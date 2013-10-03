@@ -20,3 +20,9 @@ user global configuration and to define the default location to store repositori
 not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
 EGit might behave differently since they see different configuration options.
 This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY com.google.gdt.eclipse.suite 1 0 2013-10-03 11:10:59.306
+!MESSAGE Registering: com.google.appengine.eclipse.sdkbundle_1.7.2.1
+
+!ENTRY com.google.gdt.eclipse.suite 1 0 2013-10-03 11:10:59.367
+!MESSAGE Registering: com.google.gwt.eclipse.sdkbundle_2.4.0.v201208080121-rel-r42

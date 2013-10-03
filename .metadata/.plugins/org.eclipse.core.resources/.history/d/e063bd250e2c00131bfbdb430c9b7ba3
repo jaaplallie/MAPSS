@@ -1,6 +1,6 @@
 package Main;
 
-import Gui.*;
+import Gui.mainScreen;
 
 public class main {
 
