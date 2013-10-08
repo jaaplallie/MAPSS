@@ -1,0 +1,14 @@
+package Gui;
+
+import javax.swing.JPanel;
+
+public class ScenarioSetup extends JPanel {
+
+	/**
+	 * Create the panel.
+	 */
+	public ScenarioSetup() {
+
+	}
+
+}

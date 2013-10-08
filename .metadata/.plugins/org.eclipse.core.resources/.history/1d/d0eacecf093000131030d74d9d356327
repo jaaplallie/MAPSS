@@ -1,0 +1,47 @@
+package Gui;
+
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.event.*;
+
+public class scenarioSetupWindow extends JPanel {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6622313351868642228L;
+	
+	DefaultListModel listModel = new DefaultListModel();
+	JList list = new JList(listModel);
+	JScrollPane listScroller = new JScrollPane(list);
+	
+	public scenarioSetupWindow() {
+		listModel.addElement("Jane Doe");
+		listModel.addElement("John Smith");
+		listModel.addElement("Kathy Green");
+		listModel.addElement("Jane Smith");
+		listModel.addElement("John Green");
+		listModel.addElement("Kathy Doe");
+		listModel.addElement("Jane Green");
+		listModel.addElement("John Doe");
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		list.setVisibleRowCount(-1);
+		//listScroller.setPreferredSize(new Dimension(80, 80));
+		add(listScroller);
+	}
+	
+	public void valueChanged(ListSelectionEvent e) {
+	    if (e.getValueIsAdjusting() == false) {
+
+	        if (list.getSelectedIndex() == -1) {
+	        //No selection, disable fire button.
+	            //fireButton.setEnabled(false);
+
+	        } else {
+	        //Selection, enable the fire button.
+	            //fireButton.setEnabled(true);
+	        }
+	    }
+	}
+}

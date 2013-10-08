@@ -1,0 +1,67 @@
+package Gui;
+
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.EventQueue;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.EmptyBorder;
+import javax.swing.JSplitPane;
+
+public class scenarioSetupWindow2 extends JFrame {
+
+	private JPanel contentPane;
+	DefaultListModel listModel = new DefaultListModel();
+	JList list = new JList(listModel);
+	private final JSplitPane splitPane = new JSplitPane();
+	private final JPanel panel = new JPanel();
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					scenarioSetupWindow2 frame = new scenarioSetupWindow2();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public scenarioSetupWindow2() {
+		listModel.addElement("Jane Doe");
+		listModel.addElement("John Smith");
+		listModel.addElement("Kathy Green");
+		listModel.addElement("Jane Smith");
+		listModel.addElement("John Green");
+		listModel.addElement("Kathy Doe");
+		listModel.addElement("Jane Green");
+		listModel.addElement("John Doe");
+		
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		setContentPane(contentPane);
+		
+		contentPane.add(splitPane);
+		splitPane.setLeftComponent(list);
+		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		list.setVisibleRowCount(-1);
+		
+		splitPane.setRightComponent(panel);
+	}
+
+}

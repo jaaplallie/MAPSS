@@ -1,0 +1,70 @@
+package Gui;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JTabbedPane;
+import java.awt.BorderLayout;
+import javax.swing.JPanel;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+
+public class mainWindow {
+
+	private JFrame frame;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					mainWindow window = new mainWindow();
+					window.frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the application.
+	 */
+	public mainWindow() {
+		initialize();
+	}
+
+	/**
+	 * Initialize the contents of the frame.
+	 */
+	private void initialize() {
+		frame = new JFrame();
+		frame.setBounds(100, 100, 840, 486);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		frame.getContentPane().add(tabbedPane);
+		
+		JPanel panel1 = new JPanel();
+		tabbedPane.addTab("Tab 1", null, panel1, null);
+		
+		JPanel panel2 = new JPanel();
+		tabbedPane.addTab("Tab 2", null, panel2, null);
+		
+		JMenuBar menuBar = new JMenuBar();
+		menuBar.setSize(100, 15);
+		frame.setJMenuBar(menuBar);
+		
+		JMenuItem mntmFile = new JMenuItem("File");
+		menuBar.add(mntmFile);
+		JMenuItem mntmAbout = new JMenuItem("About");
+		menuBar.add(mntmAbout);
+		JMenuItem mntmHelp = new JMenuItem("Help");
+		menuBar.add(mntmHelp);
+		
+		
+	}
+
+}
