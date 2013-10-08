@@ -2,4 +2,8 @@
 <qualifiedTypeNameHistroy>
 <fullyQualifiedTypeName name="Gui.mainScreen"/>
 <fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
+<fullyQualifiedTypeName name="javax.swing.DefaultListModel"/>
+<fullyQualifiedTypeName name="java.awt.Dimension"/>
+<fullyQualifiedTypeName name="Gui.scenarioSetupWindow"/>
+<fullyQualifiedTypeName name="javax.swing.event.ListSelectionEvent"/>
 </qualifiedTypeNameHistroy>
