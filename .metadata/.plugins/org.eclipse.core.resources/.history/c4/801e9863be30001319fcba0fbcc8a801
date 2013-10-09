@@ -13,6 +13,7 @@ public class main {
 	 */
 	public static void main(String[] args) {
 		System.out.println("Multi-Agent Production System Simulator (MAPSS) started.");
+<<<<<<< HEAD
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -23,5 +24,8 @@ public class main {
 				}
 			}
 		});
+=======
+		//Dit commentaar is toegevoegd om git te testen. Groet Mathijs
+>>>>>>> 779461955951ac681906fa021ad238152d040c53
 	}
 }
