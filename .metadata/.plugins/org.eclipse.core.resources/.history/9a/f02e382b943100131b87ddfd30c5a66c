@@ -1,0 +1,36 @@
+package Backend;
+
+import org.jfree.chart.*;
+import org.jfree.data.general.*;
+
+public class graphicDraw {
+
+	DefaultPieDataset data = new DefaultPieDataset();
+	JFreeChart chart;
+	ChartFrame frame = new ChartFrame("Test", chart);
+	
+	public graphicDraw() {
+	}
+	
+	
+	public void drawGraphic(String xLabel, String yLabel){
+		// create a dataset...
+		DefaultPieDataset data = new DefaultPieDataset();
+		data.setValue("Category 1", 250);
+		data.setValue("Category 2", 500);
+		data.setValue("Category 3", 310);
+		// create a chart...
+		JFreeChart chart = ChartFactory.createPieChart(
+		"Sample Pie Chart",
+		data,
+		true, // legend?
+		true, // tooltips?
+		false // URLs?
+		);
+		// create and display a frame...
+		ChartFrame frame = new ChartFrame("First", chart);
+		frame.pack();
+		frame.setVisible(true);
+	}
+	
+}

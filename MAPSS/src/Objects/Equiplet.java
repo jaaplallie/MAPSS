@@ -5,8 +5,8 @@ import jade.core.Agent;
 public class Equiplet extends Agent{
 	public String name = "Equiplet";
 	//Part which can be produced
-	private int locationInGrid_x = 0;
-	private int locationInGrid_y = 0;
+	public int locationInGrid_x = 0;
+	public int locationInGrid_y = 0;
 	
 	public Equiplet(){
 	}

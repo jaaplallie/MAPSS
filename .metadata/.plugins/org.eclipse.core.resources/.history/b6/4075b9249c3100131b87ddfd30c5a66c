@@ -1,0 +1,61 @@
+package Backend;
+
+import org.jfree.chart.*;
+import org.jfree.data.category.*;
+import org.jfree.data.general.*;
+import Objects.Grid;
+
+public class graphicDraw {
+
+	//DefaultPieDataset data = new DefaultPieDataset();
+	//JFreeChart chart;
+	//ChartFrame frame = new ChartFrame("Test", chart);
+	
+	DefaultCategoryDataset data2 = new DefaultCategoryDataset();
+	JFreeChart chart2;
+	ChartFrame frame2;
+	
+	public graphicDraw() {
+	}
+	
+	
+	public void drawBarChart(String title, Dataset ds){
+		// create a dataset...
+		//DefaultPieDataset data = new DefaultPieDataset();
+		//data.setValue("Category 1", 250);
+		//data.setValue("Category 2", 500);
+		//data.setValue("Category 3", 310);
+		// create a chart...
+		// JFreeChart chart = ChartFactory.createPieChart(
+		// "Sample Pie Chart",
+		// data,
+		// true, // legend?
+		// true, // tooltips?
+		// false // URLs?
+		// );
+		// create and display a frame...
+		// frame = new ChartFrame("First", chart);
+		// frame.pack();
+		// frame.setVisible(true);
+		
+		// create a dataset...
+		DefaultCategoryDataset data2 = new DefaultCategoryDataset();		
+		data2.addValue(9.0, "p1", "Category 1");
+		data2.addValue(6.0, "p1", "Category 2");
+		data2.addValue(2.0, "p1", "Category 3");
+		
+		// create a chart...
+		JFreeChart chart2 = ChartFactory.createBarChart3D(
+			"{Title Here}, 
+			"Time", 
+			"Value", 
+			data2
+		);
+		
+		// create and display a frame...
+		frame2 = new ChartFrame("second", chart2);
+		frame2.pack();
+		frame2.setVisible(true);
+	}
+	
+}

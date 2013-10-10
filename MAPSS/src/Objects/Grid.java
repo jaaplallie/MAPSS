@@ -7,7 +7,7 @@ public class Grid {
 	//default grid size 5x5
 	int size_x = 5;
 	int size_y = 5;
-	Equiplet[][] equiplets;
+	public Equiplet[][] equiplets;
 	ArrayList<EquipletLink> equipletLinks = new ArrayList<EquipletLink>();
 	
 	public Grid(){
@@ -18,9 +18,12 @@ public class Grid {
 		setGridSize(x,y);
 	}
 	
-	
 	public void addEquiplet(Equiplet a){
-		
+		for(int x = 0; x < a.locationInGrid_x; x++){
+			for(int y = 0; y < a.locationInGrid_y; y++){
+				equiplets[x][y] = a;
+			}
+		}
 		System.out.println(String.format("Equiplet [{0}] added to grid.", a.toString()));
 	}
 	

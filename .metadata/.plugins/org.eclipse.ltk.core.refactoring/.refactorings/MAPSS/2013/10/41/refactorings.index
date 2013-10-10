@@ -11,3 +11,6 @@
 1381314743774	Rename field 'agentFormContainer'
 1381351098217	Rename type 'equiplet'
 1381351118035	Rename type 'product'
+1381396895846	Rename resource 'charts4j-1.3.jar'
+1381402784150	Rename method 'drawGraphic'
+1381403427544	Rename type 'graphicDraw'
