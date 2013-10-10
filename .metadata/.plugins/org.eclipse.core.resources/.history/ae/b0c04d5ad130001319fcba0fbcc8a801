@@ -1,0 +1,33 @@
+package Main;
+
+import java.awt.EventQueue;
+import java.awt.event.WindowEvent;
+
+import javax.swing.JFrame;
+import Gui.*;
+
+public class main {
+	private JFrame frame;
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		System.out.println("Multi-Agent Production System Simulator (MAPSS) started.");
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					MainWindow window = new MainWindow();
+					window.frame.setVisible(true);
+					window.frame.addWindowListener(windowListener);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	public void valueChanged(WindowEvent e) {
+	    if (e.getSource() == this) {
+	    	System.out.println("window closed");
+	    }
+	}
+}

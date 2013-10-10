@@ -1,0 +1,39 @@
+package Objects;
+
+import jade.core.Agent;
+
+public class EquipletLink {
+	public Agent equiplet_a = new Agent();
+	public Agent equiplet_b = new Agent();
+	private int transportDirection = 0;	//vervoersrichting is beide richtingen op (0 = a naar b & b naar a, 1 = a naar b, 2 = b naar a)
+	
+	
+	public EquipletLink(Agent a, Agent b, int direction){
+	}
+	
+	public Agent getEquipletA(){
+		return equiplet_a;
+	}
+	public Agent getEquipletB(){
+		return equiplet_b;
+	}
+	
+	public String getDirectionString(){
+		String returnVal = "a to b";
+		if(transportDirection == 0){
+			returnVal = " and ";
+		}
+		if(transportDirection == 2){
+			returnVal = "";
+		}else{
+			returnVal += "b to a";
+		}
+		
+		return returnVal;
+	}
+	
+	public int getDirectionInt(){
+		return transportDirection;
+	}
+	
+}

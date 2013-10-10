@@ -3,10 +3,8 @@ package Gui;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.factories.FormFactory;
-import com.jgoodies.forms.layout.RowSpec;
+import com.jgoodies.forms.factories.*;
+import com.jgoodies.forms.layout.*;
 
 public class AgentListEditorModule extends JPanel {
 
@@ -21,7 +19,8 @@ public class AgentListEditorModule extends JPanel {
 	JPanel agentFormContainer = new JPanel();
 	
 	public AgentListEditorModule() {
-		setLayout(new BorderLayout());
+		setLayout(new BorderLayout(0, 0));
+		
 		agentListModel.addElement("Jane Doe");
 		agentListModel.addElement("John Smith");
 		agentListModel.addElement("Kathy Green");
@@ -30,10 +29,11 @@ public class AgentListEditorModule extends JPanel {
 		agentListModel.addElement("Kathy Doe");
 		agentListModel.addElement("Jane Green");
 		agentListModel.addElement("John Doe");
-		setLayout(new BorderLayout(0, 0));
+		
 		agentList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		agentList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		agentList.setVisibleRowCount(-1);
+		
 		agentListScrollPane.setPreferredSize(new Dimension(100, 150));
 		add(agentListScrollPane, BorderLayout.WEST);
 		agentFormContainer.setLayout(new FormLayout(new ColumnSpec[] {
@@ -48,11 +48,23 @@ public class AgentListEditorModule extends JPanel {
 				FormFactory.DEFAULT_ROWSPEC,}));
 		add(agentFormContainer, BorderLayout.EAST);
 		
-		JButton button = new JButton("New Agent");
+		JButton button = new JButton("");
+		ImageIcon icon = new ImageIcon("img/icons/add.png");
+		button.setIcon(icon);
+		button.setBorder(BorderFactory.createEmptyBorder());
+		button.setContentAreaFilled(false);
 		agentFormContainer.add(button, "2, 2, left, top");
-		JButton button_1 = new JButton("Edit Selected Agent");
+		JButton button_1 = new JButton("");
+		ImageIcon icon_1 = new ImageIcon("img/icons/pencil.png");
+		button_1.setIcon(icon_1);
+		button_1.setBorder(BorderFactory.createEmptyBorder());
+		button_1.setContentAreaFilled(false);
 		agentFormContainer.add(button_1, "2, 4, left, top");
-		JButton button_2 = new JButton("Delete Selected Agent");
+		JButton button_2 = new JButton("");
+		ImageIcon icon_2 = new ImageIcon("img/icons/delete.png");
+		button_2.setIcon(icon_2);
+		button_2.setBorder(BorderFactory.createEmptyBorder());
+		button_2.setContentAreaFilled(false);
 		agentFormContainer.add(button_2, "2, 6, left, top");
 	}
 	

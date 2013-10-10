@@ -6,4 +6,11 @@
 <fullyQualifiedTypeName name="java.awt.Dimension"/>
 <fullyQualifiedTypeName name="Gui.scenarioSetupWindow"/>
 <fullyQualifiedTypeName name="javax.swing.event.ListSelectionEvent"/>
+<fullyQualifiedTypeName name="java.awt.event.WindowListener"/>
+<fullyQualifiedTypeName name="java.awt.event.WindowFocusListener"/>
+<fullyQualifiedTypeName name="java.awt.event.WindowStateListener"/>
+<fullyQualifiedTypeName name="jade.core.AgentDescriptor"/>
+<fullyQualifiedTypeName name="jade.core.Agent"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
+<fullyQualifiedTypeName name="java.lang.String"/>
 </qualifiedTypeNameHistroy>

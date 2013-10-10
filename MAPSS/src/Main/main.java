@@ -1,13 +1,14 @@
 package Main;
 
 import java.awt.EventQueue;
+import java.awt.event.*;
 
 import javax.swing.JFrame;
-
 import Gui.*;
 
-public class main {
+public class main{
 	private JFrame frame;
+	
 	/**
 	 * Launch the application.
 	 */
