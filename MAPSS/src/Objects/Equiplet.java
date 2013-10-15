@@ -16,7 +16,7 @@ public class Equiplet extends Agent{
 	}
 	
 	public void setLocation(int x, int y){
-		System.out.println(String.format("Location of Equiplet {0}", this.name));
+		System.out.println(String.format("Location of Equiplet {0} set to X={1} Y={2}", this.name, x, y));
 	}
 	
 	public String getLocation(){

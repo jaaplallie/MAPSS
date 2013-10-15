@@ -1,16 +1,16 @@
 package Backend;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics2D;
-import java.awt.image.*;
+import java.io.File;
+import java.io.IOException;
 
-import javax.swing.JFrame;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
-import org.jfree.chart.*;
-import org.jfree.data.category.*;
-import org.jfree.data.general.*;
-import Objects.Grid;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartFrame;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 public class ChartCreator {
 
@@ -18,75 +18,86 @@ public class ChartCreator {
 	//JFreeChart chart;
 	//ChartFrame frame = new ChartFrame("Test", chart);
 	
+	String title = "";
 	DefaultCategoryDataset data2 = new DefaultCategoryDataset();
 	JFreeChart chart2;
 	ChartFrame frame2;
-	Component com;
 	
 	public ChartCreator() {
 	}
 	
-	public void drawBarChart(String title, String x_Label, String y_Label, Dataset ds){
-		// create a dataset...
-		//DefaultPieDataset data = new DefaultPieDataset();
-		//data.setValue("Category 1", 250);
-		//data.setValue("Category 2", 500);
-		//data.setValue("Category 3", 310);
-		// create a chart...
-		// JFreeChart chart = ChartFactory.createPieChart(
-		// "Sample Pie Chart",
-		// data,
-		// true, // legend?
-		// true, // tooltips?
-		// false // URLs?
-		// );
-		// create and display a frame...
-		// frame = new ChartFrame("First", chart);
-		// frame.pack();
-		// frame.setVisible(true);
-		
-		// create a dataset...
-		DefaultCategoryDataset data2 = new DefaultCategoryDataset();		
-		data2.addValue(9.0, "p1", "Category 1");
-		data2.addValue(6.0, "p1", "Category 2");
-		data2.addValue(2.0, "p1", "Category 3");
-		data2.addValue(9.0, "p2", "Category 1");
-		data2.addValue(6.0, "p2", "Category 2");
-		data2.addValue(2.0, "p2", "Category 3");
-		data2.addValue(9.0, "p3", "Category 1");
-		data2.addValue(6.0, "p3", "Category 2");
-		data2.addValue(2.0, "p3", "Category 3");
-		data2.addValue(9.0, "p4", "Category 1");
-		data2.addValue(6.0, "p4", "Category 2");
-		data2.addValue(2.0, "p4", "Category 3");
-		
-		// create a chart...
-		JFreeChart chart2 = ChartFactory.createBarChart3D(
+	public JFreeChart drawBarChart(String title, String x_Label, String y_Label, DefaultCategoryDataset ds){		
+		JFreeChart chart = ChartFactory.createBarChart3D(
 			title, 
 			x_Label, 
 			y_Label, 
-			data2
+			ds
 		);
-		
-		// create and display a frame...
-		frame2 = new ChartFrame(title, chart2);
-		frame2.pack();
-		frame2.setVisible(true);
+		return chart;
 	}
 	
-	public Graphics2D getChartImage(){
-		JFrame frame = (JFrame)frame2;
-		frame.setBackground(Color.WHITE);
-		frame.setUndecorated(true);
-		frame.getContentPane().add(com);
-		frame.pack();
-		BufferedImage bi = new BufferedImage(com.getWidth(), com.getHeight(), BufferedImage.TYPE_INT_RGB); //ARGB = for transparency
-		Graphics2D graphics = bi.createGraphics();
-		com.print(graphics);
-		graphics.dispose();
-		frame.dispose();
-		
-		return graphics;
+	public JFreeChart drawAreaChart(String title, String x_Label, String y_Label, DefaultCategoryDataset ds){		
+		JFreeChart chart = ChartFactory.createAreaChart(
+			title, 
+			x_Label, 
+			y_Label, 
+			ds
+		);
+		return chart;
 	}
 	
+	public void openChartInNewFrame(JFreeChart chart){
+		ChartFrame new_frame = new ChartFrame(chart.getTitle().getText(), chart);
+		new_frame.pack();
+		new_frame.setVisible(true);
+	}
+	
+	public void saveChartAsPNG(JFreeChart chart) throws IOException{
+	    JFileChooser chooser = new JFileChooser();
+	    int retrival = chooser.showSaveDialog(null);
+	    if (retrival == JFileChooser.APPROVE_OPTION) {
+	        try {
+	            ChartUtilities.saveChartAsPNG(new File(chooser.getSelectedFile() + ".png"), chart, 400, 300);
+	            JOptionPane.showMessageDialog(
+	            		null, 
+	            		"Chart succesfully saved as PNG to: \n" + chooser.getCurrentDirectory() + 
+	            		"\nFilename : " + chooser.getSelectedFile() + ".png", 
+	            		"Success!", 
+	            		JOptionPane.INFORMATION_MESSAGE
+        		);
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	            JOptionPane.showMessageDialog(
+	            		null, 
+	            		"Something went wrong, chart could not be saved as PNG", 
+	            		"Error!", 
+	            		JOptionPane.ERROR_MESSAGE
+        		);
+	        }
+	    }
+	}
+	public void saveChartAsJPEG(JFreeChart chart) throws IOException{
+	    JFileChooser chooser = new JFileChooser();
+	    int retrival = chooser.showSaveDialog(null);
+	    if (retrival == JFileChooser.APPROVE_OPTION) {
+	        try {
+	            ChartUtilities.saveChartAsJPEG(new File(chooser.getSelectedFile() + ".jpeg"), chart, 400, 300);
+	            JOptionPane.showMessageDialog(
+	            		null, 
+	            		"Chart succesfully saved as JPEG to: \n" + chooser.getCurrentDirectory() + 
+	            		"\nFilename : " + chooser.getSelectedFile() + ".jpeg", 
+	            		"Success!", 
+	            		JOptionPane.INFORMATION_MESSAGE
+        		);
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	            JOptionPane.showMessageDialog(
+	            		null, 
+	            		"Something went wrong, chart could not be saved as JPEG", 
+	            		"Error!", 
+	            		JOptionPane.ERROR_MESSAGE
+        		);
+	        }
+	    }
+	}	
 }
