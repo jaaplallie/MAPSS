@@ -69,6 +69,8 @@ public class MainWindow implements WindowListener, WindowFocusListener, WindowSt
 		ProductListEditorModule productListEditorModule = new ProductListEditorModule();
 		panel1.add(productListEditorModule, "4, 2, 2, 1, left, top");
 		
+	
+		
 		JSeparator separator = new JSeparator();
 		panel1.add(separator, "8, 2, left, center");
 		

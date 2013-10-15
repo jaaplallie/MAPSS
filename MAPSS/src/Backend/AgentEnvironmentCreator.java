@@ -14,7 +14,7 @@ public class AgentEnvironmentCreator {
 		return mainContainer;
 	}
 	
-	public static void main(String[] args) {
+	public void startAgentEnvironment() {
 		
 		// Get a hold on JADE runtime
 		Runtime rt = Runtime.instance();
@@ -29,7 +29,7 @@ public class AgentEnvironmentCreator {
 		mainContainer = rt.createMainContainer(profile);
 	
 		// Create the grid
-		int gridx = 6, gridy = 4;
+		int gridx = 0, gridy = 0;
 		GridClasses gc = new GridClasses();
 		gc.createGrid(gridx, gridy);
 		

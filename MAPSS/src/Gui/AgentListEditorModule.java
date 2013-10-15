@@ -1,8 +1,10 @@
 package Gui;
 
 import java.awt.*;
+
 import javax.swing.*;
 import javax.swing.event.*;
+
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
 
@@ -48,6 +50,9 @@ public class AgentListEditorModule extends JPanel {
 				FormFactory.DEFAULT_ROWSPEC,}));
 		add(agentFormContainer, BorderLayout.EAST);
 		
+		
+		
+		
 		JButton button = new JButton("");
 		ImageIcon icon = new ImageIcon("img/icons/add.png");
 		button.setIcon(icon);
@@ -66,6 +71,12 @@ public class AgentListEditorModule extends JPanel {
 		button_2.setBorder(BorderFactory.createEmptyBorder());
 		button_2.setContentAreaFilled(false);
 		agentFormContainer.add(button_2, "2, 6, left, top");
+		
+		
+		//JButton button_3 = new JButton("New product");
+		//agentFormContainer.add(button_3, "2, 8, left, top");
+
+		
 	}
 	
 	public void valueChanged(ListSelectionEvent e) {
