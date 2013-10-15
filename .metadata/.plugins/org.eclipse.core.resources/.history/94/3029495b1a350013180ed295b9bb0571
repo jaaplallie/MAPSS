@@ -1,0 +1,108 @@
+package Gui;
+
+import javax.swing.*;
+
+import java.awt.*;
+import java.awt.List;
+import java.awt.image.*;
+import java.io.*;
+import java.util.*;
+import java.util.Map.Entry;
+
+import javax.imageio.*;
+import org.jfree.chart.*;
+import org.jfree.data.category.*;
+import org.jfree.data.general.*;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.RowSpec;
+
+public class ChartPresenter extends JPanel implements ActionListener{
+	private static final long serialVersionUID = 6423561811886542809L;
+	
+	JSplitPane splitPane = new JSplitPane();
+	JPanel chartPanel = new JPanel();
+	JPanel controlPanel = new JPanel();
+	JPanel formContainer = new JPanel();
+	JComboBox<String> chartComboBox = new JComboBox<String>();
+	Map<Integer, String> chartNamingDictionary = new HashMap<Integer, String>();
+	Map<Integer, JFreeChart> chartObjectDictionary = new HashMap<Integer, JFreeChart>();
+	ChartPanel chartContainer = new ChartPanel(null);
+	private final Choice saveAsChoice = new Choice();
+	
+	public ChartPresenter(){
+		add(splitPane);
+		splitPane.setLeftComponent(chartPanel);
+		splitPane.setRightComponent(controlPanel);
+		chartPanel.add(chartContainer);	
+		
+		controlPanel.setLayout(new FormLayout(new ColumnSpec[] {
+				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
+				ColumnSpec.decode("200px"),},
+			new RowSpec[] {
+				FormFactory.LINE_GAP_ROWSPEC,
+				RowSpec.decode("50px"),}));
+		chartComboBox.addActionListener(this);
+		controlPanel.add(chartComboBox, "2, 2");
+		controlPanel.add(formContainer, "2, 3");
+		
+		formContainer.setLayout(new FormLayout(new ColumnSpec[] {
+				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
+				ColumnSpec.decode("200px"),},
+			new RowSpec[] {
+				FormFactory.LINE_GAP_ROWSPEC,
+				RowSpec.decode("50px"),}));
+		
+		saveAsChoice.setVisible(true);
+		saveAsChoice.add("PNG");
+		saveAsChoice.add("JPEG");
+		formContainer.add(new Label("Save as:"), "1, 2");
+		formContainer.add(saveAsChoice, "2, 2");
+	}
+	
+	public void addChart(JFreeChart chart){
+		int new_key = chartNamingDictionary.size() + 1;
+		String chartTitle = chart.getTitle().getText();
+		chartNamingDictionary.put(new_key, chartTitle);
+		chartObjectDictionary.put(new_key, chart);
+		chartComboBox.addItem(chartTitle);
+		reload();
+	}
+	
+	public void reload(){
+		chartComboBox.removeAllItems();
+		for(Entry<Integer, String> entry : chartNamingDictionary.entrySet()){
+			chartComboBox.addItem(entry.getValue());
+		}
+		validate();
+		System.out.println("ChartPresenter reloaded.");
+	}
+	
+	public void empty(){
+		chartNamingDictionary.clear();
+		chartObjectDictionary.clear();
+		chartComboBox.removeAllItems();
+		validate();
+		System.out.println("ChartPresenter emptied.");
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+        if(e.getSource().equals(chartComboBox)){
+        	@SuppressWarnings("unchecked")
+			JComboBox<String> cb = (JComboBox<String>)e.getSource();
+        	for(Entry<Integer, String> entry : chartNamingDictionary.entrySet()){
+        		if(entry.getValue() == (String)cb.getSelectedItem()){
+        			JFreeChart selectedChart = chartObjectDictionary.get(entry.getKey());
+        			chartContainer.setChart(selectedChart);
+        			validate();
+        			break;
+        		}
+    		}
+        	
+        }
+	}
+}

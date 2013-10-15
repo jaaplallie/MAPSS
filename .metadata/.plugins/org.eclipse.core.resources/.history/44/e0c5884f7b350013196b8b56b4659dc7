@@ -1,0 +1,101 @@
+package Gui;
+
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.event.*;
+
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.factories.*;
+import com.jgoodies.forms.layout.*;
+
+public class AgentListEditorModule extends JPanel {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6622313351868642228L;
+	
+	DefaultListModel agentListModel = new DefaultListModel();
+	JList agentList = new JList(agentListModel);
+	JScrollPane agentListScrollPane = new JScrollPane(agentList);
+	JPanel agentFormContainer = new JPanel();
+	DefaultFormBuilder builder = getNewBuilder();
+	
+	public AgentListEditorModule() {
+		setLayout(new BorderLayout(0, 0));
+		
+		agentListModel.addElement("Jane Doe");
+		agentListModel.addElement("John Smith");
+		agentListModel.addElement("Kathy Green");
+		agentListModel.addElement("Jane Smith");
+		agentListModel.addElement("John Green");
+		agentListModel.addElement("Kathy Doe");
+		agentListModel.addElement("Jane Green");
+		agentListModel.addElement("John Doe");
+		
+		agentList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		agentList.setLayoutOrientation(JList.VERTICAL);
+		agentList.setVisibleRowCount(-1);
+		
+		agentListScrollPane.setPreferredSize(new Dimension(100, 150));
+		
+		JButton addBtn = new JButton("");
+		ImageIcon icon = new ImageIcon("img/icons/add.png");
+		addBtn.setIcon(icon);
+		addBtn.setBorder(BorderFactory.createEmptyBorder());
+		addBtn.setContentAreaFilled(false);
+		builder.append(addBtn);
+		JButton editBtn = new JButton("");
+		ImageIcon icon_1 = new ImageIcon("img/icons/pencil.png");
+		editBtn.setIcon(icon_1);
+		editBtn.setBorder(BorderFactory.createEmptyBorder());
+		editBtn.setContentAreaFilled(false);
+		builder.append(editBtn);
+		JButton deleteBtn = new JButton("");
+		ImageIcon icon_2 = new ImageIcon("img/icons/delete.png");
+		deleteBtn.setIcon(icon_2);
+		deleteBtn.setBorder(BorderFactory.createEmptyBorder());
+		deleteBtn.setContentAreaFilled(false);
+		builder.append(deleteBtn);
+		
+		agentFormContainer = builder.getPanel();
+		builder = getNewBuilder();
+		
+		JLabel titleLabel = new JLabel("Equiplets");
+		builder.append(titleLabel);
+		builder.nextLine();
+		builder.append(agentListScrollPane);
+		builder.nextLine();
+		builder.append(agentFormContainer);
+		builder.nextLine();
+		add(builder.getPanel());
+		builder = getNewBuilder();
+	}
+	
+	public DefaultFormBuilder getNewBuilder(){
+		DefaultFormBuilder returnBuilder = new DefaultFormBuilder(new FormLayout(""));
+		returnBuilder.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		returnBuilder.appendColumn("right:pref");
+		returnBuilder.appendColumn("3dlu");
+		returnBuilder.appendColumn("fill:max(pref; 100px)");
+		returnBuilder.appendColumn("5dlu");
+		returnBuilder.appendColumn("right:pref");
+		returnBuilder.appendColumn("3dlu");
+		returnBuilder.appendColumn("fill:max(pref; 100px)");
+		
+		return returnBuilder;
+	}
+	
+	public void valueChanged(ListSelectionEvent e) {
+	    if (e.getValueIsAdjusting() == false) {
+
+	        if (agentList.getSelectedIndex() == -1) {
+	        //No selection
+
+	        } else {
+	        //Selection
+	        	//list.getSelectedIndex() = selected index
+	        }
+	    }
+	}
+}

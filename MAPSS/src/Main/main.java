@@ -2,15 +2,12 @@ package Main;
 
 import java.awt.EventQueue;
 import java.awt.event.*;
-
 import javax.swing.JFrame;
-
 import Backend.*;
 import Gui.*;
 
 public class main{
 	private JFrame frame;
-	private static ChartCreator draw = new ChartCreator();
 	
 	/**
 	 * Launch the application.
@@ -27,6 +24,5 @@ public class main{
 				}
 			}
 		});
-		draw.drawBarChart("Barchart Test", "x", "y", null);
 	}
 }

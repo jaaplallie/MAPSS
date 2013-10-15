@@ -1,10 +1,10 @@
 package Gui;
 
 import java.awt.*;
-
 import javax.swing.*;
 import javax.swing.event.*;
 
+import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
 
@@ -15,10 +15,11 @@ public class AgentListEditorModule extends JPanel {
 	 */
 	private static final long serialVersionUID = -6622313351868642228L;
 	
+	JPanel contentPanel = new JPanel();
 	DefaultListModel agentListModel = new DefaultListModel();
 	JList agentList = new JList(agentListModel);
 	JScrollPane agentListScrollPane = new JScrollPane(agentList);
-	JPanel agentFormContainer = new JPanel();
+	DefaultFormBuilder builder = getNewBuilder();
 	
 	public AgentListEditorModule() {
 		setLayout(new BorderLayout(0, 0));
@@ -33,50 +34,61 @@ public class AgentListEditorModule extends JPanel {
 		agentListModel.addElement("John Doe");
 		
 		agentList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		agentList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		agentList.setLayoutOrientation(JList.VERTICAL);
 		agentList.setVisibleRowCount(-1);
-		
+	
 		agentListScrollPane.setPreferredSize(new Dimension(100, 150));
-		add(agentListScrollPane, BorderLayout.WEST);
-		agentFormContainer.setLayout(new FormLayout(new ColumnSpec[] {
-				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-				ColumnSpec.decode("200px"),},
-			new RowSpec[] {
-				FormFactory.LINE_GAP_ROWSPEC,
-				RowSpec.decode("23px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,}));
-		add(agentFormContainer, BorderLayout.EAST);
 		
-		
-		
-		
-		JButton button = new JButton("");
+		JPanel btnPanel = new JPanel();
+		btnPanel.setLayout(new BoxLayout(btnPanel, BoxLayout.Y_AXIS));
+		JButton addBtn = new JButton("Add Equiplet");
 		ImageIcon icon = new ImageIcon("img/icons/add.png");
-		button.setIcon(icon);
-		button.setBorder(BorderFactory.createEmptyBorder());
-		button.setContentAreaFilled(false);
-		agentFormContainer.add(button, "2, 2, left, top");
-		JButton button_1 = new JButton("");
+		addBtn.setIcon(icon);
+		addBtn.setBorder(BorderFactory.createEmptyBorder());
+		addBtn.setContentAreaFilled(false);
+		addBtn.setSize(20, 20);
+		btnPanel.add(addBtn);
+		JButton editBtn = new JButton("Edit Equiplet");
 		ImageIcon icon_1 = new ImageIcon("img/icons/pencil.png");
-		button_1.setIcon(icon_1);
-		button_1.setBorder(BorderFactory.createEmptyBorder());
-		button_1.setContentAreaFilled(false);
-		agentFormContainer.add(button_1, "2, 4, left, top");
-		JButton button_2 = new JButton("");
+		editBtn.setIcon(icon_1);
+		editBtn.setBorder(BorderFactory.createEmptyBorder());
+		editBtn.setContentAreaFilled(false);
+		editBtn.setSize(20, 20);
+		btnPanel.add(editBtn);
+		JButton deleteBtn = new JButton("Delete Equiplet");
 		ImageIcon icon_2 = new ImageIcon("img/icons/delete.png");
-		button_2.setIcon(icon_2);
-		button_2.setBorder(BorderFactory.createEmptyBorder());
-		button_2.setContentAreaFilled(false);
-		agentFormContainer.add(button_2, "2, 6, left, top");
+		deleteBtn.setIcon(icon_2);
+		deleteBtn.setBorder(BorderFactory.createEmptyBorder());
+		deleteBtn.setContentAreaFilled(false);
+		deleteBtn.setSize(20, 20);
+		btnPanel.add(deleteBtn);
+		btnPanel.validate();
 		
 		
-		//JButton button_3 = new JButton("New product");
-		//agentFormContainer.add(button_3, "2, 8, left, top");
-
+		JLabel titleLabel = new JLabel("Equiplets");
+		builder.append(titleLabel);
+		builder.nextLine();
+		builder.append(agentListScrollPane);
+		builder.append(btnPanel);
+		contentPanel = builder.getPanel();
+		add(contentPanel, BorderLayout.CENTER);
+		builder = getNewBuilder();
 		
+		
+	}
+	
+	public DefaultFormBuilder getNewBuilder(){
+		DefaultFormBuilder returnBuilder = new DefaultFormBuilder(new FormLayout(""));
+		returnBuilder.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		returnBuilder.appendColumn("right:pref");
+		returnBuilder.appendColumn("3dlu");
+		returnBuilder.appendColumn("fill:max(pref; 100px)");
+		returnBuilder.appendColumn("5dlu");
+		returnBuilder.appendColumn("right:pref");
+		returnBuilder.appendColumn("3dlu");
+		returnBuilder.appendColumn("fill:max(pref; 100px)");
+		
+		return returnBuilder;
 	}
 	
 	public void valueChanged(ListSelectionEvent e) {

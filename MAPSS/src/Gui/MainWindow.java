@@ -1,87 +1,101 @@
 package Gui;
 
-import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import java.awt.*;
-import java.awt.event.*;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
+import java.awt.Component;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
+import java.awt.event.WindowListener;
+import java.awt.event.WindowStateListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.JTabbedPane;
+
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.category.DefaultCategoryDataset;
+
+import Backend.ChartCreator;
+
+import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.RowSpec;
 
 public class MainWindow implements WindowListener, WindowFocusListener, WindowStateListener {
 
 	public JFrame frame;
-
-//	/**
-//	 * Launch the application.
-//	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					mainWindow window = new mainWindow();
-//					window.frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
-
-	/**
-	 * Create the application.
-	 */
+	private DefaultFormBuilder builder = new DefaultFormBuilder(new FormLayout(""));
+	
 	public MainWindow() {
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 840, 486);
+		frame.setBounds(100, 100, 1031, 565);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.addWindowListener(this);
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frame.getContentPane().add(tabbedPane);
 		
-		JPanel panel1 = new JPanel();
-		panel1.setLayout(new FormLayout(new ColumnSpec[] {
-				FormFactory.RELATED_GAP_COLSPEC,
-				FormFactory.DEFAULT_COLSPEC,
-				ColumnSpec.decode("305px"),
-				ColumnSpec.decode("305px"),
-				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-				ColumnSpec.decode("305px"),
-				FormFactory.LABEL_COMPONENT_GAP_COLSPEC,
-				ColumnSpec.decode("1px"),},
-			new RowSpec[] {
-				FormFactory.LINE_GAP_ROWSPEC,
-				RowSpec.decode("150px"),
-				FormFactory.RELATED_GAP_ROWSPEC,
-				FormFactory.DEFAULT_ROWSPEC,}));
+		builder.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        builder.appendColumn("right:pref");
+        builder.appendColumn("3dlu");
+        builder.appendColumn("fill:max(pref; 100px)");
+        builder.appendColumn("5dlu");
+        builder.appendColumn("right:pref");
+        builder.appendColumn("3dlu");
+        builder.appendColumn("fill:max(pref; 100px)");
+        
 		AgentListEditorModule agentListEditorModule = new AgentListEditorModule();
-		panel1.add(agentListEditorModule, "3, 2, left, top");
-		tabbedPane.addTab("Setup", null, panel1, null);
 		ProductListEditorModule productListEditorModule = new ProductListEditorModule();
-		panel1.add(productListEditorModule, "4, 2, 2, 1, left, top");
 		
-	
+		builder.append(agentListEditorModule, productListEditorModule);
+		builder.nextLine();
+		builder.append(new JSeparator());
+		builder.nextLine();
 		
-		JSeparator separator = new JSeparator();
-		panel1.add(separator, "8, 2, left, center");
+		JPanel setupTab = builder.getPanel();
+		builder = getNewBuilder();
+		tabbedPane.addTab("Setup", null, setupTab, null);
 		
-		Component horizontalStrut = Box.createHorizontalStrut(5);
-		panel1.add(horizontalStrut, "2, 4");
+		builder.append(new JLabel("Simulation Pane"));
+		builder.nextLine();
 		
-		JPanel panel2 = new JPanel();
-		tabbedPane.addTab("Simulation", null, panel2, null);
+		JPanel simulationTab = builder.getPanel();
+		builder = getNewBuilder();
+		tabbedPane.addTab("Simulation Data", null, simulationTab, null);
 		
-		JPanel panel3 = new JPanel();
-		tabbedPane.addTab("Last Results", null, panel3, null);
+		ChartCreator chartcreator = new ChartCreator();
+		DefaultCategoryDataset data2 = new DefaultCategoryDataset();		
+		data2.addValue(9.0, "p1", "Category 1");
+		data2.addValue(6.0, "p1", "Category 2");
+		data2.addValue(2.0, "p1", "Category 3");
+		data2.addValue(9.0, "p2", "Category 1");
+		data2.addValue(6.0, "p2", "Category 2");
+		data2.addValue(2.0, "p2", "Category 3");
+		data2.addValue(9.0, "p3", "Category 1");
+		data2.addValue(6.0, "p3", "Category 2");
+		data2.addValue(2.0, "p3", "Category 3");
+		data2.addValue(9.0, "p4", "Category 1");
+		data2.addValue(6.0, "p4", "Category 2");
+		data2.addValue(2.0, "p4", "Category 3");
+		JFreeChart ch = chartcreator.drawBarChart("Barchart Test", "x", "y", data2);
+		ChartPresenter chartpres = new ChartPresenter();
+		chartpres.addChart(ch);
+		builder.append(chartpres);
+		builder.nextLine();
+		JPanel lastResultsTab = builder.getPanel();
+		builder = getNewBuilder();
+		tabbedPane.addTab("Last Results", null, lastResultsTab, null);
 		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setSize(100, 15);
@@ -114,6 +128,20 @@ public class MainWindow implements WindowListener, WindowFocusListener, WindowSt
 		JMenuItem mntmAbout = new JMenuItem("About");
 		mnHelp.add(mntmAbout);
 	}
+	
+	public DefaultFormBuilder getNewBuilder(){
+		DefaultFormBuilder returnBuilder = new DefaultFormBuilder(new FormLayout(""));
+		returnBuilder.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		returnBuilder.appendColumn("right:pref");
+		returnBuilder.appendColumn("3dlu");
+		returnBuilder.appendColumn("fill:max(pref; 100px)");
+		returnBuilder.appendColumn("5dlu");
+		returnBuilder.appendColumn("right:pref");
+		returnBuilder.appendColumn("3dlu");
+		returnBuilder.appendColumn("fill:max(pref; 100px)");
+		
+		return returnBuilder;
+	}
 
 
 	@Override
@@ -130,10 +158,11 @@ public class MainWindow implements WindowListener, WindowFocusListener, WindowSt
 	}
 	@Override
 	public void windowClosed(WindowEvent e) {
+		System.out.println("Main Window Closed.");
 	}
 	@Override
 	public void windowClosing(WindowEvent e) {
-		System.out.println("Main Window Closed.");
+		System.out.println("Main Window Closing...");
 	}
 	@Override
 	public void windowDeactivated(WindowEvent e) {

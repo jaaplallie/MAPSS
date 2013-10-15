@@ -1,0 +1,132 @@
+package Gui;
+
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.swing.BorderFactory;
+import javax.swing.JComboBox;
+import javax.swing.JPanel;
+import javax.swing.JSplitPane;
+
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+
+import Backend.ChartCreator;
+
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.layout.FormLayout;
+
+public class ChartPresenter extends JPanel implements ActionListener{
+	private static final long serialVersionUID = 6423561811886542809L;
+	
+	JSplitPane splitPane = new JSplitPane();
+	JPanel controlPanel = new JPanel();
+	JPanel saveAsContainer = new JPanel();
+	JComboBox<String> chartComboBox = new JComboBox<String>();
+	JComboBox<String> saveAsComboBox = new JComboBox<String>();
+	Map<Integer, String> chartNamingDictionary = new HashMap<Integer, String>();
+	Map<Integer, JFreeChart> chartObjectDictionary = new HashMap<Integer, JFreeChart>();
+	ChartPanel chartContainer = new ChartPanel(null);
+	DefaultFormBuilder builder = new DefaultFormBuilder(new FormLayout(""));
+	
+	public ChartPresenter(){
+		add(splitPane);
+		
+		//controlPanel.setLayout(new BoxLayout(controlPanel, BoxLayout.Y_AXIS));
+		controlPanel.setLayout(new GridLayout(0,2));		
+		chartComboBox.setEditable(false);
+		chartComboBox.addActionListener(this);
+		
+		saveAsComboBox.addItem("PNG");
+		saveAsComboBox.addItem("JPEG");
+		saveAsComboBox.setEditable(false);
+		saveAsComboBox.addActionListener(this);
+		
+		saveAsComboBox.setVisible(true);
+		builder.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        builder.appendColumn("right:pref");
+        builder.appendColumn("3dlu");
+        builder.appendColumn("fill:max(pref; 100px)");
+        builder.appendColumn("5dlu");
+        builder.appendColumn("right:pref");
+        builder.appendColumn("3dlu");
+        builder.appendColumn("fill:max(pref; 100px)");
+        builder.append("Chart:", chartComboBox);
+        builder.nextLine();
+        builder.appendSeparator();
+        builder.append("Save as:", saveAsComboBox);
+        builder.nextLine();
+        splitPane.setLeftComponent(chartContainer);
+        splitPane.setRightComponent(builder.getPanel());
+	}
+	
+	public void addChart(JFreeChart chart){
+		int new_key = chartNamingDictionary.size() + 1;
+		String chartTitle = chart.getTitle().getText();
+		chartNamingDictionary.put(new_key, chartTitle);
+		chartObjectDictionary.put(new_key, chart);
+		chartComboBox.addItem(chartTitle);
+		reload();
+	}
+	
+	public void reload(){
+		chartComboBox.removeAllItems();
+		for(Entry<Integer, String> entry : chartNamingDictionary.entrySet()){
+			chartComboBox.addItem(entry.getValue());
+		}
+		validate();
+		System.out.println("ChartPresenter reloaded.");
+	}
+	
+	public void empty(){
+		chartNamingDictionary.clear();
+		chartObjectDictionary.clear();
+		chartComboBox.removeAllItems();
+		validate();
+		System.out.println("ChartPresenter emptied.");
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+        if(e.getSource().equals(chartComboBox)){
+        	@SuppressWarnings("unchecked")
+			JComboBox<String> cb = (JComboBox<String>)e.getSource();
+        	for(Entry<Integer, String> entry : chartNamingDictionary.entrySet()){
+        		if(entry.getValue() == (String)cb.getSelectedItem()){
+        			JFreeChart selectedChart = chartObjectDictionary.get(entry.getKey());
+        			chartContainer.setChart(selectedChart);
+        			validate();
+        			break;
+        		}
+    		}
+        }
+        else if(e.getSource().equals(saveAsComboBox)){
+        	@SuppressWarnings("unchecked")
+			JComboBox<String> cb = (JComboBox<String>)e.getSource();
+        	String selected = cb.getSelectedItem().toString();
+        	ChartCreator chartcreator = new ChartCreator();
+        	if(selected.equals("PNG")){
+        		try {
+					chartcreator.saveChartAsPNG(chartContainer.getChart());
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+        	}
+        	else if(selected.equals("JPEG")){
+        		try {
+					chartcreator.saveChartAsJPEG(chartContainer.getChart());
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+        	}
+        	else{
+        		
+        	}
+        }
+	}
+}
