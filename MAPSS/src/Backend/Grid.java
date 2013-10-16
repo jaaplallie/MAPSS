@@ -17,7 +17,6 @@ public class Grid {
 		equiplets = new AgentController[width][length];
 		int stepnr = 1;
 		for (int i = 0; i < length; i++){
-			String output = "";
 			for (int j = 0; j < width; j++){
 				grid[j][i]= stepnr;
 				
@@ -39,11 +38,9 @@ public class Grid {
 					e.printStackTrace();
 				} 
 				
-				output += " " + stepnr;
 				stepnr++;
 				
 			}
-			System.out.println(output);
 		}
 		System.out.println();
 	}
@@ -89,5 +86,16 @@ public class Grid {
 
 		int position[] = {x,y};
 		return position;
+	}
+	
+	public int count(){
+		int y = 0;
+		int x = 0;
+		for (y = 0; y < equiplets.length; y++){
+			for (x = 0; x < equiplets[y].length; x++){
+			}
+		}
+		int returnVal = y * x;
+		return returnVal;
 	}
 }

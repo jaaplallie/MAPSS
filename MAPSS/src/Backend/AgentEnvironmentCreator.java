@@ -31,15 +31,6 @@ public class AgentEnvironmentCreator {
 	}
 	
 	public static void start(){
-//		// Get a hold on JADE runtime
-//		rt = Runtime.instance();
-//		
-//		// Exit the JVM when there are no more containers around
-//		rt.setCloseVM(true);
-//	
-//		// Create a default profile
-//		p = new ProfileImpl();
-		
 		setup();
 
 		// Create a container for the Agents
@@ -65,14 +56,14 @@ public class AgentEnvironmentCreator {
 		//XmlReader.createProductAgentsFromXML("C:/Users/Mathijs/Desktop/Testfile.xml");
 	}
 	
-	public static void setup(){
+	private static void setup(){
 		p = new ProfileImpl();
 		p.setParameter(Profile.GUI, "false");
 		mainContainer = rt.createMainContainer(p);			
 		rt.setCloseVM(true);
 	}
 	
-	public void setup(String host){
+	private void setup(String host){
 		p = new ProfileImpl();
 		p.setParameter(Profile.GUI, "false");
 		p.setParameter(Profile.MAIN_HOST, host);

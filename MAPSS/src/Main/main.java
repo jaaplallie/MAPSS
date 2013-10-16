@@ -16,7 +16,7 @@ public class main{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					AgentEnvironmentCreator.start();
+					AgentEnvironmentCreator aec = new AgentEnvironmentCreator();
 					MainWindow window = new MainWindow();
 					window.frame.setVisible(true);
 				} catch (Exception e) {

@@ -1,14 +1,8 @@
 package Agents;
 
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import jade.core.AID;
-import jade.core.Agent; 
+import jade.core.Agent;
 import jade.core.behaviours.WakerBehaviour;
 import jade.wrapper.AgentController;
- 
 import Backend.Grid;
 
 public class EquipletAgent extends Agent { 

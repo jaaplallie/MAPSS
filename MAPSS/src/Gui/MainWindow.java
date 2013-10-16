@@ -70,17 +70,15 @@ public class MainWindow implements WindowListener{
         builder.appendColumn("3dlu");
         builder.appendColumn("fill:max(pref; 100px)");
         
-		AgentListEditorModule agentListEditorModule = new AgentListEditorModule();
-		ProductListEditorModule productListEditorModule = new ProductListEditorModule();
+		CreateGridModule createGridModule = new CreateGridModule();
+		//ProductListEditorModule productListEditorModule = new ProductListEditorModule();
 		
-		builder.append(agentListEditorModule, productListEditorModule);
-		builder.nextLine();
-		builder.append(new JSeparator());
+		builder.append(createGridModule);
 		builder.nextLine();
 		
 		JPanel setupTab = builder.getPanel();
 		builder = getNewBuilder();
-		tabbedPane.addTab("Setup", null, setupTab, null);
+		tabbedPane.addTab("Scenario Setup", null, setupTab, null);
 		
 		builder.append(new JLabel("Simulation Pane"));
 		builder.nextLine();
@@ -176,7 +174,6 @@ public class MainWindow implements WindowListener{
 				try {
 					AgentEnvironmentCreator.addRemoteMonitoringAgent();
 				} catch (StaleProxyException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 //				String[] bootArgs = { 
