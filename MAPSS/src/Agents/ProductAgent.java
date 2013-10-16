@@ -3,11 +3,12 @@ package Agents;
 import jade.core.AID;
 import jade.core.Agent; 
 import jade.core.behaviours.WakerBehaviour;
+import jade.wrapper.AgentController;
  
-import Backend.GridClasses;
+import Backend.Grid;
 
 public class ProductAgent extends Agent { 
-	GridClasses gc;
+	Grid gc;
 	protected void setup() { 
 		addBehaviour(new WakerBehaviour(this, 0) { 
 			 protected void handleElapsedTimeout() { 
@@ -22,10 +23,10 @@ public class ProductAgent extends Agent {
 				}
 				System.out.println("These are my product's steps: " + output); 
 				 
-				int grid[][] = GridClasses.getGrid();
+				AgentController grid[][] = Grid.getGrid();
 
 				int start_position = (int)(Math.random()*(grid.length*grid[0].length));
-				int[] start_xy_values = GridClasses.getEquipletPosition(start_position);
+				int[] start_xy_values = Grid.getEquipletPosition(start_position);
 				
 				System.out.println("I start at equiplet number:" + start_position); 
 				System.out.println("That equiplet's position is " + 
@@ -39,7 +40,7 @@ public class ProductAgent extends Agent {
 				
 				for (Object o : args) {
 					next_position = Integer.parseInt(o.toString());
-					int path[] = GridClasses.calculatePath(current_position, next_position);
+					int path[] = Grid.calculatePath(current_position, next_position);
 					int xsteps = path[0];
 					int ysteps = path[1];
 					System.out.println("To go from " + current_position + " to " + next_position + " we need " 
@@ -64,8 +65,8 @@ public class ProductAgent extends Agent {
 	} 
 	
 	public int[] calculatePath(int start_equiplet_number, int end_equiplet_number){
-		int startposition[] = GridClasses.getEquipletPosition(start_equiplet_number);
-		int endposition[] = GridClasses.getEquipletPosition(end_equiplet_number);
+		int startposition[] = Grid.getEquipletPosition(start_equiplet_number);
+		int endposition[] = Grid.getEquipletPosition(end_equiplet_number);
 		
 		int x_difference = startposition[0]-endposition[0];
 		int y_difference = startposition[1]-endposition[1];

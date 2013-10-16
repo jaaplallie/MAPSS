@@ -1,10 +1,9 @@
 package Main;
 
 import java.awt.EventQueue;
-import java.awt.event.*;
 import javax.swing.JFrame;
-import Backend.*;
-import Gui.*;
+import Backend.AgentEnvironmentCreator;
+import Gui.MainWindow;
 
 public class main{
 	private JFrame frame;
@@ -17,6 +16,7 @@ public class main{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					AgentEnvironmentCreator.start();
 					MainWindow window = new MainWindow();
 					window.frame.setVisible(true);
 				} catch (Exception e) {

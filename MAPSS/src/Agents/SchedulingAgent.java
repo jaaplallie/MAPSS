@@ -2,7 +2,7 @@ package Agents;
 
 import jade.core.AID;
 import jade.core.Agent; 
-import Backend.GridClasses;
+import Backend.Grid;
  
 public class SchedulingAgent extends Agent { 
 	

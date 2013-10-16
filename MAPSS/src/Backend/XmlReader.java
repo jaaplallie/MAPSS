@@ -1,5 +1,6 @@
 package Backend;
 
+import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
 
@@ -11,7 +12,20 @@ import java.util.regex.Pattern;
 
 
 public class XmlReader {
-	static jade.wrapper.AgentContainer container = AgentEnvironmentCreator.getContainer();
+	static AgentContainer container = (AgentContainer) AgentEnvironmentCreator.getContainer();
+	
+	public XmlReader(){
+		
+	}
+	
+	public XmlReader(String filePath){
+		
+	}
+	
+	public void open(String filePath){
+		createProductAgentsFromXML(filePath);
+	}
+	
 	protected static void createProductAgentsFromXML(String link_to_file){
 		Object[] args = new Object[0];
 		String s;
@@ -47,7 +61,7 @@ public class XmlReader {
 				//Create a product agent and pass along the steps.
 				try {
 					AgentController ac;
-					ac = container.createNewAgent("Product_" + product_name, "agents.ProductAgent", args);
+					ac = container.createNewAgent("Product_" + product_name, "Agents.ProductAgent", args);
 					ac.start();
 					Thread.sleep(100);
 				} 
