@@ -22,12 +22,19 @@ public class EquipletAgent extends Agent {
 				 String name = getLocalName();
 				 Integer stepNumber = -1;
 				 if (name.contains("Equiplet_")){
-					 stepNumber = Integer.parseInt(name.replace("Equiplet_", " "));
+					 try{
+						 stepNumber = Integer.parseInt(name.replace("Equiplet_", "").trim());
+					 }
+					 catch(NumberFormatException e){
+						 e.printStackTrace();
+					 }
 				 }
-				 int[] equiplet_xy_values = Grid.getEquipletPosition(stepNumber);
-				 System.out.println("My position in the grid is " + 
-							" x:" + equiplet_xy_values[0] + 
-							", y:" + equiplet_xy_values[1]);
+				 if(stepNumber != -1){
+					 int[] equiplet_xy_values = Grid.getEquipletPosition(stepNumber);
+					 System.out.println("My position in the grid is " + 
+						" x:" + equiplet_xy_values[0] + 
+						", y:" + equiplet_xy_values[1]);
+				 }
 			 }
 		});	
 	} 
