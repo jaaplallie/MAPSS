@@ -7,12 +7,35 @@ import Backend.Grid;
 
 public class EquipletAgent extends Agent { 
 	
+	String code;
+	int position[];
+	Object[] args;
+	
+	public EquipletAgent(String code, int[] position, Object[] args){
+		this.code = code;
+		this.position = position;
+		this.args = args;
+		setArguments(args);
+	}
+	
+	public String getCode() {
+		return code;
+	}
+	
+	public int[] getPosition(){
+		return position;
+	}
+
+	public Object[] getArgs() {
+		return args;
+	}
+	
 	protected void setup() { 
 		addBehaviour(new WakerBehaviour(this, 0) { 
 			 protected void handleElapsedTimeout() {				 
 				 System.out.println("Hi. I'm equiplet agent " + getAID().getLocalName() + ".");
 				 
-				 AgentController grid[][] = Grid.getGrid();
+				 EquipletAgent grid[][] = Grid.getGrid();
 				 String name = getLocalName();
 				 Integer stepNumber = -1;
 				 if (name.contains("Equiplet_")){

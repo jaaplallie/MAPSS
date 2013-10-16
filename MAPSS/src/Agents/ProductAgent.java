@@ -9,6 +9,24 @@ import Backend.Grid;
 
 public class ProductAgent extends Agent { 
 	Grid gc;
+	String code;
+	Object[] args;
+	
+	public ProductAgent(String code, Object[] args){
+		this.code = code;
+		this.args = args;
+		setArguments(args);
+	}
+	
+	public String getCode() {
+		return code;
+	}
+
+	public Object[] getArgs() {
+		return args;
+	}
+	
+	
 	protected void setup() { 
 		addBehaviour(new WakerBehaviour(this, 0) { 
 			 protected void handleElapsedTimeout() { 
@@ -23,7 +41,7 @@ public class ProductAgent extends Agent {
 				}
 				System.out.println("These are my product's steps: " + output); 
 				 
-				AgentController grid[][] = Grid.getGrid();
+				EquipletAgent grid[][] = Grid.getGrid();
 
 				int start_position = (int)(Math.random()*(grid.length*grid[0].length));
 				int[] start_xy_values = Grid.getEquipletPosition(start_position);

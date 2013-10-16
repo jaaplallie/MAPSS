@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import Agents.ProductAgent;
+
 
 public class XmlReader {
 	static AgentContainer container = (AgentContainer) AgentEnvironmentCreator.getContainer();
@@ -22,11 +24,14 @@ public class XmlReader {
 		
 	}
 	
-	public void open(String filePath){
-		createProductAgentsFromXML(filePath);
+	public Scenario open(String filePath){
+		return createScenarioFromXML(filePath);
 	}
 	
-	protected static void createProductAgentsFromXML(String link_to_file){
+	protected static Scenario createScenarioFromXML(String link_to_file){
+		Scenario new_scenario = new Scenario("New Scenario");
+		new_scenario.createGrid(6, 4);
+		
 		Object[] args = new Object[0];
 		String s;
 		String product_name = "This product has no name yet";
@@ -58,22 +63,26 @@ public class XmlReader {
 					args = temp.split(",");
 				}
 				
+				ProductAgent npa = new ProductAgent("Product_" + product_name, args);
+				new_scenario.addProduct(npa);
 				//Create a product agent and pass along the steps.
-				try {
-					AgentController ac;
-					ac = container.createNewAgent("Product_" + product_name, "Agents.ProductAgent", args);
-					ac.start();
-					Thread.sleep(100);
-				} 
-				catch (StaleProxyException | InterruptedException e) {
-					e.printStackTrace();
-				} 
+//				try {
+//					AgentController ac;
+//					ac = container.createNewAgent("Product_" + product_name, "Agents.ProductAgent", args);
+//					ac.start();
+//					Thread.sleep(100);
+//				} 
+//				catch (StaleProxyException | InterruptedException e) {
+//					e.printStackTrace();
+//				} 
 			}
 			br.close();
 		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
+		AgentEnvironmentCreator.setCurrentlyLoadedScenario(new_scenario);
+		return new_scenario;
 	}
 	
 }

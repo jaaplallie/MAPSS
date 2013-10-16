@@ -21,6 +21,7 @@ import java.awt.event.WindowListener;
 import java.io.File;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -80,8 +81,8 @@ public class MainWindow implements WindowListener{
 		builder = getNewBuilder();
 		tabbedPane.addTab("Scenario Setup", null, setupTab, null);
 		
-		builder.append(new JLabel("Simulation Pane"));
-		builder.nextLine();
+		SimulationModule simulationModule = new SimulationModule();
+		builder.append(simulationModule);
 		
 		JPanel simulationTab = builder.getPanel();
 		builder = getNewBuilder();

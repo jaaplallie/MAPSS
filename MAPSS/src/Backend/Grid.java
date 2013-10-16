@@ -7,45 +7,41 @@ import Agents.EquipletAgent;
 
 
 public class Grid {
-	protected static int grid[][];
-	protected static AgentController[][] equiplets;
+	protected static EquipletAgent[][] equiplets;
 	private static AgentContainer container = AgentEnvironmentCreator.getContainer();
 	
-	public void create(int width , int length ){
-		System.out.println("Grid layout:");
-		grid = new int[width][length];
-		equiplets = new AgentController[width][length];
+	public Grid(){
+	}
+	
+	public EquipletAgent[][] create(int width , int length ){
+		equiplets = new EquipletAgent[width][length];
 		int stepnr = 1;
-		for (int i = 0; i < length; i++){
-			for (int j = 0; j < width; j++){
-				grid[j][i]= stepnr;
-				
-				try {
-					AgentController a_container;
-//					Object[] args = {
-//							Dictionary<> 
-//							String.format("<X_POS={0}>", j),
-//							String.format("<Y_POS={0}>", i),
-//							String.format("<STEPNR={0}>", stepnr)
-//					};
-					a_container = container.createNewAgent("Equiplet_" + stepnr, "Agents.EquipletAgent", null);
-					equiplets[j][i] = a_container;
-					a_container.start();
+		for (int y = 0; y < length; y++){
+			for (int x = 0; x < width; x++){				
+//				try {
+
+					Agents.EquipletAgent new_Equiplet = new Agents.EquipletAgent("Equiplet_" + stepnr, new int[]{x,y}, new Object[]{});
 					
-					Thread.sleep(100);
-				} 
-				catch (StaleProxyException | InterruptedException e) {
-					e.printStackTrace();
-				} 
+					equiplets[x][y] = new_Equiplet;					
+//					AgentController a_container;
+//					a_container = container.acceptNewAgent(new_Equiplet.getCode(), new_Equiplet);
+//					a_container.start();
+//					Thread.sleep(100);
+					//a_container = container.createNewAgent("Equiplet_" + stepnr, "Agents.EquipletAgent", null);
+//				} 
+//				catch (StaleProxyException | InterruptedException e) {
+//					e.printStackTrace();
+//				} 
 				
 				stepnr++;
 				
 			}
 		}
-		System.out.println();
+		System.out.println(String.format("Grid X[%s] Y[%s] created. \n[%s] Equiplets installed.", width+"", length+"", count()+""));
+		return equiplets;
 	}
 	
-	public static AgentController[][] getGrid(){
+	public static EquipletAgent[][] getGrid(){
 		return equiplets;
 	}
 	

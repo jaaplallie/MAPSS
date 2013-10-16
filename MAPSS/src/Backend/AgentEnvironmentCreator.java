@@ -1,5 +1,7 @@
 package Backend;
 
+import Agents.EquipletAgent;
+import Agents.ProductAgent;
 import jade.*;
 import jade.core.Agent;
 import jade.core.Profile;
@@ -14,6 +16,7 @@ import jade.wrapper.StaleProxyException;
 
 public class AgentEnvironmentCreator {
 	
+	private static Scenario loadedScenario = null;
 	private static AgentContainer mainContainer;
 	static Runtime rt = Runtime.instance();
 	static Profile p;
@@ -28,6 +31,18 @@ public class AgentEnvironmentCreator {
 	
 	public AgentEnvironmentCreator(String mainhost){
 		setup(mainhost);
+	}
+	
+	public static void setCurrentlyLoadedScenario(Scenario scenario){
+		loadedScenario = scenario;
+	}
+	
+	public static Scenario getCurrentlyLoadedScenario(){
+		return loadedScenario;
+	}
+	
+	public static void startScenario(){
+		System.out.println("Scenario " + loadedScenario.scenarioName + " started.");
 	}
 	
 	public static void start(){
@@ -90,6 +105,16 @@ public class AgentEnvironmentCreator {
 	public static void addSchedulerAgent() throws StaleProxyException{
 		AgentController ac = mainContainer.createNewAgent("Scheduler", "Agents.SchedulingAgent", new Object[0]);
 		ac.start();
+	}
+	
+	public static void addEquipletAgent(EquipletAgent agent) throws StaleProxyException{
+		AgentController ac = mainContainer.acceptNewAgent(agent.getCode(), agent);
+		ac.start(); 
+	}
+	
+	public static void addProductAgent(ProductAgent agent) throws StaleProxyException{
+		AgentController ac = mainContainer.acceptNewAgent(agent.getCode(), agent);
+		ac.start(); 
 	}
 	
 	public static Grid createGrid(int x, int y){
