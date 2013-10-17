@@ -29,8 +29,9 @@ public class ProductAgent extends Agent {
 	
 	protected void setup() { 
 		addBehaviour(new WakerBehaviour(this, 0) { 
-			 protected void handleElapsedTimeout() { 
-				System.out.println("Hi. I'm product agent " + getAID().getLocalName() + "."); 
+			 protected void handleElapsedTimeout() {
+				StringBuilder sb = new StringBuilder();
+				sb.append("\nHi. I'm product agent " + getAID().getLocalName() + "."); 
 				Object[] args = myAgent.getArguments();
 				String output = "";
 				 
@@ -39,18 +40,18 @@ public class ProductAgent extends Agent {
 				for (Object o : args) {
 					 output = output + o.toString() + " ";  
 				}
-				System.out.println("These are my product's steps: " + output); 
+				sb.append("\nThese are my product's steps: " + output);
 				 
 				EquipletAgent grid[][] = Grid.getGrid();
 
 				int start_position = (int)(Math.random()*(grid.length*grid[0].length));
 				int[] start_xy_values = Grid.getEquipletPosition(start_position);
 				
-				System.out.println("I start at equiplet number:" + start_position); 
-				System.out.println("That equiplet's position is " + 
+				sb.append("\nI start at equiplet number:" + start_position); 
+				sb.append("\nThat equiplet's position is " + 
 						" x:" + start_xy_values[0] + 
 						", y:" + start_xy_values[1]); 
-				System.out.println();
+				sb.append("\n");
 				
 				int current_position = start_position;
 				int next_position;
@@ -61,8 +62,8 @@ public class ProductAgent extends Agent {
 					int path[] = Grid.calculatePath(current_position, next_position);
 					int xsteps = path[0];
 					int ysteps = path[1];
-					System.out.println("To go from " + current_position + " to " + next_position + " we need " 
-							+ xsteps + " x steps and " + ysteps + " y steps"); 
+					sb.append("\nTo go from " + current_position + " to " + next_position + " we need " 
+							+ xsteps + " x steps and " + ysteps + " y steps."); 
 					current_position = next_position;
 					if (xsteps<0){
 						xsteps = -xsteps;
@@ -71,12 +72,12 @@ public class ProductAgent extends Agent {
 						ysteps = -ysteps;
 					} 
 					hops = hops + (xsteps+ysteps);
-				}	
-				System.out.println();
-				System.out.println("Totaal aantal hops nodig voor dit product: " + hops);
-				System.out.println("Gemiddeld aantal hops per stap: " + hops/args.length);
-				System.out.println();
-				System.out.println();
+				}
+				sb.append("\n");
+				sb.append("\nTotaal aantal hops nodig voor dit product: " + hops);
+				sb.append("\nGemiddeld aantal hops per stap: " + hops/args.length);
+				sb.append("\n");
+				System.out.println(sb.toString());
 				//Note the empty println()'s make it easier for me to check for errors in the output.
 			 } 
 		} );	

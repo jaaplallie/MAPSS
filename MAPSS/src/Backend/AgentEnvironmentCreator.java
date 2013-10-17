@@ -41,8 +41,29 @@ public class AgentEnvironmentCreator {
 		return loadedScenario;
 	}
 	
+	@SuppressWarnings("static-access")
 	public static void startScenario(){
-		System.out.println("Scenario " + loadedScenario.scenarioName + " started.");
+		Scenario started_Scenario = getCurrentlyLoadedScenario();
+		System.out.println("\nScenario " + started_Scenario.scenarioName + " started.");
+		EquipletAgent[][] Grid = started_Scenario.scenario_Grid.getGrid();
+		for (int y = 0; y < started_Scenario.scenario_Grid.getY(); y++){
+			for (int x = 0; x < started_Scenario.scenario_Grid.getX(); x++){
+				try {
+					addEquipletAgent(Grid[x][y]);
+				} catch (StaleProxyException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		for(ProductAgent pa : started_Scenario.getScenario_Products()){
+			try {
+				addProductAgent(pa);
+			} catch (StaleProxyException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		System.out.println("\nScenario " + started_Scenario.scenarioName + " finished.");
 	}
 	
 	public static void start(){
@@ -108,13 +129,13 @@ public class AgentEnvironmentCreator {
 	}
 	
 	public static void addEquipletAgent(EquipletAgent agent) throws StaleProxyException{
-		AgentController ac = mainContainer.acceptNewAgent(agent.getCode(), agent);
+		AgentController ac = mainContainer.acceptNewAgent("Equiplet_"+agent.getCode(), agent);
 		ac.start(); 
 	}
 	
 	public static void addProductAgent(ProductAgent agent) throws StaleProxyException{
 		AgentController ac = mainContainer.acceptNewAgent(agent.getCode(), agent);
-		ac.start(); 
+		ac.start();
 	}
 	
 	public static Grid createGrid(int x, int y){

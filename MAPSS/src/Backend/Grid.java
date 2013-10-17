@@ -9,18 +9,22 @@ import Agents.EquipletAgent;
 public class Grid {
 	protected static EquipletAgent[][] equiplets;
 	private static AgentContainer container = AgentEnvironmentCreator.getContainer();
+	private int x = 0;
+	private int y = 0;
 	
 	public Grid(){
 	}
 	
 	public EquipletAgent[][] create(int width , int length ){
 		equiplets = new EquipletAgent[width][length];
+		x = width;
+		y = length;
 		int stepnr = 1;
 		for (int y = 0; y < length; y++){
 			for (int x = 0; x < width; x++){				
 //				try {
 
-					Agents.EquipletAgent new_Equiplet = new Agents.EquipletAgent("Equiplet_" + stepnr, new int[]{x,y}, new Object[]{});
+					Agents.EquipletAgent new_Equiplet = new Agents.EquipletAgent(stepnr, new int[]{x,y}, new Object[]{});
 					
 					equiplets[x][y] = new_Equiplet;					
 //					AgentController a_container;
@@ -41,6 +45,14 @@ public class Grid {
 		return equiplets;
 	}
 	
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
 	public static EquipletAgent[][] getGrid(){
 		return equiplets;
 	}

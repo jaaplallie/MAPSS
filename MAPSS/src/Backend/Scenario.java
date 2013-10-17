@@ -27,6 +27,12 @@ public class Scenario {
 	}
 	
 	public void addProduct(ProductAgent pa){
+		System.out.println(
+				String.format(
+						"ProductAgent [%s] added to grid.", 
+						pa.getCode()
+				)
+		);
 		scenario_Products.add(pa);
 	}
 }
