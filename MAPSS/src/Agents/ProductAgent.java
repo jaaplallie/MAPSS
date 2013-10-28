@@ -47,7 +47,8 @@ public class ProductAgent extends Agent {
 				
 				if (dangerous_grit == false){
 					int current_position = (int)(Math.random()*(grid.length*grid[0].length));
-					int[] start_xy_values = GridClasses.getEquipletPosition(current_position);
+					
+					//int[] start_xy_values = GridClasses.getEquipletPosition(current_position);
 					
 					//System.out.println("I start at equiplet number:" + start_position); 
 					//System.out.println("That equiplet's position is " + 
