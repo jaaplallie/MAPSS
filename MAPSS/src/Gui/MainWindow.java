@@ -1,34 +1,50 @@
 package Gui;
 
-import java.awt.Component;
+import jade.Boot;
+import jade.BootGUI;
+import jade.BootProfileImpl;
+import jade.MicroBoot;
+import jade.core.AgentContainer;
+import jade.core.PlatformManager;
+import jade.core.PlatformManagerImpl;
+import jade.core.Profile;
+import jade.core.ProfileException;
+import jade.core.ServiceFinder;
+import jade.core.management.AgentManagementService;
+import jade.mtp.MTPException;
+import jade.wrapper.StaleProxyException;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowFocusListener;
 import java.awt.event.WindowListener;
-import java.awt.event.WindowStateListener;
+import java.io.File;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 
+import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 
+import Backend.AgentEnvironmentCreator;
 import Backend.ChartCreator;
+import Backend.XmlReader;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.factories.FormFactory;
-import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.RowSpec;
 
-public class MainWindow implements WindowListener, WindowFocusListener, WindowStateListener {
+public class MainWindow implements WindowListener{
 
 	public JFrame frame;
 	private DefaultFormBuilder builder = new DefaultFormBuilder(new FormLayout(""));
@@ -55,20 +71,18 @@ public class MainWindow implements WindowListener, WindowFocusListener, WindowSt
         builder.appendColumn("3dlu");
         builder.appendColumn("fill:max(pref; 100px)");
         
-		AgentListEditorModule agentListEditorModule = new AgentListEditorModule();
-		ProductListEditorModule productListEditorModule = new ProductListEditorModule();
+		CreateGridModule createGridModule = new CreateGridModule();
+		//ProductListEditorModule productListEditorModule = new ProductListEditorModule();
 		
-		builder.append(agentListEditorModule, productListEditorModule);
-		builder.nextLine();
-		builder.append(new JSeparator());
+		builder.append(createGridModule);
 		builder.nextLine();
 		
 		JPanel setupTab = builder.getPanel();
 		builder = getNewBuilder();
-		tabbedPane.addTab("Setup", null, setupTab, null);
+		tabbedPane.addTab("Scenario Setup", null, setupTab, null);
 		
-		builder.append(new JLabel("Simulation Pane"));
-		builder.nextLine();
+		SimulationModule simulationModule = new SimulationModule();
+		builder.append(simulationModule);
 		
 		JPanel simulationTab = builder.getPanel();
 		builder = getNewBuilder();
@@ -107,10 +121,38 @@ public class MainWindow implements WindowListener, WindowFocusListener, WindowSt
 		JMenuItem mntmNewScenario = new JMenuItem("New Scenario");
 		mnFile.add(mntmNewScenario);
 		
-		JMenuItem mntmImportScenario = new JMenuItem("Import Scenario");
+		JMenuItem mntmImportScenario = new JMenuItem("Import XML");
 		mnFile.add(mntmImportScenario);
+		mntmImportScenario.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser chooser = new JFileChooser();
+				XmlReader xmlReader = new XmlReader();
+			    int retrival = chooser.showOpenDialog(null);
+			    if (retrival == JFileChooser.APPROVE_OPTION) {
+			        try {
+			        	xmlReader.open(chooser.getSelectedFile().toPath().toString());
+			            JOptionPane.showMessageDialog(
+			            		null, 
+			            		"File succesfully opened." + 
+			            		"\nFilename : " + chooser.getSelectedFile() + ".xml", 
+			            		"Success!", 
+			            		JOptionPane.INFORMATION_MESSAGE
+		        		);
+			        } catch (Exception ex) {
+			            ex.printStackTrace();
+			            JOptionPane.showMessageDialog(
+			            		null, 
+			            		"Something went wrong, file could not be loaded", 
+			            		"Error!", 
+			            		JOptionPane.ERROR_MESSAGE
+		        		);
+			        }
+			    }
+			}
+		});
 		
-		JMenuItem mntmExportScenario = new JMenuItem("Export Scenario");
+		JMenuItem mntmExportScenario = new JMenuItem("Export XML");
 		mnFile.add(mntmExportScenario);
 		
 		JMenu mnEdit = new JMenu("Edit");
@@ -124,6 +166,28 @@ public class MainWindow implements WindowListener, WindowFocusListener, WindowSt
 		
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
+		
+		JMenuItem mntmJadeGui = new JMenuItem("Jade Boot GUI");
+		mnHelp.add(mntmJadeGui);
+		mntmJadeGui.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				try {
+					AgentEnvironmentCreator.addRemoteMonitoringAgent();
+				} catch (StaleProxyException e1) {
+					e1.printStackTrace();
+				}
+//				String[] bootArgs = { 
+//						"-gui",
+//						String.format("-mtp \"jade.mtp.http.MessageTransportProtocol(http://{0}:{1}/acc)\"", Profile.LOCAL_HOST, Profile.LOCAL_PORT),
+//						"agentInstance:jade.core.Agent()"
+//				};
+//				
+//				@SuppressWarnings("unused")
+//				Boot boot = new Boot();
+//				Boot.main(bootArgs);
+//				AgentEnvironmentCreator.getRuntime().startUp(AgentEnvironmentCreator.getProfile());
+			}});
 		
 		JMenuItem mntmAbout = new JMenuItem("About");
 		mnHelp.add(mntmAbout);
@@ -143,16 +207,6 @@ public class MainWindow implements WindowListener, WindowFocusListener, WindowSt
 		return returnBuilder;
 	}
 
-
-	@Override
-	public void windowStateChanged(WindowEvent arg0) {	
-	}
-	@Override
-	public void windowGainedFocus(WindowEvent arg0) {
-	}
-	@Override
-	public void windowLostFocus(WindowEvent arg0) {
-	}
 	@Override
 	public void windowActivated(WindowEvent e) {
 	}
@@ -176,5 +230,4 @@ public class MainWindow implements WindowListener, WindowFocusListener, WindowSt
 	@Override
 	public void windowOpened(WindowEvent e) {
 	}
-
 }
