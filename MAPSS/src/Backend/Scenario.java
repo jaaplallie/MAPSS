@@ -35,4 +35,9 @@ public class Scenario {
 		);
 		scenario_Products.add(pa);
 	}
+
+	@Override
+	public String toString() {
+		return String.format("{0} X[{1}] Y[{2}]", scenarioName, scenario_Grid.getX(), scenario_Grid.getY());
+	}
 }
