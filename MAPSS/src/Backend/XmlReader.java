@@ -30,7 +30,7 @@ public class XmlReader {
 	
 	protected static Scenario createScenarioFromXML(String link_to_file){
 		Scenario new_scenario = new Scenario("New Scenario");
-		new_scenario.createGrid(6, 4);
+		//new_scenario.createGrid(5, 5);
 		
 		Object[] args = new Object[0];
 		String s;

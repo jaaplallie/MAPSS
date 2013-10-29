@@ -1,5 +1,8 @@
 package Backend;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
 import jade.wrapper.StaleProxyException;
@@ -8,6 +11,7 @@ import Agents.EquipletAgent;
 
 public class Grid {
 	protected static EquipletAgent[][] equiplets;
+	protected static List[] equiplet_positions;
 	private static AgentContainer container = AgentEnvironmentCreator.getContainer();
 	private int x = 0;
 	private int y = 0;
@@ -17,9 +21,12 @@ public class Grid {
 	
 	public EquipletAgent[][] create(int width , int length ){
 		equiplets = new EquipletAgent[width][length];
+
+		equiplet_positions = new ArrayList[(width*length)];
+
 		x = width;
 		y = length;
-		int stepnr = 1;
+		int stepnr = 0;
 		for (int y = 0; y < length; y++){
 			for (int x = 0; x < width; x++){				
 //				try {
@@ -37,11 +44,19 @@ public class Grid {
 //					e.printStackTrace();
 //				} 
 				
+				ArrayList<Integer> position = new ArrayList<Integer>();
+				position.add(x);
+				position.add(y);
+				equiplet_positions[stepnr] = position;
+				
 				stepnr++;
 				
 			}
 		}
 		System.out.println(String.format("Grid X[%s] Y[%s] created. \n[%s] Equiplets installed.", width+"", length+"", count()+""));
+		
+		Matrix.createMatrix(width, length);
+		
 		return equiplets;
 	}
 	
@@ -60,7 +75,7 @@ public class Grid {
 	public int[] getRandomPosition(){
 		int x = (int)(Math.random()*equiplets.length);
 		int y = (int)(Math.random()*equiplets[0].length);
-		int position[] = {x+1,y+1};
+		int position[] = {x ,y};
 		return position;
 	}
 	
@@ -77,21 +92,11 @@ public class Grid {
 	
 	public static int[] getEquipletPosition(int equiplet_number){
 		
-		int x_length = equiplets.length;
-		int x = 1;
-		int y = 1;
+		List<Integer> equiplet_coordinates = equiplet_positions[equiplet_number];
 		
-		// If the equiplet is a higher number then the row then 
-		// increment with the value of the next row. Repeat until 
-		// the right row is found. When finished we have the y row.
-		while(x_length < equiplet_number){ 
-			x_length = x_length+equiplets.length;
-			y += 1;
-		}
+		int x = equiplet_coordinates.get(0);
+		int y = equiplet_coordinates.get(1);
 		
-		// Once y is found use the difference to calculate the x row.
-		x = equiplet_number - (x_length - equiplets.length);
-
 		int position[] = {x,y};
 		return position;
 	}
