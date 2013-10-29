@@ -5,6 +5,8 @@ import jade.core.behaviours.WakerBehaviour;
 import jade.wrapper.AgentController;
 import Backend.Grid;
 
+//comment test
+
 public class EquipletAgent extends Agent { 
 	
 	int code;
