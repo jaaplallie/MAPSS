@@ -18,6 +18,10 @@ public class Scenario {
 		scenario_EquipletGrid = scenario_Grid.create(x, y);
 	}
 	
+	public void insertAgentsCreateGrid(ArrayList<EquipletAgent> eqs){
+		scenario_Grid.insert(eqs);
+	}
+	
 	public EquipletAgent[][] getGrid(){
 		return scenario_EquipletGrid;
 	}
@@ -38,6 +42,8 @@ public class Scenario {
 
 	@Override
 	public String toString() {
-		return String.format("{0} X[{1}] Y[{2}]", scenarioName, scenario_Grid.getX(), scenario_Grid.getY());
+		return "" + scenarioName + "";
 	}
+	
+	
 }

@@ -26,6 +26,17 @@ public class ProductAgent extends Agent {
 		return args;
 	}
 	
+	public String getArgsString() {
+		String returnVal = "";
+		for(int i = 0; i < args.length; i++){
+			if(i < args.length && args.length > 1){
+				returnVal += ",";
+			}
+			returnVal += args[i].toString();
+		}
+		return returnVal;
+	}
+	
 	
 	protected void setup() { 
 		addBehaviour(new WakerBehaviour(this, 0) { 
@@ -43,7 +54,6 @@ public class ProductAgent extends Agent {
 				sb.append("\nThese are my product's steps: " + output);
 				 
 				EquipletAgent grid[][] = Grid.getGrid();
-
 				int start_position = (int)(Math.random()*(grid.length*grid[0].length));
 				int[] start_xy_values = Grid.getEquipletPosition(start_position);
 				

@@ -48,6 +48,7 @@ public class MainWindow implements WindowListener{
 
 	public JFrame frame;
 	private DefaultFormBuilder builder = new DefaultFormBuilder(new FormLayout(""));
+	ScenarioImportExportWindow scenarioImportExportWindow = new ScenarioImportExportWindow();
 	
 	public MainWindow() {
 		initialize();
@@ -58,6 +59,7 @@ public class MainWindow implements WindowListener{
 		frame.setBounds(100, 100, 1031, 565);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.addWindowListener(this);
+		frame.setTitle("MAPSS - Multi Agent Production System Simulator");
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frame.getContentPane().add(tabbedPane);
@@ -121,39 +123,14 @@ public class MainWindow implements WindowListener{
 		JMenuItem mntmNewScenario = new JMenuItem("New Scenario");
 		mnFile.add(mntmNewScenario);
 		
-		JMenuItem mntmImportScenario = new JMenuItem("Import XML");
+		JMenuItem mntmImportScenario = new JMenuItem("Import/Export Scenario");
 		mnFile.add(mntmImportScenario);
 		mntmImportScenario.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				JFileChooser chooser = new JFileChooser();
-				XmlReader xmlReader = new XmlReader();
-			    int retrival = chooser.showOpenDialog(null);
-			    if (retrival == JFileChooser.APPROVE_OPTION) {
-			        try {
-			        	xmlReader.open(chooser.getSelectedFile().toPath().toString());
-			            JOptionPane.showMessageDialog(
-			            		null, 
-			            		"File succesfully opened." + 
-			            		"\nFilename : " + chooser.getSelectedFile() + ".xml", 
-			            		"Success!", 
-			            		JOptionPane.INFORMATION_MESSAGE
-		        		);
-			        } catch (Exception ex) {
-			            ex.printStackTrace();
-			            JOptionPane.showMessageDialog(
-			            		null, 
-			            		"Something went wrong, file could not be loaded", 
-			            		"Error!", 
-			            		JOptionPane.ERROR_MESSAGE
-		        		);
-			        }
-			    }
+				scenarioImportExportWindow.setVisible(true);
 			}
 		});
-		
-		JMenuItem mntmExportScenario = new JMenuItem("Export XML");
-		mnFile.add(mntmExportScenario);
 		
 		JMenu mnEdit = new JMenu("Edit");
 		menuBar.add(mnEdit);

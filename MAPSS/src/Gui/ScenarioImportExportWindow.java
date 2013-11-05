@@ -1,69 +1,75 @@
 package Gui;
 
-import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
-import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
+import net.miginfocom.swing.MigLayout;
+import Backend.AgentEnvironmentCreator;
 import Backend.Scenario;
+import Backend.XmlReader;
+import Backend.XmlWriter;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
-import net.miginfocom.swing.MigLayout;
-import javax.swing.JLabel;
 
-public class ScenarioImportExportWindow extends JFrame implements ActionListener{
+public class ScenarioImportExportWindow extends JFrame implements ActionListener, FocusListener{
 
 	private JPanel contentPane;
 	private DefaultFormBuilder screenBuilder = getNewBuilder();
 	JButton loadButton, importButton, exportButton, removeButton;
+	private DefaultListModel<Scenario> scenarioListModel;
+	private JList<Scenario> scenarioList;
 	
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ScenarioImportExportWindow frame = new ScenarioImportExportWindow();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	
+//	/**
+//	 * Launch the application.
+//	 */
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					ScenarioImportExportWindow frame = new ScenarioImportExportWindow();
+//					frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the frame.
 	 */
 	public ScenarioImportExportWindow() {
-		setName("Load Scenario");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("Import/Export Scenario");
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 400, 300);
 		setResizable(false);
         
-		DefaultListModel<Scenario> scenarioListModel = new DefaultListModel<Scenario>();
-		JList<Scenario> scenarioList = new JList<Scenario>(scenarioListModel);
+		scenarioListModel = new DefaultListModel<Scenario>();
+		scenarioList = new JList<Scenario>(scenarioListModel);
 		JScrollPane scenarioListScrollPane = new JScrollPane(scenarioList);
         
 		scenarioList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scenarioList.setLayoutOrientation(JList.VERTICAL);
 		scenarioList.setVisibleRowCount(-1);
+		scenarioList.addFocusListener(this);
 		scenarioListScrollPane.setPreferredSize(new Dimension(175, 250));
 		
 		JPanel buttonContainer = new JPanel();
@@ -81,10 +87,12 @@ public class ScenarioImportExportWindow extends JFrame implements ActionListener
         buttonContainer.add(importButton, "cell 0 2,growx,aligny top");
         
         exportButton = new JButton("Export Scenario");
+        exportButton.setEnabled(false);
         exportButton.addActionListener(this);
         buttonContainer.add(exportButton, "cell 0 3,growx,aligny top");
         
         removeButton = new JButton("Remove Selected Scenario");
+        removeButton.setEnabled(false);
         removeButton.addActionListener(this);
         buttonContainer.add(removeButton, "cell 0 4,alignx center,aligny top");
         
@@ -92,7 +100,7 @@ public class ScenarioImportExportWindow extends JFrame implements ActionListener
         screenBuilder.append(buttonContainer);
         setContentPane(screenBuilder.getPanel());
 	}
-	
+
 	public DefaultFormBuilder getNewBuilder(){
 		DefaultFormBuilder returnBuilder = new DefaultFormBuilder(new FormLayout(""));
 		returnBuilder.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -110,16 +118,88 @@ public class ScenarioImportExportWindow extends JFrame implements ActionListener
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		if(event.getSource().equals(loadButton)){
-			System.out.println("1");
+			AgentEnvironmentCreator.setCurrentlyLoadedScenario(scenarioListModel.get(scenarioList.getSelectedIndex()));
 		}
 		else if(event.getSource().equals(importButton)){	
-			System.out.println("2");
+			JFileChooser chooser = new JFileChooser();
+			chooser.setAcceptAllFileFilterUsed(false);
+			FileNameExtensionFilter xmlfilter = new FileNameExtensionFilter("XML Scenario files (*.xml)", "xml", "XML");
+            chooser.setFileFilter(xmlfilter);
+            chooser.setDialogTitle("Import scenario file");
+			XmlReader xmlReader = new XmlReader();
+			Scenario readScenario;
+		    int retrival = chooser.showOpenDialog(null);
+		    if (retrival == JFileChooser.APPROVE_OPTION) {
+		        try {
+		        	readScenario = xmlReader.open(chooser.getSelectedFile().toPath().toString());
+		        	AgentEnvironmentCreator.setCurrentlyLoadedScenario(readScenario);
+		        	scenarioListModel.addElement(readScenario);
+		            JOptionPane.showMessageDialog(
+		            		null, 
+		            		"File succesfully opened." + 
+		            		"\nFilename : " + chooser.getSelectedFile(), 
+		            		"Success!", 
+		            		JOptionPane.INFORMATION_MESSAGE
+	        		);
+		        } catch (Exception ex) {
+		            ex.printStackTrace();
+		            JOptionPane.showMessageDialog(
+		            		null, 
+		            		"Something went wrong, file could not be loaded", 
+		            		"Error!", 
+		            		JOptionPane.ERROR_MESSAGE
+	        		);
+		        }
+		    }
 		}
-		else if(event.getSource().equals(exportButton)){	
-			System.out.println("3");
+		else if(event.getSource().equals(exportButton)){		
+			JFileChooser chooser = new JFileChooser();
+			chooser.setAcceptAllFileFilterUsed(false);
+			FileNameExtensionFilter xmlfilter = new FileNameExtensionFilter("XML Scenario files (*.xml)", "xml", "XML");
+            chooser.setFileFilter(xmlfilter);
+            chooser.setDialogTitle("Export scenario file");
+			XmlWriter xmlWriter = new XmlWriter();
+		    int retrival = chooser.showSaveDialog(null);
+		    if (retrival == JFileChooser.APPROVE_OPTION) {
+		        try {
+		        	xmlWriter.Write(scenarioListModel.get(scenarioList.getSelectedIndex()), chooser.getSelectedFile()+".xml");
+		            JOptionPane.showMessageDialog(
+		            		null, 
+		            		"Chart succesfully saved as PNG to: \n" + chooser.getCurrentDirectory() + 
+		            		"\nFilename : " + chooser.getSelectedFile() + ".png", 
+		            		"Success!", 
+		            		JOptionPane.INFORMATION_MESSAGE
+	        		);
+		        } catch (Exception ex) {
+		            ex.printStackTrace();
+		            JOptionPane.showMessageDialog(
+		            		null, 
+		            		"Something went wrong, chart could not be saved as PNG", 
+		            		"Error!", 
+		            		JOptionPane.ERROR_MESSAGE
+	        		);
+		        }
+		    }
 		}
 		else if(event.getSource().equals(removeButton)){	
 			System.out.println("4");
+			scenarioListModel.remove(scenarioList.getSelectedIndex());
+		}
+	}
+
+	@Override
+	public void focusGained(FocusEvent fe) {
+		if(fe.getSource().equals(scenarioList) && scenarioList.getSelectedIndex() != -1){
+			exportButton.setEnabled(true);
+			removeButton.setEnabled(true);
+		}
+	}
+
+	@Override
+	public void focusLost(FocusEvent fe) {
+		if(fe.getSource().equals(scenarioList) && scenarioList.getSelectedIndex() == -1){
+			exportButton.setEnabled(false);
+			removeButton.setEnabled(false);	
 		}
 	}
 
