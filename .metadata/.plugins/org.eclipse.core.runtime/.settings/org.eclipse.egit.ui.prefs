@@ -1,2 +1,4 @@
-commit_dialog_history_messages=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<messages>\r\n<message>commit changes</message>\r\n<message>added libraries</message>\r\n</messages>
+BranchProjectTracker__C\:\\Users\\Jaap\\Git\\MAPSS\\.git_master=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<projects branch\="master">\r\n<project>\\MAPSS</project>\r\n</projects>
+BranchProjectTracker__C\:\\Users\\Jaap\\Git\\MAPSS\\.git_master_branchJaap=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<projects branch\="master_branchJaap">\r\n<project>\\MAPSS</project>\r\n</projects>
+commit_dialog_history_messages=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<messages>\r\n<message>GUI voor import/export toegevoegd (work in progress) </message>\r\n<message>commit changes</message>\r\n<message>added libraries</message>\r\n</messages>
 eclipse.preferences.version=1

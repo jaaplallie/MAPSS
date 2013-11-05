@@ -32,6 +32,17 @@ public class EquipletAgent extends Agent {
 		return args;
 	}
 	
+	public String getArgsString() {
+		String returnVal = "";
+		for(int i = 0; i < args.length; i++){
+			if(i < args.length && args.length > 1){
+				returnVal += ",";
+			}
+			returnVal += args[i].toString();
+		}
+		return returnVal;
+	}
+	
 	protected void setup() { 
 		addBehaviour(new WakerBehaviour(this, 0) { 
 			 protected void handleElapsedTimeout() {
