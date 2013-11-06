@@ -14,6 +14,14 @@ public class Scenario {
 		scenario_Products = new ArrayList<ProductAgent>();
 	}
 	
+	public String getScenarioName() {
+		return scenarioName;
+	}
+
+	public void setScenarioName(String scenarioName) {
+		this.scenarioName = scenarioName;
+	}
+
 	public void createGrid(int x, int y){
 		scenario_EquipletGrid = scenario_Grid.create(x, y);
 	}
