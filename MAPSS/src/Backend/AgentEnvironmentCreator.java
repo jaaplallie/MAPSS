@@ -76,7 +76,7 @@ public class AgentEnvironmentCreator {
 //		int gridx = 6, gridy = 4;
 //		GridClasses gc = new GridClasses();
 //		gc.createGrid(gridx, gridy);
-		createGrid(6, 4);
+		//createGrid(6, 4);
 		
 		// Create the SchedulerAgent
 //		AgentController ac;
@@ -138,11 +138,11 @@ public class AgentEnvironmentCreator {
 		ac.start();
 	}
 	
-	public static Grid createGrid(int x, int y){
-		Grid gc = new Grid();
-		gc.create(x, y);
-		return gc;
-	}
+	//public static Grid createGrid(int x, int y){
+	//	Grid gc = new Grid();
+	//	gc.create(x, y);
+	//	return gc;
+	//}
 	
 	public static AgentContainer getContainer(){
 		return mainContainer;
