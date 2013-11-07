@@ -65,12 +65,13 @@ public class ProductAgent extends Agent {
 				
 				int current_position = start_position;
 				int next_position;
+				
 				int[] path = {};
 				
 				for (Object o : args) {
 					next_position = Integer.parseInt(o.toString());
-					//int path[] = Grid.calculatePath(current_position, next_position);
-					path = Grid.calculateDifferentPath(current_position, next_position);
+					path = Grid.calculatePath(current_position, next_position);
+					//path = Grid.calculateDifferentPath(current_position, next_position);
 					sb.append("path: " + path); 
 				}
 				sb.append("\n");
