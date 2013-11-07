@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -61,6 +62,8 @@ public class ScenarioImportExportWindow extends JFrame implements ActionListener
 		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		setBounds(100, 100, 400, 300);
 		setResizable(false);
+		setUndecorated(true);
+		getRootPane().setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
         
 		scenarioListModel = new DefaultListModel<Scenario>();
 		scenarioList = new JList<Scenario>(scenarioListModel);
@@ -133,20 +136,29 @@ public class ScenarioImportExportWindow extends JFrame implements ActionListener
 		        try {
 		        	readScenario = xmlReader.open(chooser.getSelectedFile().toPath().toString());
 		        	AgentEnvironmentCreator.setCurrentlyLoadedScenario(readScenario);
+		        	for(Object o : scenarioListModel.toArray()){
+		        		Scenario s = (Scenario) o;
+		        		if(s.getScenarioName().equals(readScenario.getScenarioName())){
+		        			scenarioConflictPopup scp = new scenarioConflictPopup(readScenario, this);
+		        			scp.setVisible(true);
+		        			this.setEnabled(false);
+		        		}
+		        	}
 		        	scenarioListModel.addElement(readScenario);
 		            JOptionPane.showMessageDialog(
 		            		null, 
 		            		"File succesfully opened." + 
-		            		"\nFilename : " + chooser.getSelectedFile(), 
-		            		"Success!", 
+		            		"\nFilename : " + chooser.getSelectedFile() + "\n" +
+		            		"Scenario added to scenario list", 
+		            		"Success! Scenario loaded!", 
 		            		JOptionPane.INFORMATION_MESSAGE
 	        		);
 		        } catch (Exception ex) {
 		            ex.printStackTrace();
 		            JOptionPane.showMessageDialog(
 		            		null, 
-		            		"Something went wrong, file could not be loaded", 
-		            		"Error!", 
+		            		"Something went wrong, scenario could not be loaded", 
+		            		"Error! Scenario not loaded!", 
 		            		JOptionPane.ERROR_MESSAGE
 	        		);
 		        }
@@ -155,7 +167,7 @@ public class ScenarioImportExportWindow extends JFrame implements ActionListener
 		else if(event.getSource().equals(exportButton)){		
 			JFileChooser chooser = new JFileChooser();
 			chooser.setAcceptAllFileFilterUsed(false);
-			FileNameExtensionFilter xmlfilter = new FileNameExtensionFilter("XML Scenario files (*.xml)", "xml", "XML");
+			FileNameExtensionFilter xmlfilter = new FileNameExtensionFilter("MAPSS XML Scenario files (*.xml)", "xml", "XML");
             chooser.setFileFilter(xmlfilter);
             chooser.setDialogTitle("Export scenario file");
 			XmlWriter xmlWriter = new XmlWriter();
@@ -165,17 +177,19 @@ public class ScenarioImportExportWindow extends JFrame implements ActionListener
 		        	xmlWriter.Write(scenarioListModel.get(scenarioList.getSelectedIndex()), chooser.getSelectedFile()+".xml");
 		            JOptionPane.showMessageDialog(
 		            		null, 
-		            		"Chart succesfully saved as PNG to: \n" + chooser.getCurrentDirectory() + 
-		            		"\nFilename : " + chooser.getSelectedFile() + ".png", 
-		            		"Success!", 
+		            		"Scenario succesfully saved as .xml to: \n" +
+		            		chooser.getCurrentDirectory() + "\n" +
+		            		"Filename : " + chooser.getSelectedFile() + ".xml", 
+		            		"Scenario saved succesfully!", 
 		            		JOptionPane.INFORMATION_MESSAGE
 	        		);
 		        } catch (Exception ex) {
 		            ex.printStackTrace();
 		            JOptionPane.showMessageDialog(
 		            		null, 
-		            		"Something went wrong, chart could not be saved as PNG", 
-		            		"Error!", 
+		            		"Something went wrong, scenario could not be saved!" +
+		            		"\nPlease try again...", 
+		            		"Error! Scenario not saved!", 
 		            		JOptionPane.ERROR_MESSAGE
 	        		);
 		        }

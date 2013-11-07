@@ -1,0 +1,57 @@
+package Gui;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.BorderFactory;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+import com.jgoodies.forms.layout.FormLayout;
+import net.miginfocom.swing.MigLayout;
+
+public class scenarioConflictPopup extends JFrame {
+	
+	private DefaultFormBuilder screenBuilder = getNewBuilder();
+	private JPanel contentPane;
+
+	/**
+	 * Create the frame.
+	 */
+	public scenarioConflictPopup() {
+		setTitle("Naming conflict detected!");
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new MigLayout("", "[][grow][]", "[grow][grow]"));
+		
+		JLabel panel_1 = new JLabel("A naming conflict has been detected, provide a new name for the imported scenario:");
+		screenBuilder.append(new JLabel("New scenario name: "));
+		screenBuilder.add(new JTextField());
+		contentPane.add(panel_1, "cell 1 0,grow");
+		contentPane.add(screenBuilder.getPanel(), "cell 1 1,grow");
+		
+		setContentPane(contentPane);
+		
+		
+	}
+	
+	public DefaultFormBuilder getNewBuilder(){
+		DefaultFormBuilder returnBuilder = new DefaultFormBuilder(new FormLayout(""));
+		returnBuilder.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		returnBuilder.appendColumn("right:pref");
+		returnBuilder.appendColumn("3dlu");
+		returnBuilder.appendColumn("fill:max(pref; 100px)");
+		returnBuilder.appendColumn("5dlu");
+		returnBuilder.appendColumn("right:pref");
+		returnBuilder.appendColumn("3dlu");
+		returnBuilder.appendColumn("fill:max(pref; 100px)");
+		
+		return returnBuilder;
+	}
+}

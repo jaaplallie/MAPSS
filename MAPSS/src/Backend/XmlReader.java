@@ -35,66 +35,10 @@ public class XmlReader {
 	
 	public Scenario open(String filePath){
 		//createScenarioFromXML(filePath);
-		return createScenarioFromXML2(filePath);
+		return createScenarioFromXml(filePath);
 	}
 	
-	protected static Scenario createScenarioFromXML(String link_to_file){
-		Scenario new_scenario = new Scenario("New Scenario");
-		//new_scenario.createGrid(5, 5);
-		
-		Object[] args = new Object[0];
-		String s;
-		String product_name = "This product has no name yet";
-		int stepcount = 0;
-		
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(link_to_file));
-			while ((s = br.readLine()) != null) {
-				
-				//Filter product name from string
-				Pattern product_name_pattern = Pattern.compile("(<P>)(.*)(<NPS>)");
-				Matcher name_matcher = product_name_pattern.matcher(s);
-				while (name_matcher.find()) {	
-					product_name = name_matcher.group(2);
-				}
-				
-				//Filter number of steps from string
-				Pattern step_count_pattern = Pattern.compile("(<NPS>)(.*)(</NPS><STEPS>)");
-				Matcher step_count_matcher = step_count_pattern.matcher(s);
-				while (step_count_matcher.find()) {
-					stepcount = Integer.parseInt(step_count_matcher.group(2));
-				}
-				
-				//Filter steps from string and put the steps into the arguments
-				Pattern step_pattern = Pattern.compile("(</NPS><STEPS>)(.*)(</STEPS></P>)");
-				Matcher step_matcher = step_pattern.matcher(s);
-				while (step_matcher.find()) {
-					String temp = step_matcher.group(2);
-					args = temp.split(",");
-				}
-				
-				ProductAgent npa = new ProductAgent("Product_" + product_name, args);
-				new_scenario.addProduct(npa);
-				//Create a product agent and pass along the steps.
-//				try {
-//					AgentController ac;
-//					ac = container.createNewAgent("Product_" + product_name, "Agents.ProductAgent", args);
-//					ac.start();
-//					Thread.sleep(100);
-//				} 
-//				catch (StaleProxyException | InterruptedException e) {
-//					e.printStackTrace();
-//				} 
-			}
-			br.close();
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-		}
-		return new_scenario;
-	}
-	
-	protected static Scenario createScenarioFromXML2(String fileLocation){
+	protected static Scenario createScenarioFromXml(String fileLocation){
 		Scenario new_scenario = new Scenario("Undefined Scenario Name");
 		
 		try {
@@ -109,11 +53,6 @@ public class XmlReader {
 		 
 			System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
 			
-			String gridXSize = doc.getDocumentElement().getAttribute("XSIZE"); //Read Grid XSIZE
-			String gridYSize = doc.getDocumentElement().getAttribute("YSIZE"); //Read Grid YSIZE
-			
-			
-			
 			Element scnE = doc.getDocumentElement();
 			
 			if(scnE.hasAttribute("NAME")){
@@ -123,6 +62,17 @@ public class XmlReader {
 			}
 			
 			Node gridElement = scnE.getElementsByTagName("GRD").item(0);
+			String gridXSizeStr = ((Element)gridElement).getAttribute("XSIZE"); //Read Grid XSIZE
+			String gridYSizeStr = ((Element)gridElement).getAttribute("YSIZE"); //Read Grid YSIZE
+			int gridXSize = -1;
+			int gridYSize = -1;
+			try{
+				gridXSize = Integer.parseInt(gridXSizeStr);
+				gridYSize = Integer.parseInt(gridYSizeStr);
+			}
+			catch(NumberFormatException nfe){
+				nfe.printStackTrace();
+			}
 			NodeList eqList = gridElement.getChildNodes();
 			NodeList pList = doc.getElementsByTagName("P");
 		 
@@ -166,15 +116,13 @@ public class XmlReader {
 				}
 				
 			}
-			//new_scenario.insertAgentsCreateGrid(createdEqs);
-			System.out.println("\nv^v^v^v^v^v^v^v^v^v^v^v^v^v^\n");
-			System.out.println(gridXSize);
-			System.out.println(gridYSize);
-			
-			int x = Integer.parseInt(gridXSize);
-			int y = Integer.parseInt(gridYSize);
-			
-			Grid.create(x, y);
+			if(gridXSize != -1 && gridYSize != -1){
+				new_scenario.createGrid(gridXSize, gridYSize);
+				new_scenario.insertAgents(createdEqs);
+			}
+			else{
+				new_scenario.insertAgentsCreateGrid(createdEqs);
+			}
 			
 			System.out.println("\nv^v^v^v^v^v^v^v^v^v^v^v^v^v^\n");
 			

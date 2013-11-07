@@ -14,12 +14,24 @@ public class Scenario {
 		scenario_Products = new ArrayList<ProductAgent>();
 	}
 	
+	public String getScenarioName() {
+		return scenarioName;
+	}
+
+	public void setScenarioName(String scenarioName) {
+		this.scenarioName = scenarioName;
+	}
+
 	public void createGrid(int x, int y){
 		scenario_EquipletGrid = scenario_Grid.create(x, y);
 	}
 	
-	public void insertAgentsCreateGrid(ArrayList<EquipletAgent> eqs){
+	public void insertAgents(ArrayList<EquipletAgent> eqs){
 		scenario_Grid.insert(eqs);
+	}
+	
+	public void insertAgentsCreateGrid(ArrayList<EquipletAgent> eqs){
+		scenario_Grid.createGridAndInsert(eqs);
 	}
 	
 	public EquipletAgent[][] getGrid(){

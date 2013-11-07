@@ -3,10 +3,7 @@ package Backend;
 import java.util.ArrayList;
 import java.util.List;
 
-
-//import classes.GridClasses;
 import jade.wrapper.AgentContainer;
-//import lookup_tables.Matrix;
 import Agents.EquipletAgent;
 
 
@@ -14,66 +11,15 @@ public class Grid {
 	protected static EquipletAgent[][] equiplets;
 	protected static List[] equiplet_positions;
 	private static AgentContainer container = AgentEnvironmentCreator.getContainer();
-	private static int x = 0;
-	private static int y = 0;
-	private static int max = 0;
+	private int x = 0;
+	private int y = 0;
 	
 	protected static List[] neighbors;
 	
 	public Grid(){
 	}
 	
-	
-	public static EquipletAgent[][] create(int width , int length){
-		
-		equiplets = new EquipletAgent[width][length];
-
-		equiplet_positions = new ArrayList[(width*length)];
-		
-		max = width*length;
-
-		x = width;
-		y = length;
-		int stepnr = 0;
-		for (int y = 0; y < length; y++){
-			for (int x = 0; x < width; x++){				
-//				try {
-
-					Agents.EquipletAgent new_Equiplet = new Agents.EquipletAgent(stepnr, new int[]{x,y}, new Object[]{});
-					
-					equiplets[x][y] = new_Equiplet;					
-//					AgentController a_container;
-//					a_container = container.acceptNewAgent(new_Equiplet.getCode(), new_Equiplet);
-//					a_container.start();
-//					Thread.sleep(100);
-					//a_container = container.createNewAgent("Equiplet_" + stepnr, "Agents.EquipletAgent", null);
-//				} 
-//				catch (StaleProxyException | InterruptedException e) {
-//					e.printStackTrace();
-//				} 
-				
-				ArrayList<Integer> position = new ArrayList<Integer>();
-				position.add(x);
-				position.add(y);
-				equiplet_positions[stepnr] = position;
-				
-				stepnr++;
-				
-			}
-		}
-		System.out.println(String.format("Grid X[%s] Y[%s] created. \n[%s] Equiplets installed.", width+"", length+"", count()+""));
-		
-		Matrix.createMatrix(width, length);
-		
-		return equiplets;
-	}
-	
-	
-	
-	public static EquipletAgent[][] createCustom(int width , int length , String relations){
-		
-		max = width*length;
-		
+	public EquipletAgent[][] createCustom(int width , int length , String relations){
 		System.out.println(relations);
 		
 		List[] connections = new List[width*length];
@@ -111,27 +57,91 @@ public class Grid {
 		int stepnr = 0;
 		for (int y = 0; y < length; y++){
 			for (int x = 0; x < width; x++){				
+//				try {
 
-				Agents.EquipletAgent new_Equiplet = new Agents.EquipletAgent(stepnr, new int[]{x,y}, new Object[]{});	
-				equiplets[x][y] = new_Equiplet;					
+					Agents.EquipletAgent new_Equiplet = new Agents.EquipletAgent(stepnr, new int[]{x,y}, new Object[]{});
+					
+					equiplets[x][y] = new_Equiplet;					
+//					AgentController a_container;
+//					a_container = container.acceptNewAgent(new_Equiplet.getCode(), new_Equiplet);
+//					a_container.start();
+//					Thread.sleep(100);
+					//a_container = container.createNewAgent("Equiplet_" + stepnr, "Agents.EquipletAgent", null);
+//				} 
+//				catch (StaleProxyException | InterruptedException e) {
+//					e.printStackTrace();
+//				} 
+				
 				ArrayList<Integer> position = new ArrayList<Integer>();
 				position.add(x);
 				position.add(y);
 				equiplet_positions[stepnr] = position;
+				
 				stepnr++;
 				
 			}
 		}
 		System.out.println(String.format("Grid X[%s] Y[%s] created. \n[%s] Equiplets installed.", width+"", length+"", count()+""));
+		
+		Matrix.createMatrix(width, length);
+		
+		return equiplets;
+		
+		
+	}
+	
+	
+	public EquipletAgent[][] create(int width , int length ){
+		equiplets = new EquipletAgent[width][length];
+
+		equiplet_positions = new ArrayList[(width*length)];
+
+		x = width;
+		y = length;
+		int stepnr = 0;
+		for (int y = 0; y < length; y++){
+			for (int x = 0; x < width; x++){				
+//				try {
+
+					Agents.EquipletAgent new_Equiplet = new Agents.EquipletAgent(stepnr, new int[]{x,y}, new Object[]{});
+					
+					equiplets[x][y] = new_Equiplet;					
+//					AgentController a_container;
+//					a_container = container.acceptNewAgent(new_Equiplet.getCode(), new_Equiplet);
+//					a_container.start();
+//					Thread.sleep(100);
+					//a_container = container.createNewAgent("Equiplet_" + stepnr, "Agents.EquipletAgent", null);
+//				} 
+//				catch (StaleProxyException | InterruptedException e) {
+//					e.printStackTrace();
+//				} 
+				
+				ArrayList<Integer> position = new ArrayList<Integer>();
+				position.add(x);
+				position.add(y);
+				equiplet_positions[stepnr] = position;
+				
+				stepnr++;
+				
+			}
+		}
+		System.out.println(String.format("Grid X[%s] Y[%s] created. \n[%s] Equiplets installed.", width+"", length+"", count()+""));
+		
 		Matrix.createMatrix(width, length);
 		
 		return equiplets;
 	}
 	
+	public void insert(ArrayList<EquipletAgent> eqs){
+		for(EquipletAgent ea : eqs){
+			int pos_X = ea.getPosition()[0];
+			int pos_Y = ea.getPosition()[1];
+			
+			equiplets[pos_X][pos_Y] = ea;
+		}
+	}
 	
-
-	
-	public boolean insert(ArrayList<EquipletAgent> eqs){
+	public boolean createGridAndInsert(ArrayList<EquipletAgent> eqs){
 		int max_X = -1;
 		int max_Y = -1;
 		
@@ -167,11 +177,11 @@ public class Grid {
 		return true;
 	}
 	
-	public static int getX() {
+	public int getX() {
 		return x;
 	}
 
-	public static int getY() {
+	public int getY() {
 		return y;
 	}
 
@@ -196,94 +206,6 @@ public class Grid {
 		return position;
 	}
 	
-	public static int[] calculateDifferentPath(int start_equiplet_number, int end_equiplet_number){
-		max = equiplets.length*equiplets[0].length;
-		
-		int[] visited = new int[max];
-		int[] recorded_distances = new int[max];
-		
-		//set the distance of all equiplets to "infinite"
-		for (int x = 0; x < max; x++){
-			recorded_distances[x] = max+1;
-		}
-		
-		recorded_distances[start_equiplet_number] = 0;
-		List[] neighbors = Grid.getNeighbors();
-		
-		int current_equiplet = start_equiplet_number;
-		int current_distance = max+1;
-		int next_equiplet = current_equiplet;
-		
-		ArrayList<Integer> path = new ArrayList<Integer>();
-		
-		while(true){
-			
-			//Checks the neighbors of the current node and compares the distances.
-			//The next equiplet is chosen and the current equiplet will be marked 
-			//as "visited".
-			for (Object neighbor : neighbors[current_equiplet]){
-				int neighborint = (int)neighbor;
-				
-				//check if the neighbor has been visited before.
-				if (visited[neighborint] == 0){
-					int distance_to_check = Matrix.getDistance(neighborint, end_equiplet_number);
-					
-					//compare distances and update where necessary
-					if (recorded_distances[neighborint] > distance_to_check){
-						recorded_distances[neighborint] = distance_to_check;
-					} 
-					
-					if (recorded_distances[neighborint] < current_distance){
-						current_distance = recorded_distances[neighborint];
-						next_equiplet = neighborint;
-					}
-				}
-				
-			}
-			visited[current_equiplet] = 1;
-			
-			
-			//Destination has been reached. The function stops.
-			if (visited[end_equiplet_number] > 0){
-				path.add(current_equiplet);
-				System.out.println("Path to destination:");
-				break;
-			}
-			
-			//check if the next equiplet was already visited
-			if (visited[next_equiplet] > 0){
-				//if it has. find a new one with the shortest distance
-				int new_distance = max;
-				for (int i = 0; i <max; i++){
-					if (visited[i]!=1){
-						if (recorded_distances[i] < new_distance){
-							new_distance = recorded_distances[i];
-							current_equiplet = i;
-						}
-					}
-				}
-				
-				//New_distace still being max means that there are no suitable equiplets left. 
-				//The function stops
-				if (new_distance == max){
-					path.add(current_equiplet);
-					System.out.println("Destination cannot be reached");
-					break;
-				}
-			} else {
-				path.add(current_equiplet);
-				current_equiplet = next_equiplet;
-			}	
-		}
-		
-		int[] returnvalue = new int[path.size()];
-		for (int i = 0; i < path.size(); i++){
-			returnvalue[i] = path.get(i).intValue();;
-		}
-		
-		return returnvalue;
-	}
-	
 	public static int[] calculatePath(int start_equiplet_number, int end_equiplet_number){
 		int startposition[] = getEquipletPosition(start_equiplet_number);
 		int endposition[] = getEquipletPosition(end_equiplet_number);
@@ -306,7 +228,7 @@ public class Grid {
 		return position;
 	}
 	
-	public static int count(){
+	public int count(){
 		int y = 0;
 		int x = 0;
 		for (y = 0; y < equiplets.length; y++){

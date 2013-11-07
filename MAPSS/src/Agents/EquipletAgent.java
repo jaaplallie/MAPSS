@@ -9,7 +9,7 @@ import Backend.Grid;
 
 public class EquipletAgent extends Agent { 
 	
-	int code;
+	int code = -1;
 	int position[];
 	Object[] args;
 	
