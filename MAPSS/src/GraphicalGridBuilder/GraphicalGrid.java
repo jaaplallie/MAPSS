@@ -9,9 +9,62 @@ public class GraphicalGrid extends JFrame{
 	public GraphicalGrid(int x, int y){
 		grid = new GraphicalGridTarget[y][x];
 		
+		Boolean xEven = true;
+		Boolean yEven = true;
 		for(int targetY = 0; targetY < grid.length; targetY++){
-			for(int targetX = 0; targetX < grid.length; targetX++){
-				grid[y][x] = new GraphicalGridTarget(new GraphicalGridObject[]{new GraphicalGridNothingObject()});
+			for(int targetX = 0; targetX < grid[y].length; targetX++){
+				//grid[y][x] = new GraphicalGridTarget(new GraphicalGridObject[]{new GraphicalGridNothingObject()});
+				if(xEven){
+					if(yEven){
+						if(
+								(targetY == 0 && targetX == 0) || 
+								(targetY == 0 && targetX == grid[y].length) || 
+								(targetY == grid.length && targetX == 0) || 
+								(targetY == grid.length && targetX == grid[y].length) 
+						){
+							grid[y][x] = new GraphicalGridTarget(new GraphicalGridObject[]{new GraphicalGridEquiplet()});
+						}
+						else if(
+								(targetY == 0 && targetX != 0) || 
+								(targetY != 0 && targetX == 0) || 
+								(targetY != 0 && targetX == grid[y].length) || 
+								(targetY == grid.length && targetX != 0)
+								
+						){
+							grid[y][x] = new GraphicalGridTarget(
+								new GraphicalGridObject[]{
+									new GraphicalGridNothingObject(),
+									new GraphicalGridEquiplet(),
+									new GraphicalGridTPathTransport(y,x)
+								}
+							);
+						}
+						else{
+							grid[y][x] = new GraphicalGridTarget(
+								new GraphicalGridObject[]{
+									new GraphicalGridNothingObject(),
+									new GraphicalGridEquiplet(),
+									new GraphicalGridCrossedTransport(),
+									new GraphicalGridHorizontalTransport(),
+									new GraphicalGridVerticalTransport()			
+								}
+							);
+						}
+					}
+					else{
+						
+					}
+					xEven = false;
+				}
+				else{
+					xEven = true;
+				}
+			}
+			if(yEven){
+				yEven = false;
+			}
+			else{
+				yEven = true;
 			}
 		}
 	}

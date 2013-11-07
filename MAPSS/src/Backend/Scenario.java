@@ -26,8 +26,12 @@ public class Scenario {
 		scenario_EquipletGrid = scenario_Grid.create(x, y);
 	}
 	
-	public void insertAgentsCreateGrid(ArrayList<EquipletAgent> eqs){
+	public void insertAgents(ArrayList<EquipletAgent> eqs){
 		scenario_Grid.insert(eqs);
+	}
+	
+	public void insertAgentsCreateGrid(ArrayList<EquipletAgent> eqs){
+		scenario_Grid.createGridAndInsert(eqs);
 	}
 	
 	public EquipletAgent[][] getGrid(){

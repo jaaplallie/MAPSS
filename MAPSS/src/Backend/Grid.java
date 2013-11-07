@@ -132,7 +132,16 @@ public class Grid {
 		return equiplets;
 	}
 	
-	public boolean insert(ArrayList<EquipletAgent> eqs){
+	public void insert(ArrayList<EquipletAgent> eqs){
+		for(EquipletAgent ea : eqs){
+			int pos_X = ea.getPosition()[0];
+			int pos_Y = ea.getPosition()[1];
+			
+			equiplets[pos_X][pos_Y] = ea;
+		}
+	}
+	
+	public boolean createGridAndInsert(ArrayList<EquipletAgent> eqs){
 		int max_X = -1;
 		int max_Y = -1;
 		

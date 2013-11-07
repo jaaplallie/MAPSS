@@ -53,9 +53,6 @@ public class XmlReader {
 		 
 			System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
 			
-			String gridXSize = doc.getDocumentElement().getAttribute("XSIZE"); //Read Grid XSIZE
-			String gridYSize = doc.getDocumentElement().getAttribute("YSIZE"); //Read Grid YSIZE
-			
 			Element scnE = doc.getDocumentElement();
 			
 			if(scnE.hasAttribute("NAME")){
@@ -65,6 +62,17 @@ public class XmlReader {
 			}
 			
 			Node gridElement = scnE.getElementsByTagName("GRD").item(0);
+			String gridXSizeStr = ((Element)gridElement).getAttribute("XSIZE"); //Read Grid XSIZE
+			String gridYSizeStr = ((Element)gridElement).getAttribute("YSIZE"); //Read Grid YSIZE
+			int gridXSize = -1;
+			int gridYSize = -1;
+			try{
+				gridXSize = Integer.parseInt(gridXSizeStr);
+				gridYSize = Integer.parseInt(gridYSizeStr);
+			}
+			catch(NumberFormatException nfe){
+				nfe.printStackTrace();
+			}
 			NodeList eqList = gridElement.getChildNodes();
 			NodeList pList = doc.getElementsByTagName("P");
 		 
@@ -108,7 +116,13 @@ public class XmlReader {
 				}
 				
 			}
-			new_scenario.insertAgentsCreateGrid(createdEqs);
+			if(gridXSize != -1 && gridYSize != -1){
+				new_scenario.createGrid(gridXSize, gridYSize);
+				new_scenario.insertAgents(createdEqs);
+			}
+			else{
+				new_scenario.insertAgentsCreateGrid(createdEqs);
+			}
 			
 			System.out.println("\nv^v^v^v^v^v^v^v^v^v^v^v^v^v^\n");
 			
