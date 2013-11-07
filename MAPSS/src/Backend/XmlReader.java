@@ -112,6 +112,8 @@ public class XmlReader {
 			String gridXSize = doc.getDocumentElement().getAttribute("XSIZE"); //Read Grid XSIZE
 			String gridYSize = doc.getDocumentElement().getAttribute("YSIZE"); //Read Grid YSIZE
 			
+			
+			
 			Element scnE = doc.getDocumentElement();
 			
 			if(scnE.hasAttribute("NAME")){
@@ -164,7 +166,15 @@ public class XmlReader {
 				}
 				
 			}
-			new_scenario.insertAgentsCreateGrid(createdEqs);
+			//new_scenario.insertAgentsCreateGrid(createdEqs);
+			System.out.println("\nv^v^v^v^v^v^v^v^v^v^v^v^v^v^\n");
+			System.out.println(gridXSize);
+			System.out.println(gridYSize);
+			
+			int x = Integer.parseInt(gridXSize);
+			int y = Integer.parseInt(gridYSize);
+			
+			Grid.create(x, y);
 			
 			System.out.println("\nv^v^v^v^v^v^v^v^v^v^v^v^v^v^\n");
 			

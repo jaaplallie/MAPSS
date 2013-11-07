@@ -106,13 +106,13 @@ public class CreateGridModule extends JPanel implements ActionListener{
 		} else {
 			setEnabled(gridSizePanel.getComponents(), false);
 			
-			Grid gc = new Grid();
+			//Grid gc = new Grid();
 			switch (source.getText()) {
 				case "Build Grid": 
-					gc.create(x_size, y_size);
+					Grid.create(x_size, y_size);
 					break;
 				case "Build Custom Grid":
-					gc.createCustom(x_size, y_size, grid_string.getText());
+					Grid.createCustom(x_size, y_size, grid_string.getText());
 					break;
 				default:
 					break;

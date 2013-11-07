@@ -37,4 +37,32 @@ public class Matrix {
 		
 		
 	}
+	
+	
+	
+	public static void Print(){
+		System.out.println("Matrix layout:");
+		for (List[] i : matrix){
+			String output = "";
+			for (List j : i){
+				output += " " + j;
+			}
+			System.out.println(output);
+		}
+	}
+	
+	public static List[][] getMatrix(){
+		return matrix;
+	}
+	
+	public static int getDistance(int start, int end){
+		List value = matrix[start][end];
+		int distance = 0;
+		for (Object o : value){
+			distance += Math.abs((int)o);
+		}
+		return distance;
+	}
+	
+	
 }

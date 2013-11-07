@@ -4,7 +4,8 @@ import jade.core.AID;
 import jade.core.Agent; 
 import jade.core.behaviours.WakerBehaviour;
 import jade.wrapper.AgentController;
- 
+import java.util.List; 
+
 import Backend.Grid;
 
 public class ProductAgent extends Agent { 
@@ -46,7 +47,6 @@ public class ProductAgent extends Agent {
 				Object[] args = myAgent.getArguments();
 				String output = "";
 				 
-				//GridClasses gc = new GridClasses();
 				 
 				for (Object o : args) {
 					 output = output + o.toString() + " ";  
@@ -65,27 +65,17 @@ public class ProductAgent extends Agent {
 				
 				int current_position = start_position;
 				int next_position;
-				int hops = 0;
+				int[] path = {};
 				
 				for (Object o : args) {
 					next_position = Integer.parseInt(o.toString());
-					int path[] = Grid.calculatePath(current_position, next_position);
-					int xsteps = path[0];
-					int ysteps = path[1];
-					sb.append("\nTo go from " + current_position + " to " + next_position + " we need " 
-							+ xsteps + " x steps and " + ysteps + " y steps."); 
-					current_position = next_position;
-					if (xsteps<0){
-						xsteps = -xsteps;
-					} 
-					if (ysteps<0){
-						ysteps = -ysteps;
-					} 
-					hops = hops + (xsteps+ysteps);
+					//int path[] = Grid.calculatePath(current_position, next_position);
+					path = Grid.calculateDifferentPath(current_position, next_position);
+					sb.append("path: " + path); 
 				}
 				sb.append("\n");
-				sb.append("\nTotaal aantal hops nodig voor dit product: " + hops);
-				sb.append("\nGemiddeld aantal hops per stap: " + hops/args.length);
+				sb.append("\nTotaal aantal hops nodig voor dit product: " + path.length);
+				sb.append("\nGemiddeld aantal hops per stap: " + path.length/args.length);
 				sb.append("\n");
 				System.out.println(sb.toString());
 				//Note the empty println()'s make it easier for me to check for errors in the output.
