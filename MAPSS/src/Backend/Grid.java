@@ -3,6 +3,8 @@ package Backend;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 import jade.wrapper.AgentContainer;
 import Agents.EquipletAgent;
 
@@ -11,15 +13,15 @@ public class Grid {
 	protected static EquipletAgent[][] equiplets;
 	protected static List[] equiplet_positions;
 	private static AgentContainer container = AgentEnvironmentCreator.getContainer();
-	private int x = 0;
-	private int y = 0;
+	private static int x = 0;
+	private static int y = 0;
 	
 	protected static List[] neighbors;
 	
 	public Grid(){
 	}
 	
-	public EquipletAgent[][] createCustom(int width , int length , String relations){
+	public static EquipletAgent[][] createCustom(int width , int length , String relations){
 		System.out.println(relations);
 		
 		List[] connections = new List[width*length];
@@ -91,7 +93,7 @@ public class Grid {
 	}
 	
 	
-	public EquipletAgent[][] create(int width , int length ){
+	public static EquipletAgent[][] create(int width , int length ){
 		equiplets = new EquipletAgent[width][length];
 
 		equiplet_positions = new ArrayList[(width*length)];
@@ -177,11 +179,11 @@ public class Grid {
 		return true;
 	}
 	
-	public int getX() {
+	public static int getX() {
 		return x;
 	}
 
-	public int getY() {
+	public static int getY() {
 		return y;
 	}
 
@@ -228,7 +230,7 @@ public class Grid {
 		return position;
 	}
 	
-	public int count(){
+	public static int count(){
 		int y = 0;
 		int x = 0;
 		for (y = 0; y < equiplets.length; y++){
@@ -237,6 +239,96 @@ public class Grid {
 		}
 		int returnVal = y * x;
 		return returnVal;
+	}
+
+	public static int[] calculateDifferentPath(int start_equiplet_number, int end_equiplet_number) {
+		int max = x*y;
+		
+		int[] visited = new int[max];
+		int[] recorded_distances = new int[max];
+		
+		//set the distance of all equiplets to "infinite"
+		for (int x = 0; x < max; x++){
+			recorded_distances[x] = max+1;
+		}
+		
+		recorded_distances[start_equiplet_number] = 0;
+		List[] neighbors = Grid.getNeighbors();
+		
+		int current_equiplet = start_equiplet_number;
+		int current_distance = max+1;
+		int next_equiplet = current_equiplet;
+		
+		List path = new ArrayList<Integer>();
+		
+		while(true){
+			
+			//Checks the neighbors of the current node and compares the distances.
+			//The next equiplet is chosen and the current equiplet will be marked 
+			//as "visited".
+			for (Object neighbor : neighbors[current_equiplet]){
+				int neighborint = (int)neighbor;
+				
+				//check if the neighbor has been visited before.
+				if (visited[neighborint] == 0){
+					int distance_to_check = Matrix.getDistance(neighborint, end_equiplet_number);
+					
+					//compare distances and update where necessary
+					if (recorded_distances[neighborint] > distance_to_check){
+						recorded_distances[neighborint] = distance_to_check;
+					} 
+					
+					if (recorded_distances[neighborint] < current_distance){
+						current_distance = recorded_distances[neighborint];
+						next_equiplet = neighborint;
+					}
+				}
+				
+			}
+			visited[current_equiplet] = 1;
+			
+			
+			//Destination has been reached. The function stops.
+			if (visited[end_equiplet_number] > 0){
+				path.add(current_equiplet);
+				System.out.println("Path to destination:");
+				break;
+			}
+			
+			//check if the next equiplet was already visited
+			if (visited[next_equiplet] > 0){
+				//if it has. find a new one with the shortest distance
+				int new_distance = max;
+				for (int i = 0; i <max; i++){
+					if (visited[i]!=1){
+						if (recorded_distances[i] < new_distance){
+							new_distance = recorded_distances[i];
+							current_equiplet = i;
+						}
+					}
+				}
+				
+				//New_distace still being max means that there are no suitable equiplets left. 
+				//The function stops
+				if (new_distance == max){
+					path.add(current_equiplet);
+					System.out.println("Destination cannot be reached");
+					break;
+				}
+			} else {
+				path.add(current_equiplet);
+				current_equiplet = next_equiplet;
+			}	
+		}
+		
+		int[] returnvalue = new int[path.size()];
+		
+		for (int i = 0; i > path.size(); i++){
+			returnvalue[i] = ((Integer) path.get(i));
+		}
+		
+		return returnvalue;
+		
 	}
 
 }
