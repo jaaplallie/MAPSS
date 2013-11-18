@@ -5,6 +5,7 @@ import java.util.List;
 
 
 
+
 import jade.wrapper.AgentContainer;
 import Agents.EquipletAgent;
 
@@ -15,6 +16,7 @@ public class Grid {
 	private static AgentContainer container = AgentEnvironmentCreator.getContainer();
 	private static int x = 0;
 	private static int y = 0;
+	protected static EquipletAgent[][] grid;
 	
 	protected static List[] neighbors;
 	
@@ -73,6 +75,57 @@ public class Grid {
 	}
 	
 	
+	public static void createNormalGrid(int width, int length){
+		x=width;
+		y=length;
+		
+		neighbors = new ArrayList[x*y];
+		equiplet_positions = new ArrayList[width*length];
+		grid = new EquipletAgent[width][length];
+
+		int stepnr = 0;
+		for (int y = 0; y < length; y++){
+			for (int x = 0; x < width; x++){
+				
+				ArrayList<Integer> known_equiplets = new ArrayList<Integer>();
+				
+				//if not first row
+				if (y != 0){
+					known_equiplets.add(stepnr-width);
+				}
+				
+				//if not end of row
+				if (stepnr != (width*(y+1))-1){
+					known_equiplets.add(stepnr+1);
+				}
+				
+				//if not last row
+				if (stepnr+width < length*width){
+					known_equiplets.add(stepnr+width);
+				}
+				
+				//if not start of row
+				if (stepnr != width*y){
+					known_equiplets.add(stepnr-1);
+				}
+				
+				neighbors[stepnr] = known_equiplets;
+				ArrayList<Integer> position = new ArrayList<Integer>();
+				position.add(x);
+				position.add(y);
+				//positions[stepnr] = position;
+				stepnr++;
+			}
+		}	
+		//max = width*length;
+		
+		//logGrid();
+		//logNeighbors();
+	}
+	
+	
+	
+	
 	public static EquipletAgent[][] create(int width , int length ){
 		equiplets = new EquipletAgent[width][length];
 
@@ -83,19 +136,13 @@ public class Grid {
 		int stepnr = 0;
 		for (int y = 0; y < length; y++){
 			for (int x = 0; x < width; x++){				
-
 				Agents.EquipletAgent new_Equiplet = new Agents.EquipletAgent(stepnr, new int[]{x,y}, new Object[]{});
-					
 				equiplets[x][y] = new_Equiplet;					
-
-				
 				ArrayList<Integer> position = new ArrayList<Integer>();
 				position.add(x);
 				position.add(y);
 				equiplet_positions[stepnr] = position;
-				
 				stepnr++;
-				
 			}
 		}
 		System.out.println(String.format("Grid X[%s] Y[%s] created. \n[%s] Equiplets installed.", width+"", length+"", count()+""));

@@ -106,8 +106,26 @@ public class MainWindow implements WindowListener{
 		data2.addValue(6.0, "p4", "Category 2");
 		data2.addValue(2.0, "p4", "Category 3");
 		JFreeChart ch = chartcreator.drawBarChart("Barchart Test", "x", "y", data2);
+
+//		DefaultCategoryDataset data3 = new DefaultCategoryDataset();		
+//		data3.addValue(9.0, "p1", "Category 1");
+//		data3.addValue(6.0, "p1", "Category 2");
+//		data3.addValue(2.0, "p1", "Category 3");
+//		data3.addValue(9.0, "p2", "Category 1");
+//		data3.addValue(6.0, "p2", "Category 2");
+//		data3.addValue(2.0, "p2", "Category 3");
+//		data3.addValue(9.0, "p3", "Category 1");
+//		data3.addValue(6.0, "p3", "Category 2");
+//		data3.addValue(2.0, "p3", "Category 3");
+//		data3.addValue(9.0, "p4", "Category 1");
+//		data3.addValue(6.0, "p4", "Category 2");
+//		data3.addValue(2.0, "p4", "Category 3");
+//		JFreeChart ch2 = chartcreator.drawBarChart("DERP", "x", "y", data2);
+//		chartpres.addChart(ch2);
+		
 		ChartPresenter chartpres = new ChartPresenter();
 		chartpres.addChart(ch);
+
 		builder.append(chartpres);
 		builder.nextLine();
 		JPanel lastResultsTab = builder.getPanel();

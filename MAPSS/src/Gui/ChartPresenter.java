@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
@@ -32,6 +33,8 @@ public class ChartPresenter extends JPanel implements ActionListener{
 	Map<Integer, JFreeChart> chartObjectDictionary = new HashMap<Integer, JFreeChart>();
 	ChartPanel chartContainer = new ChartPanel(null);
 	DefaultFormBuilder builder = new DefaultFormBuilder(new FormLayout(""));
+	
+	JButton simulation_btn = new JButton("Run some simulations (delete this later)");
 	
 	public ChartPresenter(){
 		add(splitPane);
