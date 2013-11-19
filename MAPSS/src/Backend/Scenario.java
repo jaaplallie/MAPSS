@@ -23,7 +23,8 @@ public class Scenario {
 	}
 
 	public void createGrid(int x, int y){
-		scenario_EquipletGrid = scenario_Grid.create(x, y);
+		Grid.create(x, y);
+		scenario_EquipletGrid = Grid.getGrid();
 	}
 	
 	public void insertAgents(ArrayList<EquipletAgent> eqs){

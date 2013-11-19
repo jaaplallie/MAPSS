@@ -26,7 +26,7 @@ public class ChartCreator {
 	public ChartCreator() {
 	}
 	
-	public JFreeChart drawBarChart(String title, String x_Label, String y_Label, DefaultCategoryDataset ds){		
+	public static JFreeChart drawBarChart(String title, String x_Label, String y_Label, DefaultCategoryDataset ds){		
 		JFreeChart chart = ChartFactory.createBarChart3D(
 			title, 
 			x_Label, 

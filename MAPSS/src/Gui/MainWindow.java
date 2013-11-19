@@ -45,8 +45,15 @@ import Backend.XmlReader;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
 
-public class MainWindow implements WindowListener{
 
+// Temporarely, delete this import later
+import Backend.Simulations;
+//
+
+
+public class MainWindow implements WindowListener{
+	
+	static ChartPresenter chartpres;
 	public JFrame frame;
 	private DefaultFormBuilder builder = new DefaultFormBuilder(new FormLayout(""));
 	ScenarioImportExportWindow scenarioImportExportWindow = new ScenarioImportExportWindow();
@@ -91,7 +98,6 @@ public class MainWindow implements WindowListener{
 		builder = getNewBuilder();
 		tabbedPane.addTab("Simulation Data", null, simulationTab, null);
 		
-		ChartCreator chartcreator = new ChartCreator();
 		DefaultCategoryDataset data2 = new DefaultCategoryDataset();		
 		data2.addValue(9.0, "p1", "Category 1");
 		data2.addValue(6.0, "p1", "Category 2");
@@ -105,27 +111,10 @@ public class MainWindow implements WindowListener{
 		data2.addValue(9.0, "p4", "Category 1");
 		data2.addValue(6.0, "p4", "Category 2");
 		data2.addValue(2.0, "p4", "Category 3");
-		JFreeChart ch = chartcreator.drawBarChart("Barchart Test", "x", "y", data2);
+		JFreeChart ch = ChartCreator.drawBarChart("Barchart Test", "x", "y", data2);
 
-//		DefaultCategoryDataset data3 = new DefaultCategoryDataset();		
-//		data3.addValue(9.0, "p1", "Category 1");
-//		data3.addValue(6.0, "p1", "Category 2");
-//		data3.addValue(2.0, "p1", "Category 3");
-//		data3.addValue(9.0, "p2", "Category 1");
-//		data3.addValue(6.0, "p2", "Category 2");
-//		data3.addValue(2.0, "p2", "Category 3");
-//		data3.addValue(9.0, "p3", "Category 1");
-//		data3.addValue(6.0, "p3", "Category 2");
-//		data3.addValue(2.0, "p3", "Category 3");
-//		data3.addValue(9.0, "p4", "Category 1");
-//		data3.addValue(6.0, "p4", "Category 2");
-//		data3.addValue(2.0, "p4", "Category 3");
-//		JFreeChart ch2 = chartcreator.drawBarChart("DERP", "x", "y", data2);
-//		chartpres.addChart(ch2);
-		
-		ChartPresenter chartpres = new ChartPresenter();
+		chartpres = new ChartPresenter();
 		chartpres.addChart(ch);
-
 		builder.append(chartpres);
 		builder.nextLine();
 		JPanel lastResultsTab = builder.getPanel();
@@ -201,6 +190,10 @@ public class MainWindow implements WindowListener{
 		returnBuilder.appendColumn("fill:max(pref; 100px)");
 		
 		return returnBuilder;
+	}
+	
+	public static ChartPresenter getChart(){
+		return chartpres;
 	}
 
 	@Override

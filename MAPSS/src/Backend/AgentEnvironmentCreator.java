@@ -68,28 +68,13 @@ public class AgentEnvironmentCreator {
 	
 	public static void start(){
 		setup();
-
-		// Create a container for the Agents
-		//cController = rt.createMainContainer(p);
-	
-		// Create the grid
-//		int gridx = 6, gridy = 4;
-//		GridClasses gc = new GridClasses();
-//		gc.createGrid(gridx, gridy);
-		//createGrid(6, 4);
 		
-		// Create the SchedulerAgent
-//		AgentController ac;
 		try {
 			addSchedulerAgent();
 		} catch (StaleProxyException e) {
 			e.printStackTrace();
 		}
 		
-		//Read XML file and create product agents
-		//String home = System.getProperty("user.home");
-		//System.out.println("User home directory is: " + home);
-		//XmlReader.createProductAgentsFromXML("C:/Users/Mathijs/Desktop/Testfile.xml");
 	}
 	
 	private static void setup(){
@@ -138,11 +123,15 @@ public class AgentEnvironmentCreator {
 		ac.start();
 	}
 	
-	//public static Grid createGrid(int x, int y){
-	//	Grid gc = new Grid();
-	//	gc.create(x, y);
-	//	return gc;
-	//}
+	public static void destroyMainContainer(){
+		try {
+			mainContainer.kill();
+		} catch (StaleProxyException e) {
+			e.printStackTrace();
+		}
+	}
+
+	
 	
 	public static AgentContainer getContainer(){
 		return mainContainer;

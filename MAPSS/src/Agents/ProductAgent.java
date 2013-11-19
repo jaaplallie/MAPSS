@@ -1,14 +1,18 @@
 package Agents;
 
+import java.util.ArrayList;
+
 import jade.core.AID;
 import jade.core.Agent; 
 import jade.core.behaviours.WakerBehaviour;
-import jade.wrapper.AgentController;
-import java.util.List; 
-
+ 
+import jade.lang.acl.ACLMessage;
 import Backend.Grid;
+import Backend.Log;
+import Backend.Simulations;
 
 public class ProductAgent extends Agent { 
+	
 	Grid gc;
 	String code;
 	Object[] args;
@@ -39,64 +43,114 @@ public class ProductAgent extends Agent {
 	}
 	
 	
+	
 	protected void setup() { 
 		addBehaviour(new WakerBehaviour(this, 0) { 
-			 protected void handleElapsedTimeout() {
-				StringBuilder sb = new StringBuilder();
-				sb.append("\nHi. I'm product agent " + getAID().getLocalName() + "."); 
+			 protected void handleElapsedTimeout() { 
+				Log.writeln("Hi. I'm product agent " + getAID().getLocalName() + "."); 
 				Object[] args = myAgent.getArguments();
 				String output = "";
+				int[] productPath;
 				 
-				 
+				boolean right_sized_grid = true;
 				for (Object o : args) {
 					 output = output + o.toString() + " ";  
+					 if (Grid.getMaxvalue() < Integer.parseInt(o.toString())){
+						 right_sized_grid = false;
+					 }
 				}
-				sb.append("\nThese are my product's steps: " + output);
-				 
-				EquipletAgent grid[][] = Grid.getGrid();
-				int start_position = (int)(Math.random()*(grid.length*grid[0].length));
-				int[] start_xy_values = Grid.getEquipletPosition(start_position);
+				Log.writeln("These are my product's steps: " + output); 
 				
-				sb.append("\nI start at equiplet number:" + start_position); 
-				sb.append("\nThat equiplet's position is " + 
-						" x:" + start_xy_values[0] + 
-						", y:" + start_xy_values[1]); 
-				sb.append("\n");
-				
-				int current_position = start_position;
-				int next_position;
-				
-				int[] path = {};
-				
-				for (Object o : args) {
-					next_position = Integer.parseInt(o.toString());
-					path = Grid.calculatePath(current_position, next_position);
-					//path = Grid.calculateDifferentPath(current_position, next_position);
-					sb.append("path: " + path); 
+				//Checking if the grid exists and if there's anything useful in it
+				EquipletAgent[][] grid = Grid.getGrid();
+				boolean safe_grid = false;
+				if (grid != null){
+					for (Object ob : grid) {
+						if (ob != null ) {
+							safe_grid = true;
+							break;
+						}
+					}
 				}
-				sb.append("\n");
-				sb.append("\nTotaal aantal hops nodig voor dit product: " + path.length);
-				sb.append("\nGemiddeld aantal hops per stap: " + path.length/args.length);
-				sb.append("\n");
-				System.out.println(sb.toString());
-				//Note the empty println()'s make it easier for me to check for errors in the output.
+				
+				if (safe_grid == true & right_sized_grid == true){
+					int start_position = (int)(Math.random()*(grid.length*grid[0].length));
+					int[] start_xy_values = Grid.getEquipletPosition(start_position);
+					//ArrayList<Integer> productPath = 
+					
+					Log.writeln("I start at equiplet number: " + start_position); 
+					Log.writeln("That equiplet's position is " + 
+							" x:" + start_xy_values[0] + 
+							", y:" + start_xy_values[1]); 
+					
+					int current_position = start_position;
+					int next_position;
+					double hops = 0;
+					ArrayList<Integer> hops_per_step_counter = new ArrayList<Integer>();
+					
+					productPath = new int[]{start_position};
+					
+					for (Object o : args) {
+						next_position = Integer.parseInt(o.toString());
+						int path[] = Grid.calculateDifferentPath(current_position, next_position);
+						Grid.addProductStepPath(path);
+						
+						/*
+						System.out.println("Path from " + current_position + " to " + next_position + ": ");
+						output = "";
+						for (Object j : path){
+							output += " " + j;
+						}
+						System.out.println(output);
+						*/
+						
+						current_position = next_position;
+						hops += path.length;
+						//int[] productPath = new int[(int) hops];
+						
+						int[] tempPath = new int[(int) hops+1];
+						System.arraycopy(productPath, 0, tempPath, 0, productPath.length);
+						System.arraycopy(path, 0, tempPath, productPath.length, path.length);
+						
+						productPath = new int[(int) hops+1];
+						productPath = tempPath;
+						
+						hops_per_step_counter.add(path.length);
+					}	
+					
+					Grid.addProductPath(productPath);
+					
+					Log.write("Path I need to complete the product: ");
+					for (int o: productPath){
+						Log.write(o+" ");
+					}
+					Log.writeln("");
+					
+					Log.writeln("Total hops needed for this product: " + hops);
+					double average = hops/args.length;
+					Log.writeln("Average number of hops needed for each product step: " + average);
+					
+					Simulations.addFinishedProduct();
+					
+					
+				} else {
+					Log.writeln("Unfortunately I can't find a suitable grid so no calculations for me");
+					if (safe_grid == false){
+						Log.writeln("The grid is either not there or it contains empty values");
+					}
+					if (right_sized_grid == false){
+						Log.writeln("The current grid is too small for my product steps");
+					}
+					 
+
+				}
+				
+				Log.writeln("");
 			 } 
 		} );	
 	} 
 	
-	public int[] calculatePath(int start_equiplet_number, int end_equiplet_number){
-		int startposition[] = Grid.getEquipletPosition(start_equiplet_number);
-		int endposition[] = Grid.getEquipletPosition(end_equiplet_number);
-		
-		int x_difference = startposition[0]-endposition[0];
-		int y_difference = startposition[1]-endposition[1];
-		
-		int path[] = {x_difference, y_difference};
-		return path;
-	}
-	
-	
 	protected void breakdown() {
-		System.out.println("Agent "+getAID().getName()+" is gone now."); 
+		Log.writeln("Agent "+getAID().getName()+" is gone now."); 
 	}
 }
