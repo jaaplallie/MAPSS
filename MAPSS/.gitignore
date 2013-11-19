@@ -1,1 +1,4 @@
+*.txt
+/.metadata
+/.settings
 /bin
