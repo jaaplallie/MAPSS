@@ -143,32 +143,32 @@ public class ChartPresenter extends JPanel implements ActionListener{
         	
         	
 //    		// Temp, delete this later
-    		int products = 5/*, gridx = 5, gridy = 5*/;
+    		int products = 1000/*, gridx = 5, gridy = 5*/;
     		int max_product_steps = 20;
     		DefaultCategoryDataset data_set = new DefaultCategoryDataset();	
     		String regular = "Regular grid";
     		String increased = "Increased usage";
     		String twenty_five = "+25% has doubles";
-    		for (int i = 4; i <= 6; i++){
-    			
-    			double value3 = Simulations.productAgentsInRegularGridSimulation(
-    					max_product_steps, products, i, i, twenty_five + i, "+25%");
-    			
-    			data_set.addValue(value3, "Average path: "+i+"x"+i, twenty_five);
+    		for (int i = 4; i <= 7; i++){
     			
     			double value1 = Simulations.productAgentsInRegularGridSimulation(
     					max_product_steps, products, i, i, regular + i, "random");
     			
-    			data_set.addValue(value1, "Average path: "+i+"x"+i, regular);
+    			data_set.addValue(value1, i+"x"+i, regular);
     			
     			double value2 = Simulations.productAgentsInRegularGridSimulation(
     					max_product_steps, products, i, i, increased + i, "increase");
     			
-    			data_set.addValue(value2, "Average path: "+i+"x"+i, increased);
+    			data_set.addValue(value2, i+"x"+i, increased);
     			
+    			double value3 = Simulations.productAgentsInRegularGridSimulation(
+    					max_product_steps, products, i, i, twenty_five + i, "+25%");
+    			
+    			data_set.addValue(value3, i+"x"+i, twenty_five);
+ 
     			
     		}
-    		JFreeChart chart = ChartCreator.drawBarChart("Grid simulation Leo-style", "x", "y", data_set);
+    		JFreeChart chart = ChartCreator.drawBarChart("Standard square grid simulation", "x", "y", data_set);
     		ChartPresenter chartpres = MainWindow.getChart();
     		chartpres.addChart(chart);
         	

@@ -61,9 +61,9 @@ public class ProductStepGenerators {
 			Integer step = (int) (Math.random()*(range-1));
     	    
     	    if (step >= gridsteps){
-    	    	System.out.println("Value: " + step);
 
-    	    	Integer tmp = (step-(gridsteps/4));
+    	    	//Integer tmp = (int) (step-(gridsteps*0.625));
+    	    	Integer tmp = (int) (Math.random()*(gridsteps-1));
     	    	steps[j] = tmp.toString();;
     	    } else {
     	    	steps[j] = step.toString();;
