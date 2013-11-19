@@ -22,7 +22,7 @@ import GraphicalGridBuilder.GraphicalGrid;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class CreateGridModule extends JPanel implements ActionListener{
-	
+	//
 	DefaultFormBuilder builder = new ProgramData().getNewBuilder();
 	private JSpinner input_xSize = new JSpinner();
 	private JSpinner input_ySize = new JSpinner();
