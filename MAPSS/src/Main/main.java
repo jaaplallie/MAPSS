@@ -1,8 +1,12 @@
 package Main;
 
 import java.awt.EventQueue;
+
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import Backend.AgentEnvironmentCreator;
+import Backend.ProgramData;
+import Backend.Scenario;
 import Gui.MainWindow;
 
 public class main{
@@ -17,6 +21,7 @@ public class main{
 			public void run() {
 				try {
 					AgentEnvironmentCreator aec = new AgentEnvironmentCreator();
+					ProgramData pd = new ProgramData();
 					MainWindow window = new MainWindow();
 					window.frame.setVisible(true);
 				} catch (Exception e) {

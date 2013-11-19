@@ -17,6 +17,7 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 
 import Backend.ChartCreator;
+import Backend.ProgramData;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
@@ -31,7 +32,7 @@ public class ChartPresenter extends JPanel implements ActionListener{
 	Map<Integer, String> chartNamingDictionary = new HashMap<Integer, String>();
 	Map<Integer, JFreeChart> chartObjectDictionary = new HashMap<Integer, JFreeChart>();
 	ChartPanel chartContainer = new ChartPanel(null);
-	DefaultFormBuilder builder = new DefaultFormBuilder(new FormLayout(""));
+	DefaultFormBuilder builder = new ProgramData().getNewBuilder();
 	
 	public ChartPresenter(){
 		add(splitPane);
@@ -43,14 +44,6 @@ public class ChartPresenter extends JPanel implements ActionListener{
 		saveAsComboBox.setEditable(false);
 		saveAsComboBox.setVisible(true);
 		
-		builder.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        builder.appendColumn("right:pref");
-        builder.appendColumn("3dlu");
-        builder.appendColumn("fill:max(pref; 100px)");
-        builder.appendColumn("5dlu");
-        builder.appendColumn("right:pref");
-        builder.appendColumn("3dlu");
-        builder.appendColumn("fill:max(pref; 100px)");
         builder.append("Chart:", chartComboBox);
         builder.nextLine();
         builder.appendSeparator();

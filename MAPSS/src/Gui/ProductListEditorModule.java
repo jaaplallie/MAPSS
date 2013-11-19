@@ -4,6 +4,8 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import Backend.ProgramData;
+
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
@@ -19,7 +21,6 @@ public class ProductListEditorModule extends JPanel {
 	JList productList = new JList(productListModel);
 	JScrollPane productListScrollPane = new JScrollPane(productList);
 	JPanel productFormContainer = new JPanel();
-	DefaultFormBuilder builder = getNewBuilder();
 	
 	public ProductListEditorModule() {
 		setLayout(new BorderLayout(0, 0));
@@ -57,20 +58,6 @@ public class ProductListEditorModule extends JPanel {
 		productFormContainer.add(button_1, "2, 4, left, top");
 		JButton button_2 = new JButton("Delete Selected product");
 		productFormContainer.add(button_2, "2, 6, left, top");
-	}
-	
-	public DefaultFormBuilder getNewBuilder(){
-		DefaultFormBuilder returnBuilder = new DefaultFormBuilder(new FormLayout(""));
-		returnBuilder.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		returnBuilder.appendColumn("right:pref");
-		returnBuilder.appendColumn("3dlu");
-		returnBuilder.appendColumn("fill:max(pref; 100px)");
-		returnBuilder.appendColumn("5dlu");
-		returnBuilder.appendColumn("right:pref");
-		returnBuilder.appendColumn("3dlu");
-		returnBuilder.appendColumn("fill:max(pref; 100px)");
-		
-		return returnBuilder;
 	}
 	
 	public void valueChanged(ListSelectionEvent e) {

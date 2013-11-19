@@ -21,6 +21,7 @@ import java.awt.event.WindowListener;
 import java.io.File;
 
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -40,18 +41,20 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import Backend.AgentEnvironmentCreator;
 import Backend.ChartCreator;
+import Backend.ProgramData;
+import Backend.Scenario;
 import Backend.XmlReader;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
 
 public class MainWindow implements WindowListener{
-
 	public JFrame frame;
-	private DefaultFormBuilder builder = new DefaultFormBuilder(new FormLayout(""));
-	ScenarioImportExportWindow scenarioImportExportWindow = new ScenarioImportExportWindow();
+	private DefaultFormBuilder builder = new ProgramData().getNewBuilder();
+	public ScenarioImportExportWindow scenarioImportExportWindow;
 	
 	public MainWindow() {
+		scenarioImportExportWindow = new ScenarioImportExportWindow();
 		initialize();
 	}
 
@@ -64,15 +67,6 @@ public class MainWindow implements WindowListener{
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frame.getContentPane().add(tabbedPane);
-		
-		builder.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        builder.appendColumn("right:pref");
-        builder.appendColumn("3dlu");
-        builder.appendColumn("fill:max(pref; 100px)");
-        builder.appendColumn("5dlu");
-        builder.appendColumn("right:pref");
-        builder.appendColumn("3dlu");
-        builder.appendColumn("fill:max(pref; 100px)");
         
 		CreateGridModule createGridModule = new CreateGridModule();
 		//ProductListEditorModule productListEditorModule = new ProductListEditorModule();
@@ -81,14 +75,14 @@ public class MainWindow implements WindowListener{
 		builder.nextLine();
 		
 		JPanel setupTab = builder.getPanel();
-		builder = getNewBuilder();
+		builder = new ProgramData().getNewBuilder();
 		tabbedPane.addTab("Scenario Setup", null, setupTab, null);
 		
 		SimulationModule simulationModule = new SimulationModule();
 		builder.append(simulationModule);
 		
 		JPanel simulationTab = builder.getPanel();
-		builder = getNewBuilder();
+		builder = new ProgramData().getNewBuilder();
 		tabbedPane.addTab("Simulation Data", null, simulationTab, null);
 		
 		ChartCreator chartcreator = new ChartCreator();
@@ -111,7 +105,7 @@ public class MainWindow implements WindowListener{
 		builder.append(chartpres);
 		builder.nextLine();
 		JPanel lastResultsTab = builder.getPanel();
-		builder = getNewBuilder();
+		builder = new ProgramData().getNewBuilder();
 		tabbedPane.addTab("Last Results", null, lastResultsTab, null);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -145,7 +139,7 @@ public class MainWindow implements WindowListener{
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
 		
-		JMenuItem mntmJadeGui = new JMenuItem("Jade Boot GUI");
+		JMenuItem mntmJadeGui = new JMenuItem("Jade Monitor");
 		mnHelp.add(mntmJadeGui);
 		mntmJadeGui.addActionListener(new ActionListener(){
 			@Override
@@ -169,20 +163,6 @@ public class MainWindow implements WindowListener{
 		
 		JMenuItem mntmAbout = new JMenuItem("About");
 		mnHelp.add(mntmAbout);
-	}
-	
-	public DefaultFormBuilder getNewBuilder(){
-		DefaultFormBuilder returnBuilder = new DefaultFormBuilder(new FormLayout(""));
-		returnBuilder.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		returnBuilder.appendColumn("right:pref");
-		returnBuilder.appendColumn("3dlu");
-		returnBuilder.appendColumn("fill:max(pref; 100px)");
-		returnBuilder.appendColumn("5dlu");
-		returnBuilder.appendColumn("right:pref");
-		returnBuilder.appendColumn("3dlu");
-		returnBuilder.appendColumn("fill:max(pref; 100px)");
-		
-		return returnBuilder;
 	}
 
 	@Override

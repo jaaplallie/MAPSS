@@ -4,6 +4,8 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
+import Backend.ProgramData;
+
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
@@ -19,7 +21,7 @@ public class AgentListEditorModule extends JPanel {
 	DefaultListModel agentListModel = new DefaultListModel();
 	JList agentList = new JList(agentListModel);
 	JScrollPane agentListScrollPane = new JScrollPane(agentList);
-	DefaultFormBuilder builder = getNewBuilder();
+	DefaultFormBuilder builder = new ProgramData().getNewBuilder();
 	
 	public AgentListEditorModule() {
 		setLayout(new BorderLayout(0, 0));
@@ -72,23 +74,9 @@ public class AgentListEditorModule extends JPanel {
 		builder.append(btnPanel);
 		contentPanel = builder.getPanel();
 		add(contentPanel, BorderLayout.CENTER);
-		builder = getNewBuilder();
+		builder = new ProgramData().getNewBuilder();
 		
 		
-	}
-	
-	public DefaultFormBuilder getNewBuilder(){
-		DefaultFormBuilder returnBuilder = new DefaultFormBuilder(new FormLayout(""));
-		returnBuilder.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		returnBuilder.appendColumn("right:pref");
-		returnBuilder.appendColumn("3dlu");
-		returnBuilder.appendColumn("fill:max(pref; 100px)");
-		returnBuilder.appendColumn("5dlu");
-		returnBuilder.appendColumn("right:pref");
-		returnBuilder.appendColumn("3dlu");
-		returnBuilder.appendColumn("fill:max(pref; 100px)");
-		
-		return returnBuilder;
 	}
 	
 	public void valueChanged(ListSelectionEvent e) {
