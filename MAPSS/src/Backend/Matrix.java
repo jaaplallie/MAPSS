@@ -3,7 +3,6 @@ package Backend;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Matrix {
 
 	protected static List[][] matrix;

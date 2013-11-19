@@ -1,57 +1,27 @@
 package Gui;
 
-import jade.Boot;
-import jade.BootGUI;
-import jade.BootProfileImpl;
-import jade.MicroBoot;
-import jade.core.AgentContainer;
-import jade.core.PlatformManager;
-import jade.core.PlatformManagerImpl;
-import jade.core.Profile;
-import jade.core.ProfileException;
-import jade.core.ServiceFinder;
-import jade.core.management.AgentManagementService;
-import jade.mtp.MTPException;
 import jade.wrapper.StaleProxyException;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.File;
 
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRootPane;
-import javax.swing.JSeparator;
 import javax.swing.JTabbedPane;
 
-import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import Backend.AgentEnvironmentCreator;
 import Backend.ChartCreator;
 import Backend.ProgramData;
-import Backend.Scenario;
-import Backend.XmlReader;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.layout.FormLayout;
-
-
-// Temporarely, delete this import later
-import Backend.Simulations;
-//
 
 
 public class MainWindow implements WindowListener{
@@ -93,7 +63,6 @@ public class MainWindow implements WindowListener{
 		builder = new ProgramData().getNewBuilder();
 		tabbedPane.addTab("Simulation Data", null, simulationTab, null);
 		
-		ChartCreator chartcreator = new ChartCreator();
 		DefaultCategoryDataset data2 = new DefaultCategoryDataset();		
 		data2.addValue(9.0, "p1", "Category 1");
 		data2.addValue(6.0, "p1", "Category 2");
@@ -177,7 +146,7 @@ public class MainWindow implements WindowListener{
 	public static ChartPresenter getChart(){
 		return chartpres;
 	}
-
+	
 	@Override
 	public void windowActivated(WindowEvent e) {
 	}

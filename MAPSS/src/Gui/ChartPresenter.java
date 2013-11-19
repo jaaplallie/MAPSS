@@ -1,6 +1,5 @@
 package Gui;
 
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -8,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -23,7 +21,6 @@ import Backend.ProgramData;
 import Backend.Simulations;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.layout.FormLayout;
 
 public class ChartPresenter extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 6423561811886542809L;
@@ -65,6 +62,7 @@ public class ChartPresenter extends JPanel implements ActionListener{
         simulation_btn.addActionListener(this);
 	}
 	
+	
 	public void addChart(JFreeChart chart){
 		int new_key = chartNamingDictionary.size() + 1;
 		String chartTitle = chart.getTitle().getText();
@@ -93,6 +91,7 @@ public class ChartPresenter extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		//System.out.print("Derp");
         if(e.getSource().equals(chartComboBox)){
         	@SuppressWarnings("unchecked")
 			JComboBox<String> cb = (JComboBox<String>)e.getSource();
@@ -124,6 +123,7 @@ public class ChartPresenter extends JPanel implements ActionListener{
 					e1.printStackTrace();
 				}
         	}
+        	
         	else{
         		
         	}

@@ -2,10 +2,10 @@ package Main;
 
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
 import Backend.AgentEnvironmentCreator;
 import Backend.ProgramData;
 import Gui.MainWindow;
+
 
 public class main{	
 	/**

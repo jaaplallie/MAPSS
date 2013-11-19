@@ -1,8 +1,5 @@
 package Backend;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /*
  * This class is inspired by "gridscenario.c" wich is part of "ToolkitLvM". 
  * 

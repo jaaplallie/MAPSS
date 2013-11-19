@@ -1,21 +1,18 @@
 package Backend;
 
-import Agents.EquipletAgent;
-import Agents.ProductAgent;
-import jade.*;
 import jade.core.Agent;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
-import jade.tools.rma.rma;
-import jade.tools.sniffer.Sniffer;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
-import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
+import Agents.EquipletAgent;
+import Agents.ProductAgent;
 
 public class AgentEnvironmentCreator {
 	
+	@SuppressWarnings("unused")
 	private static Scenario loadedScenario = null;
 	private static AgentContainer mainContainer;
 	static Runtime rt = Runtime.instance();

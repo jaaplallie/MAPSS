@@ -1,11 +1,9 @@
 package Backend;
 
+import jade.wrapper.AgentContainer;
+
 import java.util.ArrayList;
 import java.util.List;
-
-
-import Backend.Log;
-import jade.wrapper.AgentContainer;
 
 import Agents.EquipletAgent;
 
