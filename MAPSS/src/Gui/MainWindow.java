@@ -48,7 +48,15 @@ import Backend.XmlReader;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
 
+
+// Temporarely, delete this import later
+import Backend.Simulations;
+//
+
+
 public class MainWindow implements WindowListener{
+	
+	static ChartPresenter chartpres;
 	public JFrame frame;
 	private DefaultFormBuilder builder = new ProgramData().getNewBuilder();
 	public ScenarioImportExportWindow scenarioImportExportWindow;
@@ -99,8 +107,9 @@ public class MainWindow implements WindowListener{
 		data2.addValue(9.0, "p4", "Category 1");
 		data2.addValue(6.0, "p4", "Category 2");
 		data2.addValue(2.0, "p4", "Category 3");
-		JFreeChart ch = chartcreator.drawBarChart("Barchart Test", "x", "y", data2);
-		ChartPresenter chartpres = new ChartPresenter();
+		JFreeChart ch = ChartCreator.drawBarChart("Barchart Test", "x", "y", data2);
+
+		chartpres = new ChartPresenter();
 		chartpres.addChart(ch);
 		builder.append(chartpres);
 		builder.nextLine();
@@ -163,6 +172,10 @@ public class MainWindow implements WindowListener{
 		
 		JMenuItem mntmAbout = new JMenuItem("About");
 		mnHelp.add(mntmAbout);
+	}
+	
+	public static ChartPresenter getChart(){
+		return chartpres;
 	}
 
 	@Override

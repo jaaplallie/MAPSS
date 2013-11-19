@@ -12,6 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 
+import Backend.AgentEnvironmentCreator;
 import Backend.Grid;
 import Backend.ProgramData;
 import GraphicalGridBuilder.GraphicalGrid;
@@ -107,12 +108,12 @@ public class CreateGridModule extends JPanel implements ActionListener{
 					break;
 			}
 			
-//			try {
-//				AgentEnvironmentCreator.addSchedulerAgent();
-//				AgentEnvironmentCreator.addRemoteMonitoringAgent();
-//			} catch (StaleProxyException spe) {
-//				spe.printStackTrace();
-//			}
+			try {
+				AgentEnvironmentCreator.addSchedulerAgent();
+				AgentEnvironmentCreator.addRemoteMonitoringAgent();
+			} catch (StaleProxyException spe) {
+				spe.printStackTrace();
+			}
 			
 		}
 	}

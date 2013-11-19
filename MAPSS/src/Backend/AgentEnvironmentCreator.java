@@ -1,17 +1,22 @@
 package Backend;
 
+import Agents.EquipletAgent;
+import Agents.ProductAgent;
+import jade.*;
 import jade.core.Agent;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
+import jade.tools.rma.rma;
+import jade.tools.sniffer.Sniffer;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
+import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
-import Agents.EquipletAgent;
-import Agents.ProductAgent;
 
 public class AgentEnvironmentCreator {
 	
+	private static Scenario loadedScenario = null;
 	private static AgentContainer mainContainer;
 	static Runtime rt = Runtime.instance();
 	static Profile p;
@@ -26,6 +31,15 @@ public class AgentEnvironmentCreator {
 	
 	public AgentEnvironmentCreator(String mainhost){
 		setup(mainhost);
+	}
+	
+	public static void setCurrentlyLoadedScenario(Scenario scenario){
+		ProgramData.setCurrentlyLoadedScenario(scenario);
+		loadedScenario = ProgramData.getCurrentlyLoadedScenario();
+	}
+	
+	public static Scenario getCurrentlyLoadedScenario(){
+		return ProgramData.getCurrentlyLoadedScenario();
 	}
 	
 	@SuppressWarnings("static-access")
@@ -55,28 +69,13 @@ public class AgentEnvironmentCreator {
 	
 	public static void start(){
 		setup();
-
-		// Create a container for the Agents
-		//cController = rt.createMainContainer(p);
-	
-		// Create the grid
-//		int gridx = 6, gridy = 4;
-//		GridClasses gc = new GridClasses();
-//		gc.createGrid(gridx, gridy);
-		//createGrid(6, 4);
 		
-		// Create the SchedulerAgent
-//		AgentController ac;
 		try {
 			addSchedulerAgent();
 		} catch (StaleProxyException e) {
 			e.printStackTrace();
 		}
 		
-		//Read XML file and create product agents
-		//String home = System.getProperty("user.home");
-		//System.out.println("User home directory is: " + home);
-		//XmlReader.createProductAgentsFromXML("C:/Users/Mathijs/Desktop/Testfile.xml");
 	}
 	
 	private static void setup(){
@@ -91,7 +90,7 @@ public class AgentEnvironmentCreator {
 		p.setParameter(Profile.GUI, "false");
 		p.setParameter(Profile.MAIN_HOST, host);
 		mainContainer = rt.createAgentContainer(p);			
-		rt.setCloseVM(true);
+		rt.setCloseVM(true);	
 	}
 	
 	public static void addRemoteMonitoringAgent() throws StaleProxyException{
@@ -125,11 +124,15 @@ public class AgentEnvironmentCreator {
 		ac.start();
 	}
 	
-	//public static Grid createGrid(int x, int y){
-	//	Grid gc = new Grid();
-	//	gc.create(x, y);
-	//	return gc;
-	//}
+	public static void destroyMainContainer(){
+		try {
+			mainContainer.kill();
+		} catch (StaleProxyException e) {
+			e.printStackTrace();
+		}
+	}
+
+	
 	
 	public static AgentContainer getContainer(){
 		return mainContainer;

@@ -2,16 +2,12 @@ package Main;
 
 import java.awt.EventQueue;
 
-import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import Backend.AgentEnvironmentCreator;
 import Backend.ProgramData;
-import Backend.Scenario;
 import Gui.MainWindow;
 
-public class main{
-	private JFrame frame;
-	
+public class main{	
 	/**
 	 * Launch the application.
 	 */

@@ -12,7 +12,7 @@ public class Matrix {
 		
 		matrix = new ArrayList[grid_width*grid_length][grid_length*grid_width];
 		
-		System.out.println("Matrix layout:");
+		//System.out.println("Matrix layout:");
 		
 		for (int x = 0; x < grid_width*grid_length; x++){	
 			int currentposition[] = Grid.getEquipletPosition(x);
@@ -25,31 +25,20 @@ public class Matrix {
 					matrix[x][y] = X;
 				}	
 			}	
-		
-		//Print the matrix. 
+		//logMatrix();
+	}
+	
+	public static void logMatrix(){
+		Log.writeln("Matrix layout:");
 		for (List[] i : matrix){
 			String output = "";
 			for (List j : i){
 				output += " " + j;
 			}
-			System.out.println(output);
-		}
-		
-		
-	}
-	
-	
-	
-	public static void Print(){
-		System.out.println("Matrix layout:");
-		for (List[] i : matrix){
-			String output = "";
-			for (List j : i){
-				output += " " + j;
-			}
-			System.out.println(output);
+			Log.writeln(output);
 		}
 	}
+
 	
 	public static List[][] getMatrix(){
 		return matrix;

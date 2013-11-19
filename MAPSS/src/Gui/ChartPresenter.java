@@ -9,15 +9,18 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 import Backend.ChartCreator;
 import Backend.ProgramData;
+import Backend.Simulations;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
@@ -34,6 +37,8 @@ public class ChartPresenter extends JPanel implements ActionListener{
 	ChartPanel chartContainer = new ChartPanel(null);
 	DefaultFormBuilder builder = new ProgramData().getNewBuilder();
 	
+	JButton simulation_btn = new JButton("Run simulation (takes along time)");
+	
 	public ChartPresenter(){
 		add(splitPane);
 	
@@ -43,17 +48,21 @@ public class ChartPresenter extends JPanel implements ActionListener{
 		saveAsComboBox.addItem("JPEG");
 		saveAsComboBox.setEditable(false);
 		saveAsComboBox.setVisible(true);
+		simulation_btn.setVisible(true);
 		
         builder.append("Chart:", chartComboBox);
         builder.nextLine();
         builder.appendSeparator();
         builder.append("Save as:", saveAsComboBox);
         builder.nextLine();
+        builder.appendSeparator();
+        builder.append("", simulation_btn);
         splitPane.setLeftComponent(chartContainer);
         splitPane.setRightComponent(builder.getPanel());
         
         chartComboBox.addActionListener(this);
         saveAsComboBox.addActionListener(this);
+        simulation_btn.addActionListener(this);
 	}
 	
 	public void addChart(JFreeChart chart){
@@ -118,6 +127,40 @@ public class ChartPresenter extends JPanel implements ActionListener{
         	else{
         		
         	}
+        }
+        else if(e.getSource().equals(simulation_btn)){
+        	
+        	
+//    		// Temp, delete this later
+    		int products = 5/*, gridx = 5, gridy = 5*/;
+    		int max_product_steps = 20;
+    		DefaultCategoryDataset data_set = new DefaultCategoryDataset();	
+    		String regular = "Regular grid";
+    		String increased = "Increased usage";
+    		String twenty_five = "+25% has doubles";
+    		for (int i = 4; i <= 6; i++){
+    			
+    			double value3 = Simulations.productAgentsInRegularGridSimulation(
+    					max_product_steps, products, i, i, twenty_five + i, "+25%");
+    			
+    			data_set.addValue(value3, "Average path: "+i+"x"+i, twenty_five);
+    			
+    			double value1 = Simulations.productAgentsInRegularGridSimulation(
+    					max_product_steps, products, i, i, regular + i, "random");
+    			
+    			data_set.addValue(value1, "Average path: "+i+"x"+i, regular);
+    			
+    			double value2 = Simulations.productAgentsInRegularGridSimulation(
+    					max_product_steps, products, i, i, increased + i, "increase");
+    			
+    			data_set.addValue(value2, "Average path: "+i+"x"+i, increased);
+    			
+    			
+    		}
+    		JFreeChart chart = ChartCreator.drawBarChart("Grid simulation Leo-style", "x", "y", data_set);
+    		ChartPresenter chartpres = MainWindow.getChart();
+    		chartpres.addChart(chart);
+        	
         }
 	}
 }
