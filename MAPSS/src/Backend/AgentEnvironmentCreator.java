@@ -1,21 +1,18 @@
 package Backend;
 
-import Agents.EquipletAgent;
-import Agents.ProductAgent;
-import jade.*;
 import jade.core.Agent;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.core.Runtime;
-import jade.tools.rma.rma;
-import jade.tools.sniffer.Sniffer;
 import jade.wrapper.AgentContainer;
 import jade.wrapper.AgentController;
-import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
+import Agents.EquipletAgent;
+import Agents.ProductAgent;
 
 public class AgentEnvironmentCreator {
 	
+	@SuppressWarnings("unused")
 	private static Scenario loadedScenario = null;
 	private static AgentContainer mainContainer;
 	static Runtime rt = Runtime.instance();
@@ -34,16 +31,17 @@ public class AgentEnvironmentCreator {
 	}
 	
 	public static void setCurrentlyLoadedScenario(Scenario scenario){
-		loadedScenario = scenario;
+		ProgramData.setCurrentlyLoadedScenario(scenario);
+		loadedScenario = ProgramData.getCurrentlyLoadedScenario();
 	}
 	
 	public static Scenario getCurrentlyLoadedScenario(){
-		return loadedScenario;
+		return ProgramData.getCurrentlyLoadedScenario();
 	}
 	
 	@SuppressWarnings("static-access")
 	public static void startScenario(){
-		Scenario started_Scenario = getCurrentlyLoadedScenario();
+		Scenario started_Scenario = ProgramData.getCurrentlyLoadedScenario();
 		System.out.println("\nScenario " + started_Scenario.scenarioName + " started.");
 		EquipletAgent[][] Grid = started_Scenario.scenario_Grid.getGrid();
 		for (int y = 0; y < started_Scenario.scenario_Grid.getY(); y++){

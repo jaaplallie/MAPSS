@@ -1,8 +1,14 @@
 package GraphicalGridBuilder;
 
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+
 public abstract class GraphicalGridObject {
 	
-	String textualIcon = "";
+	String textualIcon = " ";
+	ImageIcon imageIcon = new ImageIcon();
+	//"img/grid_icons/add.png"
+	//addBtn.setIcon(icon); 
 	
 	public GraphicalGridObject(){
 	}
@@ -15,4 +21,11 @@ public abstract class GraphicalGridObject {
 		this.textualIcon = textualIcon;
 	}
 	
+	public ImageIcon getImageIcon() {
+		return imageIcon;
+	}
+
+	public void setImageIcon(String imageIcon) {
+		this.imageIcon = new ImageIcon(imageIcon);
+	}
 }

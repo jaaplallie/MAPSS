@@ -1,0 +1,66 @@
+package Gui;
+
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.RowSpec;
+import com.jgoodies.forms.factories.FormFactory;
+import javax.swing.JButton;
+import net.miginfocom.swing.MigLayout;
+
+public class guitest extends JFrame {
+
+	private JPanel contentPane;
+
+	/**
+	 * Launch the application.
+	 */
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					guitest frame = new guitest();
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public guitest() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(new MigLayout("", "[][]", "[][][]"));
+		
+		JButton btnNewButton = new JButton("New button");
+		contentPane.add(btnNewButton, "cell 0 0,grow");
+		
+		JButton btnNewButton_2 = new JButton("New button");
+		contentPane.add(btnNewButton_2, "cell 1 0,grow");
+		
+		JButton btnNewButton_1 = new JButton("New button");
+		contentPane.add(btnNewButton_1, "cell 0 1,grow");
+		
+		JButton btnNewButton_3 = new JButton("New button");
+		contentPane.add(btnNewButton_3, "cell 1 1,grow");
+		
+		JButton btnNewButton_4 = new JButton("New button");
+		contentPane.add(btnNewButton_4, "cell 0 2,grow");
+		
+		JButton btnNewButton_5 = new JButton("New button");
+		contentPane.add(btnNewButton_5, "cell 1 2,grow");
+	}
+
+}

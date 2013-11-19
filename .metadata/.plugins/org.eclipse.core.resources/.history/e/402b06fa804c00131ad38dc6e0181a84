@@ -1,0 +1,8 @@
+package GraphicalGridBuilder;
+
+public class GraphicalGridCrossedTransport extends GraphicalGridObject {
+
+	public GraphicalGridCrossedTransport(){
+		textualIcon = "X";
+	}
+}

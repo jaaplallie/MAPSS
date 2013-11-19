@@ -3,3 +3,5 @@
 1383730494378	Rename local variable 'xx'
 1383730816376	Rename local variable 'prod_name'
 1383744707079	Rename method 'createScenarioFromXML2'
+1383748311099	Rename type 'GraphicalGridNoTransport'
+1383822241455	Rename method 'insert'

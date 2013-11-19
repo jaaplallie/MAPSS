@@ -1,6 +1,5 @@
 package Gui;
 
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -8,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
@@ -19,10 +17,10 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import Backend.ChartCreator;
+import Backend.ProgramData;
 import Backend.Simulations;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.layout.FormLayout;
 
 public class ChartPresenter extends JPanel implements ActionListener{
 	private static final long serialVersionUID = 6423561811886542809L;
@@ -34,7 +32,7 @@ public class ChartPresenter extends JPanel implements ActionListener{
 	Map<Integer, String> chartNamingDictionary = new HashMap<Integer, String>();
 	Map<Integer, JFreeChart> chartObjectDictionary = new HashMap<Integer, JFreeChart>();
 	ChartPanel chartContainer = new ChartPanel(null);
-	DefaultFormBuilder builder = new DefaultFormBuilder(new FormLayout(""));
+	DefaultFormBuilder builder = new ProgramData().getNewBuilder();
 	
 	JButton simulation_btn = new JButton("Run simulation (takes along time)");
 	
@@ -49,15 +47,6 @@ public class ChartPresenter extends JPanel implements ActionListener{
 		saveAsComboBox.setVisible(true);
 		simulation_btn.setVisible(true);
 		
-		builder.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        builder.appendColumn("right:pref");
-        builder.appendColumn("3dlu");
-        builder.appendColumn("fill:max(pref; 100px)");
-        builder.appendColumn("5dlu");
-        builder.appendColumn("right:pref");
-        builder.appendColumn("3dlu");
-        builder.appendColumn("fill:max(pref; 100px)");
-        
         builder.append("Chart:", chartComboBox);
         builder.nextLine();
         builder.appendSeparator();

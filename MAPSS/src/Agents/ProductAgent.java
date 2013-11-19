@@ -1,18 +1,15 @@
 package Agents;
 
+import jade.core.Agent;
+import jade.core.behaviours.WakerBehaviour;
+
 import java.util.ArrayList;
 
-import jade.core.AID;
-import jade.core.Agent; 
-import jade.core.behaviours.WakerBehaviour;
- 
-import jade.lang.acl.ACLMessage;
 import Backend.Grid;
 import Backend.Log;
 import Backend.Simulations;
 
 public class ProductAgent extends Agent { 
-	
 	Grid gc;
 	String code;
 	Object[] args;

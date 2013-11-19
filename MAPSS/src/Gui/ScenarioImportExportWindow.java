@@ -22,6 +22,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import net.miginfocom.swing.MigLayout;
 import Backend.AgentEnvironmentCreator;
+import Backend.ProgramData;
 import Backend.Scenario;
 import Backend.XmlReader;
 import Backend.XmlWriter;
@@ -32,9 +33,8 @@ import com.jgoodies.forms.layout.FormLayout;
 public class ScenarioImportExportWindow extends JFrame implements ActionListener, FocusListener{
 
 	private JPanel contentPane;
-	private DefaultFormBuilder screenBuilder = getNewBuilder();
+	private DefaultFormBuilder screenBuilder = new ProgramData().getNewBuilder();
 	JButton loadButton, importButton, exportButton, removeButton;
-	private DefaultListModel<Scenario> scenarioListModel;
 	private JList<Scenario> scenarioList;
 	
 //	
@@ -65,8 +65,7 @@ public class ScenarioImportExportWindow extends JFrame implements ActionListener
 		setUndecorated(true);
 		getRootPane().setWindowDecorationStyle(JRootPane.PLAIN_DIALOG);
         
-		scenarioListModel = new DefaultListModel<Scenario>();
-		scenarioList = new JList<Scenario>(scenarioListModel);
+		scenarioList = new JList<Scenario>(ProgramData.getScenarioListModel());
 		JScrollPane scenarioListScrollPane = new JScrollPane(scenarioList);
         
 		scenarioList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -104,24 +103,10 @@ public class ScenarioImportExportWindow extends JFrame implements ActionListener
         setContentPane(screenBuilder.getPanel());
 	}
 
-	public DefaultFormBuilder getNewBuilder(){
-		DefaultFormBuilder returnBuilder = new DefaultFormBuilder(new FormLayout(""));
-		returnBuilder.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		returnBuilder.appendColumn("right:pref");
-		returnBuilder.appendColumn("3dlu");
-		returnBuilder.appendColumn("fill:max(pref; 100px)");
-		returnBuilder.appendColumn("5dlu");
-		returnBuilder.appendColumn("right:pref");
-		returnBuilder.appendColumn("3dlu");
-		returnBuilder.appendColumn("fill:max(pref; 100px)");
-		
-		return returnBuilder;
-	}
-
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		if(event.getSource().equals(loadButton)){
-			AgentEnvironmentCreator.setCurrentlyLoadedScenario(scenarioListModel.get(scenarioList.getSelectedIndex()));
+			ProgramData.setCurrentlyLoadedScenario(ProgramData.getScenarioListModel().get(scenarioList.getSelectedIndex()));
 		}
 		else if(event.getSource().equals(importButton)){	
 			JFileChooser chooser = new JFileChooser();
@@ -135,8 +120,8 @@ public class ScenarioImportExportWindow extends JFrame implements ActionListener
 		    if (retrival == JFileChooser.APPROVE_OPTION) {
 		        try {
 		        	readScenario = xmlReader.open(chooser.getSelectedFile().toPath().toString());
-		        	AgentEnvironmentCreator.setCurrentlyLoadedScenario(readScenario);
-		        	for(Object o : scenarioListModel.toArray()){
+		        	ProgramData.setCurrentlyLoadedScenario(readScenario);
+		        	for(Object o : ProgramData.getScenarioListModel().toArray()){
 		        		Scenario s = (Scenario) o;
 		        		if(s.getScenarioName().equals(readScenario.getScenarioName())){
 		        			scenarioConflictPopup scp = new scenarioConflictPopup(readScenario, this);
@@ -144,7 +129,7 @@ public class ScenarioImportExportWindow extends JFrame implements ActionListener
 		        			this.setEnabled(false);
 		        		}
 		        	}
-		        	scenarioListModel.addElement(readScenario);
+		        	ProgramData.getScenarioListModel().addElement(readScenario);
 		            JOptionPane.showMessageDialog(
 		            		null, 
 		            		"File succesfully opened." + 
@@ -174,7 +159,7 @@ public class ScenarioImportExportWindow extends JFrame implements ActionListener
 		    int retrival = chooser.showSaveDialog(null);
 		    if (retrival == JFileChooser.APPROVE_OPTION) {
 		        try {
-		        	xmlWriter.Write(scenarioListModel.get(scenarioList.getSelectedIndex()), chooser.getSelectedFile()+".xml");
+		        	xmlWriter.Write(ProgramData.getScenarioListModel().get(scenarioList.getSelectedIndex()), chooser.getSelectedFile()+".xml");
 		            JOptionPane.showMessageDialog(
 		            		null, 
 		            		"Scenario succesfully saved as .xml to: \n" +
@@ -197,7 +182,7 @@ public class ScenarioImportExportWindow extends JFrame implements ActionListener
 		}
 		else if(event.getSource().equals(removeButton)){	
 			System.out.println("4");
-			scenarioListModel.remove(scenarioList.getSelectedIndex());
+			ProgramData.getScenarioListModel().remove(scenarioList.getSelectedIndex());
 		}
 	}
 

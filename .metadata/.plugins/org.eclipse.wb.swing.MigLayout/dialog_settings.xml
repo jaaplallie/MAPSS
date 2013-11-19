@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.wb.internal.swing.MigLayout.model.ui.ColumnsDialog">
+		<item value="434" key="height"/>
+		<item value="525" key="width"/>
+		<item value="354" key="y"/>
+		<item value="706" key="x"/>
+	</section>
+</section>

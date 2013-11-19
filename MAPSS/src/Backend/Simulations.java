@@ -1,23 +1,7 @@
 package Backend;
 
-import jade.core.Profile;
-import jade.core.ProfileImpl;
-import jade.core.Runtime;
-import jade.wrapper.AgentController;
-import jade.wrapper.ContainerController;
 import jade.wrapper.StaleProxyException;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import Agents.ProductAgent;
-import Backend.ChartCreator;
-import Backend.AgentEnvironmentCreator;
-
-import org.jfree.chart.JFreeChart;
-import org.jfree.data.category.DefaultCategoryDataset;
-
-import Gui.ChartPresenter;
 
 public class Simulations {	
 	public static int finished_products;

@@ -1,7 +1,9 @@
 package Backend;
 
-import java.util.*;
-import Agents.*;
+import java.util.ArrayList;
+
+import Agents.EquipletAgent;
+import Agents.ProductAgent;
 
 public class Scenario {
 	String scenarioName;
