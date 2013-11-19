@@ -40,11 +40,10 @@ public class CreateGridModule extends JPanel implements ActionListener{
 	
 	public void buildScreen(){
         builder.append(new JLabel("Size x-axis :"), input_xSize);
-		//builder.append(input_xSize);
+
 		builder.nextLine();
 		builder.append(new JLabel("Size y-axis :"), input_ySize, buildGrid_Btn);
-		//builder.append();
-		//builder.append();
+
 		builder.nextLine();
 		builder.appendSeparator("Additional values");
 		
@@ -53,8 +52,6 @@ public class CreateGridModule extends JPanel implements ActionListener{
 		
 		builder.nextLine();
 		builder.appendSeparator("Preview");
-//		previewPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
-//		previewPanel.setLayout(new BorderLayout(0, 0));
 		builder.append(previewPanel);
 		
 		buildGrid_Btn.addActionListener(this);
