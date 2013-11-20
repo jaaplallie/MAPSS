@@ -89,7 +89,7 @@ public class CreateGridModule extends JPanel implements ActionListener{
 			"Error: Please enter numbers that are at least 2", "Error Message",
 			JOptionPane.ERROR_MESSAGE);
 		} else {
-			setEnabled(gridSizePanel.getComponents(), false);
+			//setEnabled(gridSizePanel.getComponents(), false);
 			
 			//Grid gc = new Grid();
 			switch (source.getText()) {
@@ -100,8 +100,9 @@ public class CreateGridModule extends JPanel implements ActionListener{
 					invalidate();
 					validate();
 					repaint();
-					Grid.createNormalGrid(x_size, y_size);
-					Matrix.createMatrix(x_size, y_size);
+					
+					Grid.createNormalGrid(x_size, y_size, x_size+"X"+y_size);
+					Matrix.createMatrix(x_size, y_size, x_size+"X"+y_size);
 					ProductStepGenerators.setGridSize(x_size*y_size);
 					break;
 				case "Build Custom Grid":
@@ -111,12 +112,12 @@ public class CreateGridModule extends JPanel implements ActionListener{
 					break;
 			}
 			
-			try {
-				AgentEnvironmentCreator.addSchedulerAgent();
-				AgentEnvironmentCreator.addRemoteMonitoringAgent();
-			} catch (StaleProxyException spe) {
-				spe.printStackTrace();
-			}
+//			try {
+//				AgentEnvironmentCreator.addSchedulerAgent();
+//				AgentEnvironmentCreator.addRemoteMonitoringAgent();
+//			} catch (StaleProxyException spe) {
+//				spe.printStackTrace();
+//			}
 			
 		}
 	}

@@ -3,6 +3,7 @@ package Backend;
 import java.util.ArrayList;
 
 import jade.wrapper.StaleProxyException;
+import Agents.EquipletAgent;
 import Agents.ProductAgent;
 
 public class Simulations {	
@@ -16,7 +17,7 @@ public class Simulations {
 		finished_products = 0;
 	}
 	
-	public static double productAgentsInRegularGridSimulation(String log_name){
+	public static double productAgentsInRegularGridSimulation(String structure_name, String log_name){
 		
 
 		AgentEnvironmentCreator.start();
@@ -29,8 +30,14 @@ public class Simulations {
 		
 		//ProductStepGenerators.generateProductBatch(number_of_products, max_product_steps, type);
 		
-		ArrayList<ArrayList> A = ProductStepGenerators.getProducts();
-		ArrayList<Object[]> products = A.get(0);
+		//ArrayList<ArrayList> A = ProductStepGenerators.getProducts();
+		//ArrayList<Object[]> products = A.get(0);
+		
+		Grid.setGrid(structure_name);
+		Matrix.setMatrix(structure_name);
+		//Grid.setName(structure_name);
+		
+		ArrayList<Object[]> products = ProductStepGenerators.getBatch(structure_name);
 		
 		
 		Log.createLogFile(log_name);
@@ -42,6 +49,7 @@ public class Simulations {
 		Matrix.logMatrix();
 		Log.writeln("**************************************************************************");
 		
+
 		
 		for (int i =0; i < products.size(); i++){
 			Object[] arguments = products.get(i);
@@ -49,8 +57,7 @@ public class Simulations {
 			ProductAgent smith = new ProductAgent("Product" + i , arguments);
 			try {
 				AgentEnvironmentCreator.addProductAgent(smith);
-				System.out.println("Agent created");
-				Thread.sleep(1);
+				Thread.sleep(10);
 			} catch (StaleProxyException | InterruptedException e) {
 				e.printStackTrace();
 			}

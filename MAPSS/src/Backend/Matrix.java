@@ -6,12 +6,11 @@ import java.util.List;
 public class Matrix {
 
 	protected static List[][] matrix;
+	protected static ArrayList<List[][]> matrix_list = new ArrayList<List[][]>();
 	
-	public static void createMatrix(int grid_width, int grid_length){
+	public static void createMatrix(int grid_width, int grid_length, String structure_name){
 		
 		matrix = new ArrayList[grid_width*grid_length][grid_length*grid_width];
-		
-		//System.out.println("Matrix layout:");
 		
 		for (int x = 0; x < grid_width*grid_length; x++){	
 			int currentposition[] = Grid.getEquipletPosition(x);
@@ -24,7 +23,14 @@ public class Matrix {
 					matrix[x][y] = X;
 				}	
 			}	
+		matrix_list.add(matrix);
 		//logMatrix();
+	}
+	
+	public static void setMatrix(String structure_name){
+		int index = Grid.getIndex(structure_name);
+		List[][] matrixie = matrix_list.get(index);
+		matrix = matrixie;
 	}
 	
 	public static void logMatrix(){
@@ -36,11 +42,6 @@ public class Matrix {
 			}
 			Log.writeln(output);
 		}
-	}
-
-	
-	public static List[][] getMatrix(){
-		return matrix;
 	}
 	
 	public static int getDistance(int start, int end){

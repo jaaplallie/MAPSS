@@ -14,6 +14,7 @@ import javax.swing.JSpinner;
 
 import Backend.AgentEnvironmentCreator;
 import Backend.ChartCreator;
+import Backend.Grid;
 import Backend.ProductStepGenerators;
 import Backend.ProgramData;
 
@@ -35,6 +36,8 @@ public class SimulationModule extends JPanel implements ActionListener{
 	private String increased = "Increased (Higher numbers are more popular)";
 	private String twentyfive = "Multisteps (25% will be used twice as much)";
 	
+	static JComboBox<String> structureBox = new JComboBox<String>();
+	
 	
 	public SimulationModule() {   
 		
@@ -44,12 +47,20 @@ public class SimulationModule extends JPanel implements ActionListener{
 		productStepComboBox.addItem(increased);
 		productStepComboBox.addItem(twentyfive);
 		
+		structureBox.setEditable(false);
+		structureBox.setVisible(true);
+		
+		
         builder.append(new JLabel("Number of products :"), products_snr);
 
 		builder.nextLine();
 		builder.append(new JLabel("Number of product steps :"), product_steps_snr);
 		builder.nextLine();
 		builder.append("Method:", productStepComboBox);
+        builder.nextLine();
+        builder.append("Structures:", structureBox);
+        builder.nextLine();
+        builder.appendSeparator();
 		builder.append(generate_products_btn);
 		generate_products_btn.addActionListener(this);
 		builder.nextLine();
@@ -60,6 +71,14 @@ public class SimulationModule extends JPanel implements ActionListener{
         productStepComboBox.addActionListener(this);
         add(builder.getPanel());
 	}
+	
+	public static void updateProductStructures(){
+		structureBox.removeAllItems();
+		for (String name: Grid.getStructureNames()){
+			structureBox.addItem(name);
+		}
+	}
+	
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -104,14 +123,12 @@ public class SimulationModule extends JPanel implements ActionListener{
 		    		type = twentyfive;
 				}
 		    	
+		    	String structure_name = (String)structureBox.getSelectedItem();
 		    	
-		    	ProductStepGenerators.generateProductBatch(number_of_products, max_product_steps, type);
-		    	System.out.println("Products created");
-			
+		    	ProductStepGenerators.generateProductBatch(number_of_products, max_product_steps, type, structure_name);
+		    	//System.out.println("Products created");
 			
 			}
-			
-			
 
 		}
 

@@ -3,6 +3,8 @@ package Backend;
 import java.awt.List;
 import java.util.ArrayList;
 
+import Agents.EquipletAgent;
+
 /*
  * This class is inspired by "gridscenario.c" wich is part of "ToolkitLvM". 
  * 
@@ -12,19 +14,41 @@ public class ProductStepGenerators {
 	private static int gridsize;
 	//private static ArrayList<String[]> products;
 	private static ArrayList<ArrayList> product_batches = new ArrayList<ArrayList>();
+	private static ArrayList<String> batch_names = new ArrayList<String>();
 	
 	public static void setGridSize(int amount){
 		gridsize = amount;
+	}
+	
+	public static ArrayList getBatch(String name){
+		int counter = 0, found = 0;
+		for(String s: batch_names){
+			if (s == name){
+				found = counter;
+				break;
+			}
+			counter++;
+		}
+		
+		ArrayList<Object[]> batch = product_batches.get(found);
+		
+		return batch;
 	}
 	
 	public static ArrayList<ArrayList> getProducts(){
 		return product_batches;
 	}
 	
-	public static void generateProductBatch(int product_count, int max_product_steps, String type){
+	public static void generateProductBatch(int product_count, int max_product_steps, String type, String structure_name){
+		
+		
+		Grid.setGrid(structure_name);
+		gridsize = Grid.getMaxvalue();
+		
 		ArrayList<Object[]> products = new ArrayList<Object[]>();
 		for (int i =0; i < product_count; i++){
 			Object[] steps = {};
+			
 			switch(type){
 			case "random":
 				steps = ProductStepGenerators.generateRandomSteps(max_product_steps);
@@ -40,8 +64,11 @@ public class ProductStepGenerators {
 			};
 			products.add(steps);
 		}
+
 		
+		batch_names.add(structure_name);
 		product_batches.add(products);
+		System.out.println("Products created for " + structure_name);
 	}
 	
 	public static String[] generateRandomSteps(int amount){
@@ -51,9 +78,10 @@ public class ProductStepGenerators {
 		String[] steps = new String[amount];
     	for (int j = 0; j < amount; j++){      	
     	    Integer step = (int)(Math.random()*(gridsize-1));
-    	    
+    	    System.out.println(step);
     	    steps[j] = step.toString();
     	}
+    	
 
 		return steps;
 	}
