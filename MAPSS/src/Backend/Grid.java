@@ -15,7 +15,7 @@ Hello there. To save you some time here is a small table of contents for this fi
 - Creation Functions. Functions that are used to create the grid or any other structure.
 - Calculations. Pretty self explanatory. There's a few attempts at math there.
 - Getters/Setters. Can you guess?
-- Other. Everything else. Included a few log functions + few functions to clear/change some values.
+- Other. Everything else. Includes a few log functions + few functions to clear/change some values.
 
 ****************************************************************************************/
 

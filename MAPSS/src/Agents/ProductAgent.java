@@ -39,8 +39,6 @@ public class ProductAgent extends Agent {
 		return returnVal;
 	}
 	
-	
-	
 	protected void setup() { 
 		addBehaviour(new WakerBehaviour(this, 0) { 
 			 protected void handleElapsedTimeout() { 
@@ -119,9 +117,8 @@ public class ProductAgent extends Agent {
 					MapssFileWriter.writeLogLn("Total hops needed for this product: " + hops);
 					double average = hops/args.length;
 					MapssFileWriter.writeLogLn("Average number of hops needed for each product step: " + average);
-					
+			
 					Simulations.addFinishedProduct();
-					
 					
 				} else {
 					MapssFileWriter.writeLogLn("Unfortunately I can't find a suitable grid so no calculations for me");
@@ -131,12 +128,8 @@ public class ProductAgent extends Agent {
 					if (right_sized_grid == false){
 						MapssFileWriter.writeLogLn("The current grid is too small for my product steps");
 					}
-					 
-
 				}
-				
 				MapssFileWriter.writeLogLn("");
-
 			 } 
 		} );	
 	} 

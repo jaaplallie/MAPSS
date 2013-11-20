@@ -18,38 +18,21 @@ public class Simulations {
 	}
 	
 	public static double productAgentsInRegularGridSimulation(String structure_name, String log_name){
-		
-
 		AgentEnvironmentCreator.start();
-		
-		System.out.println("Creating the nessesary files.....");
-
-		System.out.println("Generating a set of products and giving them product agents.....");
-		
-		//ProductStepGenerators.setGridSize(gridx*gridy);
-		
-		//ProductStepGenerators.generateProductBatch(number_of_products, max_product_steps, type);
-		
-		//ArrayList<ArrayList> A = ProductStepGenerators.getProducts();
-		//ArrayList<Object[]> products = A.get(0);
-		
 		Grid.setGrid(structure_name);
 		Matrix.setMatrix(structure_name);
-		//Grid.setName(structure_name);
-		
 		ArrayList<Object[]> products = ProductStepGenerators.getBatch(structure_name);
 		
-
+		System.out.println("Creating the nessesary files.....");
+		System.out.println("Generating a set of products and giving them product agents.....");
+		
 		MapssFileWriter.createLogFile(log_name);
 		MapssFileWriter.writeLogLn("***********************Configurations*************************************");
 		MapssFileWriter.writeLogLn("Number of products: " + products.size());
-
 		Grid.logGrid();
 		Grid.logNeighbors();
 		Matrix.logMatrix();
 		MapssFileWriter.writeLogLn("**************************************************************************");
-		
-
 		
 		for (int i =0; i < products.size(); i++){
 			Object[] arguments = products.get(i);
@@ -61,14 +44,11 @@ public class Simulations {
 			} catch (StaleProxyException | InterruptedException e) {
 				e.printStackTrace();
 			}
-			
 		}
 		
-		while (finished_products < products.size()){}
+		while (finished_products < products.size()){} //Wait until each product agent is finished
 		
-		//gc.printPaths();
-		double a = Grid.getAverageProductStepPath();
-		
+		double average = Grid.getAverageProductStepPath();
 		MapssFileWriter.writeLogLn("The average path for each product step is: " + Grid.getAverageProductStepPath() + " long");
 		MapssFileWriter.writeLogLn("The average path for each product is: " + Grid.getAverageProductPath() + " long");
 		MapssFileWriter.closeLog();
@@ -78,9 +58,6 @@ public class Simulations {
 		Grid.clearProductPaths();
 		System.out.println("Simulation " + log_name + " is finished");
 		
-		return a;
-
-		
+		return average;
 	}
-	
 }
