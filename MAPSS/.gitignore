@@ -1,5 +1,5 @@
 *.txt
-/.metadata
+.metadata/
 /.settings
 /bin
 
