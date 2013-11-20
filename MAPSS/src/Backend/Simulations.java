@@ -39,15 +39,15 @@ public class Simulations {
 		
 		ArrayList<Object[]> products = ProductStepGenerators.getBatch(structure_name);
 		
-		
-		Log.createLogFile(log_name);
-		Log.writeln("***********************Configurations*************************************");
-		Log.writeln("Number of products: " + products.size());
+
+		MapssFileWriter.createLogFile(log_name);
+		MapssFileWriter.writeLogLn("***********************Configurations*************************************");
+		MapssFileWriter.writeLogLn("Number of products: " + products.size());
 
 		Grid.logGrid();
 		Grid.logNeighbors();
 		Matrix.logMatrix();
-		Log.writeln("**************************************************************************");
+		MapssFileWriter.writeLogLn("**************************************************************************");
 		
 
 		
@@ -69,9 +69,9 @@ public class Simulations {
 		//gc.printPaths();
 		double a = Grid.getAverageProductStepPath();
 		
-		Log.writeln("The average path for each product step is: " + Grid.getAverageProductStepPath() + " long");
-		Log.writeln("The average path for each product is: " + Grid.getAverageProductPath() + " long");
-		Log.close();
+		MapssFileWriter.writeLogLn("The average path for each product step is: " + Grid.getAverageProductStepPath() + " long");
+		MapssFileWriter.writeLogLn("The average path for each product is: " + Grid.getAverageProductPath() + " long");
+		MapssFileWriter.closeLog();
 		clearProducts();
 		AgentEnvironmentCreator.destroyMainContainer();
 		Grid.clearProductStepPaths();

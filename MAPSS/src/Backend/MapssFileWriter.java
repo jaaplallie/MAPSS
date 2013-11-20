@@ -2,6 +2,9 @@ package Backend;
 
 import java.util.ArrayList;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -20,14 +23,15 @@ import org.xml.sax.SAXParseException;
 import Agents.EquipletAgent;
 import Agents.ProductAgent;
 
-public class XmlWriter {
-	StringBuilder writer;
+public class MapssFileWriter {
+	StringBuilder xmlStringBuilder;
+	static PrintWriter logWriter;
 	
-	public XmlWriter(){
-		writer = new StringBuilder();
+	public MapssFileWriter(){
+		xmlStringBuilder = new StringBuilder();
 	}
 	
-	public void Write(Scenario scenario, String fileLocation){
+	public void writeScenarioToXML(Scenario scenario, String fileLocation){
 		String defaultString = "Undefined.";
 		String scenarioName = defaultString;
 		
@@ -177,5 +181,26 @@ public class XmlWriter {
 		  finally{
 			  System.out.println("Scenario File saved!");
 		  }
+	}
+	
+	public static void createLogFile(String name){
+		try {
+			logWriter = new PrintWriter("logs/" + name + ".txt");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public static void writeLogLn(String s){
+		logWriter.println(s);
+	}
+	
+	public static void writeLog(String s){
+		logWriter.print(s);
+	}
+	
+	public static void closeLog(){
+		logWriter.close();
 	}
 }

@@ -2,13 +2,8 @@ package Backend;
 
 import jade.wrapper.AgentContainer;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -22,18 +17,14 @@ import Agents.EquipletAgent;
 import Agents.ProductAgent;
 
 
-public class XmlReader {
-	static AgentContainer container = (AgentContainer) AgentEnvironmentCreator.getContainer();
+public class MapssFileReader {
+	static AgentContainer container = AgentEnvironmentCreator.getContainer();
 	
-	public XmlReader(){
+	public MapssFileReader(){
 		
 	}
 	
-	public XmlReader(String filePath){
-		
-	}
-	
-	public Scenario open(String filePath){
+	public Scenario openScenarioXml(String filePath){
 		//createScenarioFromXML(filePath);
 		return createScenarioFromXml(filePath);
 	}

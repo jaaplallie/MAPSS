@@ -1,0 +1,11 @@
+package GraphicalGridBuilder;
+
+public class GraphicalGridBackSlashTransport extends GraphicalGridObject {
+
+	GraphicalGridEquiplet eq1, eq2;
+	
+	public GraphicalGridBackSlashTransport(){
+		textualIcon = "/";
+		this.setImageIcon("img/grid_icons/backslash.png");
+	}
+}
