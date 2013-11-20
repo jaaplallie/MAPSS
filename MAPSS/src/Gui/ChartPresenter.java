@@ -17,6 +17,7 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import Backend.ChartCreator;
+import Backend.Grid;
 import Backend.ProgramData;
 import Backend.Simulations;
 
@@ -91,7 +92,6 @@ public class ChartPresenter extends JPanel implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		//System.out.print("Derp");
         if(e.getSource().equals(chartComboBox)){
         	@SuppressWarnings("unchecked")
 			JComboBox<String> cb = (JComboBox<String>)e.getSource();
@@ -130,33 +130,20 @@ public class ChartPresenter extends JPanel implements ActionListener{
         }
         else if(e.getSource().equals(simulation_btn)){
         	
-        	
-//    		// Temp, delete this later
-    		int products = 1000/*, gridx = 5, gridy = 5*/;
-    		int max_product_steps = 20;
     		DefaultCategoryDataset data_set = new DefaultCategoryDataset();	
     		String regular = "Regular grid";
-    		String increased = "Increased usage";
-    		String twenty_five = "+25% has doubles";
-    		for (int i = 4; i <= 7; i++){
+//    		String increased = "Increased usage";
+//    		String twenty_five = "+25% has doubles";
+    	
+    		//for (int i = 4; i <= 7; i++){
     			
-    			double value1 = Simulations.productAgentsInRegularGridSimulation(
-    					max_product_steps, products, i, i, regular + i, "random");
+    			double value1 = Simulations.productAgentsInRegularGridSimulation("random");
     			
-    			data_set.addValue(value1, i+"x"+i, regular);
+    			data_set.addValue(value1, Grid.getX()+"x"+Grid.getY(), regular);
     			
-    			double value2 = Simulations.productAgentsInRegularGridSimulation(
-    					max_product_steps, products, i, i, increased + i, "increase");
-    			
-    			data_set.addValue(value2, i+"x"+i, increased);
-    			
-    			double value3 = Simulations.productAgentsInRegularGridSimulation(
-    					max_product_steps, products, i, i, twenty_five + i, "+25%");
-    			
-    			data_set.addValue(value3, i+"x"+i, twenty_five);
  
     			
-    		}
+    		//}
     		JFreeChart chart = ChartCreator.drawBarChart("Standard square grid simulation", "x", "y", data_set);
     		ChartPresenter chartpres = MainWindow.getChart();
     		chartpres.addChart(chart);

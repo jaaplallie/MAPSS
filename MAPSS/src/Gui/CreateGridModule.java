@@ -16,6 +16,8 @@ import javax.swing.JTextField;
 
 import Backend.AgentEnvironmentCreator;
 import Backend.Grid;
+import Backend.Matrix;
+import Backend.ProductStepGenerators;
 import Backend.ProgramData;
 import GraphicalGridBuilder.GraphicalGrid;
 
@@ -84,7 +86,7 @@ public class CreateGridModule extends JPanel implements ActionListener{
 		
 		if(x_size <= 1 || y_size <= 1) {
 			JOptionPane.showMessageDialog(null,
-			"Error: Please enter numbers that are atleast 2", "Error Massage",
+			"Error: Please enter numbers that are at least 2", "Error Message",
 			JOptionPane.ERROR_MESSAGE);
 		} else {
 			setEnabled(gridSizePanel.getComponents(), false);
@@ -98,7 +100,9 @@ public class CreateGridModule extends JPanel implements ActionListener{
 					invalidate();
 					validate();
 					repaint();
-					//Grid.create(x_size, y_size);
+					Grid.createNormalGrid(x_size, y_size);
+					Matrix.createMatrix(x_size, y_size);
+					ProductStepGenerators.setGridSize(x_size*y_size);
 					break;
 				case "Build Custom Grid":
 					Grid.createCustom(x_size, y_size, grid_string.getText());

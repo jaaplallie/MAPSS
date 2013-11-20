@@ -1,5 +1,7 @@
 package Backend;
 
+import java.util.ArrayList;
+
 import jade.wrapper.StaleProxyException;
 import Agents.ProductAgent;
 
@@ -14,60 +16,40 @@ public class Simulations {
 		finished_products = 0;
 	}
 	
-	public static double productAgentsInRegularGridSimulation(
-			int max_product_steps, 
-			int products, 
-			int gridx, 
-			int gridy,
-			String log_name,
-			String type
-			){
+	public static double productAgentsInRegularGridSimulation(String log_name){
 		
-		// get a JADE runtime
-		//Runtime rt = Runtime.instance();
-		// create a default profile
-		//Profile p = new ProfileImpl();
-		// create the Main-container
-		//ContainerController mainContainer = rt.createMainContainer(p);
+
 		AgentEnvironmentCreator.start();
 		
 		System.out.println("Creating the nessesary files.....");
+
+		System.out.println("Generating a set of products and giving them product agents.....");
+		
+		//ProductStepGenerators.setGridSize(gridx*gridy);
+		
+		//ProductStepGenerators.generateProductBatch(number_of_products, max_product_steps, type);
+		
+		ArrayList<ArrayList> A = ProductStepGenerators.getProducts();
+		ArrayList<Object[]> products = A.get(0);
+		
 		
 		Log.createLogFile(log_name);
 		Log.writeln("***********************Configurations*************************************");
-		Log.writeln("Number of products: " + products);
-		Log.writeln("Number of product steps per product: " + max_product_steps);
+		Log.writeln("Number of products: " + products.size());
 
-		Grid.createNormalGrid(gridx, gridy);
-		Matrix.createMatrix(gridx, gridy);
+		Grid.logGrid();
+		Grid.logNeighbors();
+		Matrix.logMatrix();
 		Log.writeln("**************************************************************************");
+		
+		
+		for (int i =0; i < products.size(); i++){
+			Object[] arguments = products.get(i);
 
-		System.out.println("Generating a set of products and giving them product agents.....");
-		ProductStepGenerators.setGridSize(gridx*gridy);
-		for (int i =0; i < products; i++){
-			Object[] arguments = {};
-			switch(type){
-			case "random":
-				arguments = ProductStepGenerators.generateRandomSteps(max_product_steps);
-				break;
-			case "increase":
-				arguments = ProductStepGenerators.generateIncreasedSteps(max_product_steps);
-				break;
-			case "+25%":
-				arguments = ProductStepGenerators.generate25PercentPopularSteps(max_product_steps);
-				break;
-			default:
-				arguments = ProductStepGenerators.generateRandomSteps(max_product_steps);
-			}
-			
-			//Scenario new_scenario = new Scenario(log_name);
-			
-			//ProductAgent npa = new ProductAgent("Product" + i, arguments);
-			//new_scenario.addProduct(npa);
-			
 			ProductAgent smith = new ProductAgent("Product" + i , arguments);
 			try {
 				AgentEnvironmentCreator.addProductAgent(smith);
+				System.out.println("Agent created");
 				Thread.sleep(1);
 			} catch (StaleProxyException | InterruptedException e) {
 				e.printStackTrace();
@@ -75,7 +57,7 @@ public class Simulations {
 			
 		}
 		
-		while (finished_products < products){}
+		while (finished_products < products.size()){}
 		
 		//gc.printPaths();
 		double a = Grid.getAverageProductStepPath();

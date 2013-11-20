@@ -21,6 +21,8 @@ public class Grid {
 	protected static ArrayList<int[]> product_paths = new ArrayList<int[]>();
 	protected static ArrayList<int[]> productstep_paths = new ArrayList<int[]>();
 	
+	protected static ArrayList<EquipletAgent[][]> saved_structures = new ArrayList<EquipletAgent[][]>();
+	
 	public Grid(){
 	}
 	
@@ -110,10 +112,13 @@ public class Grid {
 				stepnr++;
 			}
 		}	
+		
+		saved_structures.add(grid);
+		
 		//max = width*length;
 		
-		logGrid();
-		logNeighbors();
+		//logGrid();
+		//logNeighbors();
 	}
 	
 	public static void logGrid(){
