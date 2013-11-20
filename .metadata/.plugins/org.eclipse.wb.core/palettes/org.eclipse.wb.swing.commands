@@ -4,4 +4,8 @@
 		id="org.eclipse.wb.swing.components.menu javax.swing.JMenuBar"
 		category="org.eclipse.wb.swing.components"
 		nextEntry="org.eclipse.wb.swing.components javax.swing.JScrollBar"/>
+	<moveEntry
+		id="org.eclipse.wb.swing.containers javax.swing.JPanel"
+		category="org.eclipse.wb.swing.containers"
+		nextEntry="org.eclipse.wb.swing.containers javax.swing.JLayeredPane"/>
 </commands>
