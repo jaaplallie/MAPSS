@@ -1,5 +1,9 @@
 package GraphicalGridBuilder;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -151,6 +155,17 @@ public class GraphicalGrid extends JFrame{
 		JPanel gridPanel = new JPanel();
 		JPanel gridEditorPanel = new JPanel();
 		
+		final JButton saveGrid_Btn = new JButton("Save Grid");
+		saveGrid_Btn.setEnabled(false);
+		saveGrid_Btn.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				save();
+				saveGrid_Btn.setEnabled(false);
+			}
+		});
+		gridEditorPanel.add(saveGrid_Btn);
+		
 		//fill the GraphicalGrid gridPanel
 		gridPanel.setLayout(new MigLayout("", "[grow, fill][grow, fill]", "[]"));
 
@@ -161,6 +176,14 @@ public class GraphicalGrid extends JFrame{
 				System.out.println("x: " + targetX);
 				System.out.println("y: " + targetY);
 				
+				grid[targetY][targetX].getButton().addActionListener(
+					new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							saveGrid_Btn.setEnabled(true);
+						}
+					}
+				);
 				//returnPanel.add(grid[targetY][targetX].getButton(), "cell " + targetX + " " + targetY + ",alignx center,growy");
 				gridPanel.add(grid[targetY][targetX].getButton(), "cell " + targetX + " " + targetY + ",growx");
 			}
@@ -171,6 +194,10 @@ public class GraphicalGrid extends JFrame{
 		
 		//fill the 
 		return returnPanel;
+	}
+
+	public void save(){
+		
 	}
 	
 	public String getGridString(){

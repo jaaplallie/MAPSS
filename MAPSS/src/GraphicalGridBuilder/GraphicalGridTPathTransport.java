@@ -2,6 +2,8 @@ package GraphicalGridBuilder;
 
 public class GraphicalGridTPathTransport extends GraphicalGridObject {
 
+	GraphicalGridEquiplet eq1, eq2, eq3;
+	
 	Character arm;
 	
 	public GraphicalGridTPathTransport(int y, int x, int y_max){
@@ -26,4 +28,34 @@ public class GraphicalGridTPathTransport extends GraphicalGridObject {
 			this.setImageIcon("img/grid_icons/tleft.png");
 		}
 	}
+
+	public GraphicalGridEquiplet getEq1() {
+		return eq1;
+	}
+
+	public void setEq1(GraphicalGridEquiplet eq1) {
+		this.eq1 = eq1;
+	}
+
+	public GraphicalGridEquiplet getEq2() {
+		return eq2;
+	}
+
+	public void setEq2(GraphicalGridEquiplet eq2) {
+		this.eq2 = eq2;
+	}
+
+	public GraphicalGridEquiplet getEq3() {
+		return eq3;
+	}
+
+	public void setEq3(GraphicalGridEquiplet eq3) {
+		this.eq3 = eq3;
+	}
+
+	public Character getArm() {
+		return arm;
+	}
+	
+	
 }

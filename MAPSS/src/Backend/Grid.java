@@ -117,7 +117,7 @@ public class Grid {
 	}
 	
 	public static void logGrid(){
-		Log.writeln("Grid layout");
+		MapssFileWriter.writeLogLn("Grid layout");
 		int stepnr = 0;
 		for (int y = 0; y < grid[0].length; y++){
 			String output = "";
@@ -125,16 +125,16 @@ public class Grid {
 				output += " " + stepnr;
 				stepnr++;
 			}
-			Log.writeln(output);
+			MapssFileWriter.writeLogLn(output);
 		}
-		Log.writeln("");
+		MapssFileWriter.writeLogLn("");
 	}
 	
 	public static void logNeighbors() {
 		for (int i = 0; i < neighbors.length; i++){
-			Log.writeln("Equiplet " + i + " kent: " + neighbors[i]);	
+			MapssFileWriter.writeLogLn("Equiplet " + i + " kent: " + neighbors[i]);	
 		}
-		Log.writeln("");
+		MapssFileWriter.writeLogLn("");
 	}
 	
 	public static double getAverageProductPath(){
@@ -177,11 +177,11 @@ public class Grid {
 		for (int i = 0; i < product_paths.size(); i++){
 			System.out.print("The path of product " + i + " is: ");	
 			for (int o: product_paths.get(i)){
-				Log.write(o+" ");
+				MapssFileWriter.writeLog(o+" ");
 			}
-			Log.write("\n");
+			MapssFileWriter.writeLog("\n");
 		}
-		Log.writeln("");
+		MapssFileWriter.writeLogLn("");
 	}
 	
 	

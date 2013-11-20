@@ -8,14 +8,12 @@ import javax.swing.JPanel;
 
 public class GraphicalGridTarget{
 
-	JPanel targetContainer;
 	JButton returnButton;
 	GraphicalGridObject[] targetPossibilities = new GraphicalGridObject[0];
 	int currentlyDisplayedPossibility = 0;
 	
 	public GraphicalGridTarget(GraphicalGridObject[] possibilities){
 		targetPossibilities = possibilities;
-		targetContainer = new JPanel(new BorderLayout());
 		returnButton = new JButton("");
 		returnButton.setIcon(targetPossibilities[currentlyDisplayedPossibility].getImageIcon());
 		returnButton.addActionListener(new ActionListener(){
@@ -33,11 +31,10 @@ public class GraphicalGridTarget{
 		if(targetPossibilities.length == 1){
 			returnButton.setEnabled(false);
 		}
-		targetContainer.add(returnButton);
 	}
 	
-	public JPanel getButton(){
-		return targetContainer;
+	public JButton getButton(){
+		return returnButton;
 	}
 	
 	public GraphicalGridObject getInput(){

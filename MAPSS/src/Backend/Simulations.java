@@ -33,14 +33,14 @@ public class Simulations {
 		
 		System.out.println("Creating the nessesary files.....");
 		
-		Log.createLogFile(log_name);
-		Log.writeln("***********************Configurations*************************************");
-		Log.writeln("Number of products: " + products);
-		Log.writeln("Number of product steps per product: " + max_product_steps);
+		MapssFileWriter.createLogFile(log_name);
+		MapssFileWriter.writeLogLn("***********************Configurations*************************************");
+		MapssFileWriter.writeLogLn("Number of products: " + products);
+		MapssFileWriter.writeLogLn("Number of product steps per product: " + max_product_steps);
 
 		Grid.createNormalGrid(gridx, gridy);
 		Matrix.createMatrix(gridx, gridy);
-		Log.writeln("**************************************************************************");
+		MapssFileWriter.writeLogLn("**************************************************************************");
 
 		System.out.println("Generating a set of products and giving them product agents.....");
 		ProductStepGenerators.setGridSize(gridx*gridy);
@@ -80,9 +80,9 @@ public class Simulations {
 		//gc.printPaths();
 		double a = Grid.getAverageProductStepPath();
 		
-		Log.writeln("The average path for each product step is: " + Grid.getAverageProductStepPath() + " long");
-		Log.writeln("The average path for each product is: " + Grid.getAverageProductPath() + " long");
-		Log.close();
+		MapssFileWriter.writeLogLn("The average path for each product step is: " + Grid.getAverageProductStepPath() + " long");
+		MapssFileWriter.writeLogLn("The average path for each product is: " + Grid.getAverageProductPath() + " long");
+		MapssFileWriter.closeLog();
 		clearProducts();
 		AgentEnvironmentCreator.destroyMainContainer();
 		Grid.clearProductStepPaths();

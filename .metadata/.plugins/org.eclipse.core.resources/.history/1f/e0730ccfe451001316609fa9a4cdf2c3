@@ -1,0 +1,11 @@
+package GraphicalGridBuilder;
+
+public class GraphicalGridForwardSlashTransport extends GraphicalGridObject {
+
+	GraphicalGridEquiplet eq1, eq2;
+	
+	public GraphicalGridForwardSlashTransport(){
+		textualIcon = "\\";
+		this.setImageIcon("img/grid_icons/forwardslash.png");
+	}
+}

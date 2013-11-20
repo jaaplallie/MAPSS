@@ -28,13 +28,13 @@ public class Matrix {
 	}
 	
 	public static void logMatrix(){
-		Log.writeln("Matrix layout:");
+		MapssFileWriter.writeLogLn("Matrix layout:");
 		for (List[] i : matrix){
 			String output = "";
 			for (List j : i){
 				output += " " + j;
 			}
-			Log.writeln(output);
+			MapssFileWriter.writeLogLn(output);
 		}
 	}
 

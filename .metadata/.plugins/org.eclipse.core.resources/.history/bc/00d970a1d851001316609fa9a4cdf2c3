@@ -1,0 +1,33 @@
+package Gui;
+
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JSplitPane;
+
+import Backend.ProgramData;
+
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+
+public class CreateGraphicalGridModule extends JPanel {
+
+	DefaultFormBuilder builder = new ProgramData().getNewBuilder();
+	private JSpinner input_xSize = new JSpinner();
+	private JSpinner input_ySize = new JSpinner();
+	
+	/**
+	 * Create the panel.
+	 */
+	public CreateGraphicalGridModule() {
+		
+		JSplitPane splitPane = new JSplitPane();
+		add(splitPane);
+		
+		JPanel editorPanel = new JPanel();
+		splitPane.setLeftComponent(editorPanel);
+		
+		JPanel graphicalGridPanel = new JPanel();
+		splitPane.setRightComponent(graphicalGridPanel);
+
+	}
+
+}

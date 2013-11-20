@@ -24,8 +24,8 @@ import net.miginfocom.swing.MigLayout;
 import Backend.AgentEnvironmentCreator;
 import Backend.ProgramData;
 import Backend.Scenario;
-import Backend.XmlReader;
-import Backend.XmlWriter;
+import Backend.MapssFileReader;
+import Backend.MapssFileWriter;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
@@ -114,12 +114,12 @@ public class ScenarioImportExportWindow extends JFrame implements ActionListener
 			FileNameExtensionFilter xmlfilter = new FileNameExtensionFilter("XML Scenario files (*.xml)", "xml", "XML");
             chooser.setFileFilter(xmlfilter);
             chooser.setDialogTitle("Import scenario file");
-			XmlReader xmlReader = new XmlReader();
+			MapssFileReader xmlReader = new MapssFileReader();
 			Scenario readScenario;
 		    int retrival = chooser.showOpenDialog(null);
 		    if (retrival == JFileChooser.APPROVE_OPTION) {
 		        try {
-		        	readScenario = xmlReader.open(chooser.getSelectedFile().toPath().toString());
+		        	readScenario = xmlReader.openScenarioXml(chooser.getSelectedFile().toPath().toString());
 		        	ProgramData.setCurrentlyLoadedScenario(readScenario);
 		        	for(Object o : ProgramData.getScenarioListModel().toArray()){
 		        		Scenario s = (Scenario) o;
@@ -155,11 +155,11 @@ public class ScenarioImportExportWindow extends JFrame implements ActionListener
 			FileNameExtensionFilter xmlfilter = new FileNameExtensionFilter("MAPSS XML Scenario files (*.xml)", "xml", "XML");
             chooser.setFileFilter(xmlfilter);
             chooser.setDialogTitle("Export scenario file");
-			XmlWriter xmlWriter = new XmlWriter();
+			MapssFileWriter xmlWriter = new MapssFileWriter();
 		    int retrival = chooser.showSaveDialog(null);
 		    if (retrival == JFileChooser.APPROVE_OPTION) {
 		        try {
-		        	xmlWriter.Write(ProgramData.getScenarioListModel().get(scenarioList.getSelectedIndex()), chooser.getSelectedFile()+".xml");
+		        	xmlWriter.writeScenarioToXML(ProgramData.getScenarioListModel().get(scenarioList.getSelectedIndex()), chooser.getSelectedFile()+".xml");
 		            JOptionPane.showMessageDialog(
 		            		null, 
 		            		"Scenario succesfully saved as .xml to: \n" +

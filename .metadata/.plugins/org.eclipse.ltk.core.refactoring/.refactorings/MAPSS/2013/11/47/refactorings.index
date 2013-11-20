@@ -1,3 +1,14 @@
 1384851661389	Delete element
 1384859618016	Delete element
 1384938343016	Rename local variable 'setupTab'
+1384944133464	Rename type 'XmlWriter'
+1384944151925	Rename type 'XmlReader'
+1384944448898	Rename method 'Write'
+1384944460309	Rename method 'WriteScenarioToXML'
+1384944491954	Rename method 'open'
+1384944607917	Rename field 'writer'
+1384944641909	Rename method 'writeln'
+1384944657621	Rename method 'write'
+1384944674211	Rename method 'close'
+1384944833281	Rename field 'writer'
+1384944857838	Delete element

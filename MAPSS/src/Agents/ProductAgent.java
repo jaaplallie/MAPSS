@@ -6,7 +6,7 @@ import jade.core.behaviours.WakerBehaviour;
 import java.util.ArrayList;
 
 import Backend.Grid;
-import Backend.Log;
+import Backend.MapssFileWriter;
 import Backend.Simulations;
 
 public class ProductAgent extends Agent { 
@@ -44,7 +44,7 @@ public class ProductAgent extends Agent {
 	protected void setup() { 
 		addBehaviour(new WakerBehaviour(this, 0) { 
 			 protected void handleElapsedTimeout() { 
-				Log.writeln("Hi. I'm product agent " + getAID().getLocalName() + "."); 
+				MapssFileWriter.writeLogLn("Hi. I'm product agent " + getAID().getLocalName() + "."); 
 				Object[] args = myAgent.getArguments();
 				String output = "";
 				int[] productPath;
@@ -56,7 +56,7 @@ public class ProductAgent extends Agent {
 						 right_sized_grid = false;
 					 }
 				}
-				Log.writeln("These are my product's steps: " + output); 
+				MapssFileWriter.writeLogLn("These are my product's steps: " + output); 
 				
 				//Checking if the grid exists and if there's anything useful in it
 				EquipletAgent[][] grid = Grid.getGrid();
@@ -75,8 +75,8 @@ public class ProductAgent extends Agent {
 					int[] start_xy_values = Grid.getEquipletPosition(start_position);
 					//ArrayList<Integer> productPath = 
 					
-					Log.writeln("I start at equiplet number: " + start_position); 
-					Log.writeln("That equiplet's position is " + 
+					MapssFileWriter.writeLogLn("I start at equiplet number: " + start_position); 
+					MapssFileWriter.writeLogLn("That equiplet's position is " + 
 							" x:" + start_xy_values[0] + 
 							", y:" + start_xy_values[1]); 
 					
@@ -117,37 +117,37 @@ public class ProductAgent extends Agent {
 					
 					Grid.addProductPath(productPath);
 					
-					Log.write("Path I need to complete the product: ");
+					MapssFileWriter.writeLog("Path I need to complete the product: ");
 					for (int o: productPath){
-						Log.write(o+" ");
+						MapssFileWriter.writeLog(o+" ");
 					}
-					Log.writeln("");
+					MapssFileWriter.writeLogLn("");
 					
-					Log.writeln("Total hops needed for this product: " + hops);
+					MapssFileWriter.writeLogLn("Total hops needed for this product: " + hops);
 					double average = hops/args.length;
-					Log.writeln("Average number of hops needed for each product step: " + average);
+					MapssFileWriter.writeLogLn("Average number of hops needed for each product step: " + average);
 					
 					Simulations.addFinishedProduct();
 					
 					
 				} else {
-					Log.writeln("Unfortunately I can't find a suitable grid so no calculations for me");
+					MapssFileWriter.writeLogLn("Unfortunately I can't find a suitable grid so no calculations for me");
 					if (safe_grid == false){
-						Log.writeln("The grid is either not there or it contains empty values");
+						MapssFileWriter.writeLogLn("The grid is either not there or it contains empty values");
 					}
 					if (right_sized_grid == false){
-						Log.writeln("The current grid is too small for my product steps");
+						MapssFileWriter.writeLogLn("The current grid is too small for my product steps");
 					}
 					 
 
 				}
 				
-				Log.writeln("");
+				MapssFileWriter.writeLogLn("");
 			 } 
 		} );	
 	} 
 	
 	protected void breakdown() {
-		Log.writeln("Agent "+getAID().getName()+" is gone now."); 
+		MapssFileWriter.writeLogLn("Agent "+getAID().getName()+" is gone now."); 
 	}
 }
