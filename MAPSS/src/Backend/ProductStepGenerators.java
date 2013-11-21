@@ -5,10 +5,10 @@ import java.util.ArrayList;
 
 import Agents.EquipletAgent;
 
-/*
+/***************************************************************************
  * This class is inspired by "gridscenario.c" wich is part of "ToolkitLvM". 
  * 
- */
+ ***************************************************************************/
 
 public class ProductStepGenerators {
 	private static int gridsize;

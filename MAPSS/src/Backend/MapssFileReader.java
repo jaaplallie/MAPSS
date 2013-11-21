@@ -25,7 +25,6 @@ public class MapssFileReader {
 	}
 	
 	public Scenario openScenarioXml(String filePath){
-		//createScenarioFromXML(filePath);
 		return createScenarioFromXml(filePath);
 	}
 	

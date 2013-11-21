@@ -13,10 +13,6 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 public class ChartCreator {
-
-	//DefaultPieDataset data = new DefaultPieDataset();
-	//JFreeChart chart;
-	//ChartFrame frame = new ChartFrame("Test", chart);
 	
 	String title = "";
 	DefaultCategoryDataset data2 = new DefaultCategoryDataset();
