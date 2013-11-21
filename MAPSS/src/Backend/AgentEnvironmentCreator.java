@@ -95,16 +95,6 @@ public class AgentEnvironmentCreator {
 		ac.start();
 	}
 	
-	public static void addSnifferAgent() throws StaleProxyException{
-		AgentController ac = mainContainer.createNewAgent("Sniffer", "jade.tools.sniffer.Sniffer", new Object[0]);
-		ac.start();
-	}
-	
-	public void addAgent(String name, Agent a) throws StaleProxyException {		
-		AgentController ac = mainContainer.acceptNewAgent(name, a);
-		ac.start();
-	}
-	
 	//MAPSS SPECIFIC
 	public static void addSchedulerAgent() throws StaleProxyException{
 		AgentController ac = mainContainer.createNewAgent("Scheduler", "Agents.SchedulingAgent", new Object[0]);
