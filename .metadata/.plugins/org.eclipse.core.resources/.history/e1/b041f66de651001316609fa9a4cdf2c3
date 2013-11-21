@@ -46,6 +46,7 @@ public class CreateGraphicalGridModule extends JPanel {
 		builder.nextLine();
 		builder.append(new JLabel("Size y-axis :"), input_ySize, buildGraphicalGrid_Btn);
 		editorPanel.add(builder.getPanel());
+
 	}
 	
 	public void setEnabled(Component[] components, Boolean b){
@@ -66,9 +67,9 @@ public class CreateGraphicalGridModule extends JPanel {
 			nfe.printStackTrace();
 		}
 		
-		if(x_size <= 1 || y_size <= 1 || x_size > 10 || y_size > 10) {
+		if(x_size <= 1 || y_size <= 1) {
 			JOptionPane.showMessageDialog(null,
-			"Error: Please enter numbers that are atleast 2 and max 10", "Error Message",
+			"Error: Please enter numbers that are atleast 2", "Error Message",
 			JOptionPane.ERROR_MESSAGE);
 			if(x_size <= 1){
 				input_xSize.setValue(2);
@@ -77,15 +78,6 @@ public class CreateGraphicalGridModule extends JPanel {
 			if(y_size <= 1){
 				input_ySize.setValue(2);
 				y_size = 2;
-			}
-			
-			if(x_size > 10){
-				input_xSize.setValue(10);
-				x_size = 10;
-			}
-			if(y_size > 10){
-				input_ySize.setValue(10);
-				y_size = 10;
 			}
 			
 		} else {
