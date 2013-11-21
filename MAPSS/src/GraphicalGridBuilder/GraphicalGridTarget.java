@@ -37,7 +37,7 @@ public class GraphicalGridTarget{
 		return returnButton;
 	}
 	
-	public GraphicalGridObject getInput(){
+	public GraphicalGridObject getInputObject(){
 		return targetPossibilities[currentlyDisplayedPossibility];
 	}
 	

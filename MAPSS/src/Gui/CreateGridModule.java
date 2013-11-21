@@ -56,6 +56,8 @@ public class CreateGridModule extends JPanel implements ActionListener{
 		builder.appendSeparator("Preview");
 		builder.append(previewPanel);
 		
+		builder.append(new CreateGraphicalGridModule());
+		
 		buildGrid_Btn.addActionListener(this);
 		buildCustomGrid_Btn.addActionListener(this);
 		

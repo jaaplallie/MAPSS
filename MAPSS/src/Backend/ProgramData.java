@@ -1,13 +1,18 @@
 package Backend;
 
+import java.util.ArrayList;
+
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+
+import GraphicalGridBuilder.GraphicalGrid;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.layout.FormLayout;
 
 public class ProgramData {
 	public static DefaultListModel<Scenario> scenarioListModel = new DefaultListModel<Scenario>();
+	public static ArrayList<GraphicalGrid> graphicalGridModel = new ArrayList<GraphicalGrid>();
 	private static Scenario loadedScenario = null;
 	
 	public ProgramData() {
@@ -17,7 +22,7 @@ public class ProgramData {
 	public static DefaultListModel<Scenario> getScenarioListModel() {
 		return scenarioListModel;
 	}
-	
+
 	public static void setCurrentlyLoadedScenario(Scenario scenario){
 		loadedScenario = scenario;
 	}
