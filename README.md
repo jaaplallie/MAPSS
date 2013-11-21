@@ -1,5 +1,7 @@
 o-o
+
 |M|APSS, Multi-Agent Production System Simulator
+
 o-o
 
 Version 0.1 - November 2013
