@@ -197,7 +197,16 @@ public class GraphicalGrid extends JFrame{
 	}
 
 	public void save(){
-		
+		for(int targetY = 0; targetY < grid.length; targetY++){
+			for(int targetX = 0; targetX < grid[targetY].length; targetX++){
+				GraphicalGridObject currentObj = grid[targetY][targetX].getInput();
+				if(currentObj.getClass().isInstance(new GraphicalGridEquiplet()));{
+					//TODO 
+					// *Create checks for every GraphicalGridObject Class.
+					// *Create Strings from every object in grid.
+				}
+			}
+		}
 	}
 	
 	public String getGridString(){

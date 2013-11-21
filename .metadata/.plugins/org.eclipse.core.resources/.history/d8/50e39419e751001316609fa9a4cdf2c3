@@ -46,6 +46,7 @@ public class CreateGraphicalGridModule extends JPanel {
 		builder.nextLine();
 		builder.append(new JLabel("Size y-axis :"), input_ySize, buildGraphicalGrid_Btn);
 		editorPanel.add(builder.getPanel());
+
 	}
 	
 	public void setEnabled(Component[] components, Boolean b){

@@ -44,14 +44,15 @@
 <fullyQualifiedTypeName name="javax.swing.JRootPane"/>
 <fullyQualifiedTypeName name="Backend.Scenario"/>
 <fullyQualifiedTypeName name="javax.swing.JFrame"/>
-<fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="GraphicalGridBuilder.GraphicalGrid"/>
 <fullyQualifiedTypeName name="javax.swing.JPanel"/>
 <fullyQualifiedTypeName name="java.awt.BorderLayout"/>
 <fullyQualifiedTypeName name="java.awt.Component"/>
 <fullyQualifiedTypeName name="Backend.ProgramData"/>
-<fullyQualifiedTypeName name="javax.swing.JButton"/>
 <fullyQualifiedTypeName name="org.jfree.data.category.DefaultCategoryDataset"/>
 <fullyQualifiedTypeName name="jade.wrapper.StaleProxyException"/>
+<fullyQualifiedTypeName name="Backend.MapssFileWriter"/>
+<fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
+<fullyQualifiedTypeName name="javax.swing.JButton"/>
 </qualifiedTypeNameHistroy>
