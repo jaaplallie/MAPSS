@@ -46,11 +46,11 @@ public class EquipletAgent extends Agent {
 	protected void setup() { 
 		addBehaviour(new WakerBehaviour(this, 0) { 
 			 protected void handleElapsedTimeout() {
-				 int[] equiplet_xy_values = Grid.getEquipletPosition(getCode());				 	 
-				 System.out.println(
-					 "Hi. I'm equiplet agent " + getAID().getLocalName() + "." +
-					 "\nMy position in the grid is x:" + equiplet_xy_values[0] + ", y:" + equiplet_xy_values[1] + "\n"
-				 );
+//				 //int[] equiplet_xy_values = Grid.getEquipletPosition(getCode(), );				 	 
+//				 System.out.println(
+//					 "Hi. I'm equiplet agent " + getAID().getLocalName() + "." +
+//					 "\nMy position in the grid is x:" + equiplet_xy_values[0] + ", y:" + equiplet_xy_values[1] + "\n"
+//				 );
 			 }
 		});
 	}

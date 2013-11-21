@@ -39,8 +39,6 @@ public class ProductAgent extends Agent {
 		return returnVal;
 	}
 	
-	
-	
 	protected void setup() { 
 		addBehaviour(new WakerBehaviour(this, 0) { 
 			 protected void handleElapsedTimeout() { 
@@ -56,10 +54,12 @@ public class ProductAgent extends Agent {
 						 right_sized_grid = false;
 					 }
 				}
+
 				MapssFileWriter.writeLogLn("These are my product's steps: " + output); 
 				
 				//Checking if the grid exists and if there's anything useful in it
 				EquipletAgent[][] grid = Grid.getGrid();
+				
 				boolean safe_grid = false;
 				if (grid != null){
 					for (Object ob : grid) {
@@ -69,6 +69,7 @@ public class ProductAgent extends Agent {
 						}
 					}
 				}
+				
 				
 				if (safe_grid == true & right_sized_grid == true){
 					int start_position = (int)(Math.random()*(grid.length*grid[0].length));
@@ -92,18 +93,8 @@ public class ProductAgent extends Agent {
 						int path[] = Grid.calculateDifferentPath(current_position, next_position);
 						Grid.addProductStepPath(path);
 						
-						/*
-						System.out.println("Path from " + current_position + " to " + next_position + ": ");
-						output = "";
-						for (Object j : path){
-							output += " " + j;
-						}
-						System.out.println(output);
-						*/
-						
 						current_position = next_position;
 						hops += path.length;
-						//int[] productPath = new int[(int) hops];
 						
 						int[] tempPath = new int[(int) hops+1];
 						System.arraycopy(productPath, 0, tempPath, 0, productPath.length);
@@ -126,9 +117,8 @@ public class ProductAgent extends Agent {
 					MapssFileWriter.writeLogLn("Total hops needed for this product: " + hops);
 					double average = hops/args.length;
 					MapssFileWriter.writeLogLn("Average number of hops needed for each product step: " + average);
-					
+			
 					Simulations.addFinishedProduct();
-					
 					
 				} else {
 					MapssFileWriter.writeLogLn("Unfortunately I can't find a suitable grid so no calculations for me");
@@ -138,10 +128,7 @@ public class ProductAgent extends Agent {
 					if (right_sized_grid == false){
 						MapssFileWriter.writeLogLn("The current grid is too small for my product steps");
 					}
-					 
-
 				}
-				
 				MapssFileWriter.writeLogLn("");
 			 } 
 		} );	

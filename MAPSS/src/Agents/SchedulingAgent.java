@@ -36,9 +36,11 @@ public class SchedulingAgent extends Agent {
 						int equiplet = Integer.parseInt(data[0]);
 						int time = Integer.parseInt(data[1]);
 						
-						int[] position = Grid.getEquipletPosition(equiplet);
-						int x = position[0];
-						int y = position[1];
+						//int[] position = Grid.getEquipletPosition(equiplet);
+						//int x = position[0];
+						//int y = position[1];
+						int x = 0;
+						int y = 0;
 						
 						if (timetable[x][y][time] != 0 ){
 							timetable[x][y][time] = 1;
