@@ -7,6 +7,7 @@ public abstract class GraphicalGridObject {
 	
 	String textualIcon = " ";
 	ImageIcon imageIcon = new ImageIcon();
+	String textualInputRepresentation = "";
 	//"img/grid_icons/add.png"
 	//addBtn.setIcon(icon); 
 	
@@ -27,5 +28,14 @@ public abstract class GraphicalGridObject {
 
 	public void setImageIcon(String imageIcon) {
 		this.imageIcon = new ImageIcon(imageIcon);
+	}
+	
+	@SuppressWarnings("unused") //is used in subclasses
+	private void setTextualInputRepresentation(String tir){
+		textualInputRepresentation = tir;
+	}
+	
+	public String getTextualInputRepresentation(){
+		return textualInputRepresentation;
 	}
 }

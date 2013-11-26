@@ -12,8 +12,12 @@ import net.miginfocom.swing.MigLayout;
 
 public class GraphicalGrid extends JFrame{
 
+	String name = "";
 	GraphicalGridTarget[][] grid;
 	JPanel interfacePanel = new JPanel();
+	
+	public GraphicalGrid(){
+	}
 	
 	public GraphicalGrid(int x, int y){
 		int xP = (x*2)-1;
@@ -150,6 +154,10 @@ public class GraphicalGrid extends JFrame{
 		}
 	}
 	
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	public JPanel draw(){
 		JPanel returnPanel = new JPanel();
 		JPanel gridPanel = new JPanel();
@@ -160,7 +168,7 @@ public class GraphicalGrid extends JFrame{
 		saveGrid_Btn.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				save();
+				getTextualGrid();
 				saveGrid_Btn.setEnabled(false);
 			}
 		});
@@ -196,36 +204,22 @@ public class GraphicalGrid extends JFrame{
 		return returnPanel;
 	}
 
-	public void save(){
+	public String[] getTextualGrid(){
+		String[] textualGrid = new String[grid.length];
+		StringBuilder lineBuilder = new StringBuilder();
 		for(int targetY = 0; targetY < grid.length; targetY++){
+			lineBuilder = new StringBuilder();
 			for(int targetX = 0; targetX < grid[targetY].length; targetX++){
-				GraphicalGridObject currentObj = grid[targetY][targetX].getInput();
-				if(currentObj.getClass().isInstance(new GraphicalGridEquiplet()));{
-					//TODO 
-					// *Create checks for every GraphicalGridObject Class.
-					// *Create Strings from every object in grid.
-				}
+				GraphicalGridObject currentObj = grid[targetY][targetX].getInputObject();
+				lineBuilder.append(currentObj.getTextualInputRepresentation());
 			}
+			textualGrid[targetY] = lineBuilder.toString();
 		}
+		return textualGrid;
 	}
-	
-	public String getGridString(){
-		String returnString = "";
-		
-		for(int targetY = 0; targetY < grid.length; targetY++){
-			for(int targetX = 0; targetX < grid[targetY].length; targetX++){
-				grid[targetY][targetX].getInput();
-				
-				//TODO
-				/* 
-				 * -What class is the GraphicalGridObject?
-				 * -Define links between equiplets based on the different objects
-				 * -create grid
-				 * -insert data into scenario
-				 * -insert into jade 
-				*/
-			}
-		}
-		return returnString;
+
+	@Override
+	public String toString() {
+		return name + "[x=" + grid.length + "][y=" + grid[0].length + "]";
 	}
 }

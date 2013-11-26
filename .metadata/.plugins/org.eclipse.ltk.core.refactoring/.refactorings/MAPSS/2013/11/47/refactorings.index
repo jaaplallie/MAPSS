@@ -12,3 +12,7 @@
 1384944674211	Rename method 'close'
 1384944833281	Rename field 'writer'
 1384944857838	Delete element
+1385028109466	Rename field 'chartComboBox'
+1385029887463	Rename method 'getInput'
+1385029999112	Rename field 'TextualInputRepresentation'
+1385033819914	Rename local variable 'i'

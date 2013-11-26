@@ -2,11 +2,19 @@ package Gui;
 
 import jade.wrapper.StaleProxyException;
 
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -38,6 +46,16 @@ public class MainWindow implements WindowListener{
 
 	private void initialize() {
 		frame = new JFrame();
+		ArrayList<BufferedImage> iconList = new ArrayList<BufferedImage>();
+		try {
+			iconList.add(ImageIO.read(new File("img/MapssIcon16x16.png")));
+			iconList.add(ImageIO.read(new File("img/MapssIcon32x32.png")));
+			iconList.add(ImageIO.read(new File("img/MapssIcon64x64.png")));
+			iconList.add(ImageIO.read(new File("img/MapssIcon128x128.png")));
+		} catch (IOException e2) {
+			e2.printStackTrace();
+		}
+		frame.setIconImages(iconList);
 		frame.setBounds(100, 100, 1031, 565);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.addWindowListener(this);
