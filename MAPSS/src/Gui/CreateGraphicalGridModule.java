@@ -41,6 +41,7 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 	 * Create the panel.
 	 */
 	public CreateGraphicalGridModule() {
+		JPanel gridPane = new JPanel();
 		builder = new ProgramData().getNewBuilder();
 		setLayout(new BorderLayout(0, 0));
 		this.updateGraphicalGridComboBox();
@@ -71,18 +72,16 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 		builder = new ProgramData().getNewBuilder();
 		add(optionsPanel, BorderLayout.NORTH);
 		
-		JPanel gridPane = new JPanel();
-		add(gridPane, BorderLayout.CENTER);
-		
-		gridPane.add(editorPanel);
-		gridPane.add(graphicalGridPanel);
-		
 		builder.append(new JLabel("Size x-axis :"), input_xSize);
 		builder.nextLine();
 		buildGraphicalGrid_Btn = new JButton("Build GraphicalGrid");
 		buildGraphicalGrid_Btn.addActionListener(this);
 		builder.append(new JLabel("Size y-axis :"), input_ySize, buildGraphicalGrid_Btn);
-		editorPanel.add(builder.getPanel());
+		editorPanel = builder.getPanel();
+		
+		gridPane.add(editorPanel);
+		gridPane.add(graphicalGridPanel);
+		add(gridPane, BorderLayout.CENTER);
 	}
 	
 	private void updateGraphicalGridComboBox(){
@@ -157,5 +156,4 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 			
 		}
 	}
-
 }

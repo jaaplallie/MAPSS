@@ -15,10 +15,8 @@
 <fullyQualifiedTypeName name="Backend.graphicDraw"/>
 <fullyQualifiedTypeName name="org.jfree.data.category.CategoryDataset"/>
 <fullyQualifiedTypeName name="Objects.Grid"/>
-<fullyQualifiedTypeName name="java.awt.image.BufferedImage"/>
 <fullyQualifiedTypeName name="java.awt.Color"/>
 <fullyQualifiedTypeName name="java.awt.Graphics2D"/>
-<fullyQualifiedTypeName name="javax.imageio.ImageIO"/>
 <fullyQualifiedTypeName name="java.io.IOException"/>
 <fullyQualifiedTypeName name="java.awt.Image"/>
 <fullyQualifiedTypeName name="org.jfree.chart.JFreeChart"/>
@@ -30,7 +28,6 @@
 <fullyQualifiedTypeName name="Agents.ProductAgent"/>
 <fullyQualifiedTypeName name="javax.swing.filechooser.FileFilter"/>
 <fullyQualifiedTypeName name="javax.swing.filechooser.FileNameExtensionFilter"/>
-<fullyQualifiedTypeName name="java.io.File"/>
 <fullyQualifiedTypeName name="org.w3c.dom.Document"/>
 <fullyQualifiedTypeName name="org.w3c.dom.Node"/>
 <fullyQualifiedTypeName name="org.w3c.dom.Element"/>
@@ -44,7 +41,6 @@
 <fullyQualifiedTypeName name="javax.swing.JRootPane"/>
 <fullyQualifiedTypeName name="Backend.Scenario"/>
 <fullyQualifiedTypeName name="javax.swing.JFrame"/>
-<fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="GraphicalGridBuilder.GraphicalGrid"/>
 <fullyQualifiedTypeName name="javax.swing.JPanel"/>
 <fullyQualifiedTypeName name="java.awt.BorderLayout"/>
@@ -53,6 +49,13 @@
 <fullyQualifiedTypeName name="org.jfree.data.category.DefaultCategoryDataset"/>
 <fullyQualifiedTypeName name="jade.wrapper.StaleProxyException"/>
 <fullyQualifiedTypeName name="Backend.MapssFileWriter"/>
-<fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
 <fullyQualifiedTypeName name="javax.swing.JButton"/>
+<fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
+<fullyQualifiedTypeName name="javax.swing.ImageIcon"/>
+<fullyQualifiedTypeName name="javax.swing.BorderFactory"/>
+<fullyQualifiedTypeName name="java.util.List"/>
+<fullyQualifiedTypeName name="java.awt.image.BufferedImage"/>
+<fullyQualifiedTypeName name="javax.imageio.ImageIO"/>
+<fullyQualifiedTypeName name="java.io.File"/>
+<fullyQualifiedTypeName name="java.util.ArrayList"/>
 </qualifiedTypeNameHistroy>
