@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import Backend.Grid;
 import Backend.MapssFileWriter;
 import Backend.Simulations;
+import Gui.ChartPresenter;
 
 public class ProductAgent extends Agent { 
 	Grid gc;
@@ -119,6 +120,7 @@ public class ProductAgent extends Agent {
 					MapssFileWriter.writeLogLn("Average number of hops needed for each product step: " + average);
 			
 					Simulations.addFinishedProduct();
+					ChartPresenter.updateProgress(1);
 					
 				} else {
 					MapssFileWriter.writeLogLn("Unfortunately I can't find a suitable grid so no calculations for me");

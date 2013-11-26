@@ -1,17 +1,31 @@
 package Gui;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 import javax.swing.JSplitPane;
+import javax.swing.SwingWorker;
 
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -20,22 +34,33 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import Agents.EquipletAgent;
 import Backend.ChartCreator;
 import Backend.Grid;
+import Backend.ProductStepGenerators;
 import Backend.ProgramData;
 import Backend.Simulations;
+import GraphicalGridBuilder.GraphicalGrid;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-public class ChartPresenter extends JPanel implements ActionListener{
+public class ChartPresenter extends JPanel implements ActionListener, PropertyChangeListener{
 	private static final long serialVersionUID = 6423561811886542809L;
 	
 	JSplitPane splitPane = new JSplitPane();
 	JPanel saveAsContainer = new JPanel();
 	JComboBox<String> chartComboBox = new JComboBox<String>();
 	JComboBox<String> saveAsComboBox = new JComboBox<String>();
+	JCheckBox check = new JCheckBox("Different color for each category");
 	Map<Integer, String> chartNamingDictionary = new HashMap<Integer, String>();
 	Map<Integer, JFreeChart> chartObjectDictionary = new HashMap<Integer, JFreeChart>();
 	ChartPanel chartContainer = new ChartPanel(null);
 	DefaultFormBuilder builder = new ProgramData().getNewBuilder();
+	private Task task;
+	
+	private static JProgressBar progressBar;
+	
+	JLabel imageLabel = new JLabel();
+	
+	private JPanel loadingPanel = new JPanel();
+	private JLabel loadingLabel = new JLabel();
 	
 	int simulation_counter = 1;
 	
@@ -46,6 +71,8 @@ public class ChartPresenter extends JPanel implements ActionListener{
 	JButton simulation_btn = new JButton("Run simulation (takes along time)");
 	
 	protected static ArrayList<String> selected_topologies = new ArrayList<String>();
+	
+
 	
 	
 	public ChartPresenter(){
@@ -64,6 +91,8 @@ public class ChartPresenter extends JPanel implements ActionListener{
 		simulation_btn.setVisible(true);
 		add_btn.setVisible(true);
 		
+		
+		
         builder.append("Chart:", chartComboBox);
         builder.nextLine();
         builder.appendSeparator();
@@ -76,7 +105,20 @@ public class ChartPresenter extends JPanel implements ActionListener{
         builder.append("", add_btn);
         builder.nextLine();
         builder.appendSeparator();
+        builder.nextLine();
+        builder.append(check);
+        builder.nextLine();
         builder.append("", simulation_btn);
+        
+        builder.nextLine();
+        builder.appendSeparator();
+        //builder.append(loadingPanel);
+        
+        progressBar = new JProgressBar(0, 100);
+        progressBar.setValue(0);
+        progressBar.setStringPainted(true);
+        
+        builder.append(progressBar);
 
         splitPane.setLeftComponent(chartContainer);
         splitPane.setRightComponent(builder.getPanel());
@@ -86,9 +128,24 @@ public class ChartPresenter extends JPanel implements ActionListener{
         structureBox.addActionListener(this);
         simulation_btn.addActionListener(this);
         add_btn.addActionListener(this);
+        
+        
+
+//		setEnabled(loadingPanel.getComponents(), true);
+//		
+//		ImageIcon ii = new ImageIcon("images/loading_animation.gif");
+//		loadingLabel.setIcon(ii);
+//      loadingPanel.add(loadingLabel);
+//        
+//      loadingLabel.setVisible(false);
 	}
 	
-	
+	public void setEnabled(Component[] components, Boolean b){
+		for(Component c : components){
+			c.setEnabled(b);
+		}
+	}
+
 	public void addChart(JFreeChart chart){
 		int new_key = chartNamingDictionary.size() + 1;
 		String chartTitle = chart.getTitle().getText();
@@ -121,9 +178,16 @@ public class ChartPresenter extends JPanel implements ActionListener{
 			structureBox.addItem(name);
 		}
 	}
+	
+	public static void updateProgress(int amount){
+		progressBar.setValue(amount + progressBar.getValue());
+        //progressBar.setStringPainted(true);
+	}
 
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
+
         if(e.getSource().equals(chartComboBox)){
         	@SuppressWarnings("unchecked")
 			JComboBox<String> cb = (JComboBox<String>)e.getSource();
@@ -168,17 +232,47 @@ public class ChartPresenter extends JPanel implements ActionListener{
         }
         else if(e.getSource().equals(simulation_btn)){
         	
-    		DefaultCategoryDataset data_set = new DefaultCategoryDataset();	
-    		//String regular = "Regular grid";
-//    		String increased = "Increased usage";
-//    		String twenty_five = "+25% has doubles";
-    		//selected_topologies.size();
-    		System.out.println("size: " + selected_topologies.size());
+        	task = new Task();
+            task.addPropertyChangeListener(this);
+            task.execute();
+        	
+        }
+        
+        
+	}
+	
+	class Task extends SwingWorker<Void, Void> {
+        /*
+         * Main task. Executed in background thread.
+         */
+        @Override
+        public Void doInBackground() {
+        	
+        	DefaultCategoryDataset data_set = new DefaultCategoryDataset();	
+    		
+    		int total_products = 0;
+    		for (int i = 0; i < selected_topologies.size(); i++){
+    			ArrayList<Object[]> products = ProductStepGenerators.getBatch(selected_topologies.get(i));
+    			total_products += products.size();
+    			System.out.println(selected_topologies.get(i));
+    		}
+    		progressBar.setMaximum(total_products);
+    		progressBar.setStringPainted(true);
     		
     		for (int i = 0; i < selected_topologies.size(); i++){
+
     			System.out.println("Attempting: " + selected_topologies.get(i));
-    			double value1 = Simulations.productAgentsInRegularGridSimulation(selected_topologies.get(i), "random"+i);
-    			data_set.addValue(value1, i + "", Grid.getX()+"x"+Grid.getY());
+    			double value1 = Simulations.productAgentsInRegularGridSimulation(selected_topologies.get(i), selected_topologies.get(i));
+    			int X = Grid.getX();
+    			int Y = Grid.getY();
+    			String name = selected_topologies.get(i).split(""+X)[0];
+    			
+    			if (check.isSelected()) {
+    				data_set.addValue(value1, X + "x" + Y, name);
+    			} else{
+    				data_set.addValue(value1, X + "x" + Y, name);
+    			}
+	
     		}
     		
     		JFreeChart chart = ChartCreator.drawBarChart("Simulation" + simulation_counter , "x", "y", data_set);
@@ -186,6 +280,26 @@ public class ChartPresenter extends JPanel implements ActionListener{
     		chartpres.addChart(chart);
     		simulation_counter ++;
         	
+            return null;
+        }
+
+        /*
+         * Executed in event dispatching thread
+         */
+        @Override
+        public void done() {
+        	progressBar.setValue(0);
+        }
+    }
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if ("progress" == evt.getPropertyName()) {
+            int progress = (Integer) evt.getNewValue();
+            progressBar.setValue(progress);
+
         }
 	}
+	
+	
 }

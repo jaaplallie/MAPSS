@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import jade.wrapper.StaleProxyException;
 import Agents.EquipletAgent;
 import Agents.ProductAgent;
+import Gui.ChartPresenter;
 
 public class Simulations {	
 	public static int finished_products;
@@ -40,14 +41,14 @@ public class Simulations {
 			ProductAgent smith = new ProductAgent("Product" + i , arguments);
 			try {
 				AgentEnvironmentCreator.addProductAgent(smith);
-				Thread.sleep(10);
+				Thread.sleep(1);
 			} catch (StaleProxyException | InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
 		
 		while (finished_products < products.size()){} //Wait until each product agent is finished
-		
+
 		double average = Grid.getAverageProductStepPath();
 		MapssFileWriter.writeLogLn("The average path for each product step is: " + Grid.getAverageProductStepPath() + " long");
 		MapssFileWriter.writeLogLn("The average path for each product is: " + Grid.getAverageProductPath() + " long");
