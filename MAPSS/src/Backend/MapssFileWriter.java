@@ -15,6 +15,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -26,6 +27,7 @@ import Agents.ProductAgent;
 public class MapssFileWriter {
 	StringBuilder xmlStringBuilder;
 	static PrintWriter logWriter;
+	
 	
 	public MapssFileWriter(){
 		xmlStringBuilder = new StringBuilder();
@@ -181,6 +183,50 @@ public class MapssFileWriter {
 		  finally{
 			  System.out.println("Scenario File saved!");
 		  }
+	}
+	
+	
+	public static void saveStructure(String structure_name){
+		try {
+			PrintWriter structureWriter = new PrintWriter("structures/" + structure_name + ".txt");
+			EquipletAgent[][] grid = Grid.getGrid();
+			
+			boolean safe_grid = false;
+			structureWriter.println("Name: "+structure_name);
+			structureWriter.println("Size: " +grid.length+"x"+grid[0].length);
+			structureWriter.print("Relations: ");
+			for (Object neighbor : Grid.getNeighbors(structure_name)) {
+				structureWriter.print(neighbor);
+			}
+			structureWriter.println("");
+			
+			
+			if (ProductStepGenerators.getProducts(structure_name) != null){
+				ArrayList<Object[]> products = ProductStepGenerators.getBatch(structure_name);
+				structureWriter.print("Products & steps: ");
+				for (Object[] productsteps : products) {
+					
+					for (Object s: productsteps){
+						structureWriter.print(s+"-");
+					}
+					structureWriter.println("");
+				}
+				
+			}
+
+			structureWriter.close();
+			
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	public static void loadGrid(){
+		
 	}
 	
 	public static void createLogFile(String name){

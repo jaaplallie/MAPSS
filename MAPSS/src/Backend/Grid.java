@@ -76,53 +76,81 @@ public class Grid {
 		
 		neighbor_list.add(neighbors);
 		saved_grids.add(grid);
-		grid_names.add(name);
+		grid_names.add(name+x+"x"+y);
 		position_list.add(equiplet_positions);
+		
+		MapssFileWriter.saveStructure(name+x+"x"+y);
 		
 		ChartPresenter.updateChartStructures();
 		SimulationModule.updateProductStructures();
+		
+		
 	}
 	
 	public static void createCustom(int width , int length , String relations){
-		List[] connections = new List[width*length];
-		List<Integer> tempList;
-		int telnr = 0;
-		for (String s : relations.split(",")){
-			String[] temp = s.split("-");
-			tempList = new ArrayList<Integer>();
-			for (int i = 0; i < temp.length; i++){
-				int tempInt = Integer.parseInt(temp[i]);
-				tempList.add(tempInt);
-			}
-			connections[telnr] = tempList;
-			telnr++;
-		}
+		x=width;
+		y=length;
 		
-		neighbor_list.add(connections);
+		List[] neighbors = new ArrayList[x*y];
+		equiplet_positions = new ArrayList[width*length];
 		grid = new EquipletAgent[width][length];
-		equiplet_positions = new ArrayList[(width*length)];
-		
-		if (connections.length != width*length){
-			//raise error
-			System.out.println("You bloody what mate? The number of equiplets and the given size do not mix well");
-		}
 
-		x = width;
-		y = length;
 		int stepnr = 0;
 		for (int y = 0; y < length; y++){
-			for (int x = 0; x < width; x++){				
-				Agents.EquipletAgent new_Equiplet = new Agents.EquipletAgent(stepnr, new int[]{x,y}, new Object[]{});	
-				grid[x][y] = new_Equiplet;					
+			for (int x = 0; x < width; x++){
+				
 				ArrayList<Integer> position = new ArrayList<Integer>();
 				position.add(x);
 				position.add(y);
 				equiplet_positions[stepnr] = position;
 				stepnr++;
 			}
+		}	
+	
+		List<Integer> tempList;
+		int telnr = 0;
+		for (String s : relations.split(",")){
+			System.out.println("Derp: "+s);
+			String[] temp = s.split("-");
+			tempList = new ArrayList<Integer>();
+			for (int i = 0; i < temp.length; i++){
+				
+				int tempInt = Integer.parseInt(temp[i]);
+				//System.out.print("Derp: "+tempInt);
+				tempList.add(tempInt);
+			}
+			neighbors[telnr] = tempList;
+
+			telnr++;
 		}
 		
-		System.out.println(String.format("Grid X[%s] Y[%s] created. \n[%s] Equiplets installed.", width+"", length+"", count()+""));
+		neighbor_list.add(neighbors);
+		saved_grids.add(grid);
+		grid_names.add("Custom"+x+"x"+y);
+		position_list.add(equiplet_positions);
+		
+		MapssFileWriter.saveStructure("Custom"+x+"x"+y);
+		
+		ChartPresenter.updateChartStructures();
+		SimulationModule.updateProductStructures();
+
+		
+		
+		
+//		int stepnr = 0;
+//		for (int y = 0; y < length; y++){
+//			for (int x = 0; x < width; x++){				
+//				Agents.EquipletAgent new_Equiplet = new Agents.EquipletAgent(stepnr, new int[]{x,y}, new Object[]{});	
+//				grid[x][y] = new_Equiplet;					
+//				ArrayList<Integer> position = new ArrayList<Integer>();
+//				position.add(x);
+//				position.add(y);
+//				equiplet_positions[stepnr] = position;
+//				stepnr++;
+//			}
+//		}
+//		
+//		System.out.println(String.format("Grid X[%s] Y[%s] created. \n[%s] Equiplets installed.", width+"", length+"", count()+""));
 		//Matrix.createMatrix(width, length, structure_name);
 	}
 	
@@ -318,6 +346,10 @@ public class Grid {
 			counter++;
 		}
 		return found;
+	}
+	
+	public static List[] getNeighbors(String structure_name){
+		return neighbor_list.get(Grid.getIndex(structure_name));
 	}
 	
 	public static ArrayList<String> getStructureNames(){

@@ -70,6 +70,8 @@ public class SimulationModule extends JPanel implements ActionListener{
         startScenario_btn.addActionListener(this);
         productStepComboBox.addActionListener(this);
         add(builder.getPanel());
+        
+
 	}
 	
 	public static void updateProductStructures(){
@@ -114,13 +116,13 @@ public class SimulationModule extends JPanel implements ActionListener{
 			} else {
 				
 		    	if(productStepComboBox.getSelectedItem().equals(regular)){
-		    		type = regular;
+		    		type = "regular";
 		    	}
 		    	else if(productStepComboBox.getSelectedItem().equals(increased)){
-		    		type = increased;
+		    		type = "increased";
 				}
 		    	else if(productStepComboBox.getSelectedItem().equals(twentyfive)){
-		    		type = twentyfive;
+		    		type = "twentyfive";
 				}
 		    	
 		    	String structure_name = (String)structureBox.getSelectedItem();
