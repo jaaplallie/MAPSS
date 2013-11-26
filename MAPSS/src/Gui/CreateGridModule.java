@@ -113,13 +113,10 @@ public class CreateGridModule extends JPanel implements ActionListener{
 					repaint();
 					
 					String name = name_field.getText();
-					//System.out.println("Name is: "+name);
 					if (name != null && name.isEmpty()){
 						name = x_size+"X"+y_size;
 					}
 					Grid.createNormalGrid(x_size, y_size, name);
-					Matrix.createMatrix(x_size, y_size, name);
-					ProductStepGenerators.setGridSize(x_size*y_size);
 					
 					break;
 				case "Build Custom Grid":
@@ -132,10 +129,8 @@ public class CreateGridModule extends JPanel implements ActionListener{
 					validate();
 					repaint();
 			
-					
 					Grid.createCustom(x_size, y_size, grid_string.getText());
-					Matrix.createMatrix(x_size, y_size, "Custom");
-					ProductStepGenerators.setGridSize(x_size*y_size);
+
 					break;
 				default:
 					break;

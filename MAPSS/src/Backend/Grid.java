@@ -64,6 +64,7 @@ public class Grid {
 					known_equiplets.add(stepnr-1);
 				}
 				neighbors[stepnr] = known_equiplets;
+				System.out.println(known_equiplets);
 				ArrayList<Integer> position = new ArrayList<Integer>();
 				position.add(x);
 				position.add(y);
@@ -76,6 +77,8 @@ public class Grid {
 		saved_grids.add(grid);
 		grid_names.add(name+x+"x"+y);
 		position_list.add(equiplet_positions);
+		
+		Matrix.createMatrix(width, length, name);
 		
 		MapssFileWriter.saveStructure(name+x+"x"+y);
 		
@@ -133,7 +136,7 @@ public class Grid {
 		SimulationModule.updateProductStructures();
 
 		
-		
+		//Matrix.createMatrix(width, length, name);
 		
 //		int stepnr = 0;
 //		for (int y = 0; y < length; y++){
@@ -150,6 +153,39 @@ public class Grid {
 //		
 //		System.out.println(String.format("Grid X[%s] Y[%s] created. \n[%s] Equiplets installed.", width+"", length+"", count()+""));
 		//Matrix.createMatrix(width, length, structure_name);
+	}
+	
+	public static void createCustom(int width , int length, String name, List[] neighbors){
+		x=width;
+		y=length;
+		
+		//List[] neighbors = new ArrayList[x*y];
+		equiplet_positions = new ArrayList[width*length];
+		grid = new EquipletAgent[width][length];
+
+		int stepnr = 0;
+		for (int y = 0; y < length; y++){
+			for (int x = 0; x < width; x++){
+				
+				ArrayList<Integer> position = new ArrayList<Integer>();
+				position.add(x);
+				position.add(y);
+				equiplet_positions[stepnr] = position;
+				stepnr++;
+			}
+		}	
+	
+		neighbor_list.add(neighbors);
+		saved_grids.add(grid);
+		grid_names.add(name);
+		position_list.add(equiplet_positions);
+		
+		//MapssFileWriter.saveStructure("Custom"+x+"x"+y);
+		
+		Matrix.createMatrix(width, length, name);
+		
+		ChartPresenter.updateChartStructures();
+		SimulationModule.updateProductStructures();
 	}
 	
 	public static void create(int width , int length ){

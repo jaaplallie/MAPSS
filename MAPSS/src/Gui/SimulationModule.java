@@ -128,7 +128,6 @@ public class SimulationModule extends JPanel implements ActionListener{
 		    	String structure_name = (String)structureBox.getSelectedItem();
 		    	
 		    	ProductStepGenerators.generateProductBatch(number_of_products, max_product_steps, type, structure_name);
-		    	//System.out.println("Products created");
 			
 			}
 

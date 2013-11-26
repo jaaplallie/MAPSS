@@ -118,8 +118,6 @@ public class AgentEnvironmentCreator {
 			e.printStackTrace();
 		}
 	}
-
-	
 	
 	public static AgentContainer getContainer(){
 		return mainContainer;

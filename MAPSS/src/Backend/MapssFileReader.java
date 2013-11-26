@@ -2,8 +2,13 @@ package Backend;
 
 import jade.wrapper.AgentContainer;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -19,10 +24,94 @@ import Agents.ProductAgent;
 
 public class MapssFileReader {
 	static AgentContainer container = AgentEnvironmentCreator.getContainer();
+	static ArrayList[] neighbors;
+	
 	
 	public MapssFileReader(){
 		
 	}
+	
+	
+	public static void loadStructures(){
+		File dir = new File("structures");
+		
+		
+		for (File file : dir.listFiles()) {
+		    if (file.getName().endsWith((".txt"))) {
+		    	
+		    	FileReader fr;
+				try {
+					fr = new FileReader("structures/" +file.getName());
+			    	BufferedReader br = new BufferedReader(fr); 
+			    	String s; 
+			    	
+			    	int counter = 0;
+			    	int x = 0;
+			    	int y = 0;
+			    	ArrayList<String[]> product_list = new ArrayList<String[]>();
+			    	
+			    	while((s = br.readLine()) != null) { 
+			    		
+			    		if (counter == 0){
+			    			//neighbors = new ArrayList[0];
+			    			String [] ss = s.split("x");
+			    			x = Integer.parseInt(ss[0]);
+			    			y = Integer.parseInt(ss[0]);
+			    			neighbors = new ArrayList[x*y];
+			    		} else if (counter <= x*y) {
+			    			s = s.replace("[", "");
+			    			s = s.replace("]", "");
+			    			s = s.replace(" ", "");
+			    			String [] ss = s.split(",");
+			    			
+			    			
+			    			
+			    			ArrayList<Integer> known_equiplets = new ArrayList<Integer>();
+			    			
+			    			for (String product_step: ss){
+			    				System.out.println(product_step);
+			    				known_equiplets.add(Integer.parseInt(product_step));
+			    				
+			    			}
+			    			neighbors[counter-1] = known_equiplets;
+			    		} else {
+			    			
+			    			String[] steps = s.split(" ");
+			    			
+			    			for (String sup: steps){
+			    				System.out.print(sup);
+			    			}
+			    			System.out.println("");
+			    			
+			    			
+			    			product_list.add(steps);
+			    		}
+			    		counter++;
+			    	} 
+					
+			    	String name = file.getName().replace(".txt", "");
+			    	
+			    	for (List i: neighbors){
+			    		for (Object o: i){
+			    			System.out.println(o);
+			    		}
+			    	}
+			    	
+			    	Grid.createCustom(x, y, name, neighbors);
+			    	
+			    	ProductStepGenerators.addProductBatch(name, product_list);
+			    	
+			    	
+			    	
+			    	fr.close(); 
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    	}
+		}	
+	}
+	
 	
 	public Scenario openScenarioXml(String filePath){
 		return createScenarioFromXml(filePath);
