@@ -267,11 +267,11 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
     			int Y = Grid.getY();
     			String name = selected_topologies.get(i).split(""+X)[0];
     			
-    			if (check.isSelected()) {
+    			//if (check.isSelected()) {
     				data_set.addValue(value1, X + "x" + Y, name);
-    			} else{
-    				data_set.addValue(value1, X + "x" + Y, name);
-    			}
+    			//} else{
+    			//	data_set.addValue(value1, X + "x" + Y, name);
+    			//}
 	
     		}
     		

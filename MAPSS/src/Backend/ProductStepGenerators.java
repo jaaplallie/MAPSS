@@ -141,4 +141,19 @@ public class ProductStepGenerators {
 
 		return steps;
 	}
+	
+	public static void addProductBatch(String structure_name, ArrayList<String[]> product_list){
+		batch_names.add(structure_name);
+		product_batches.add(product_list);	
+		
+//		for (String[] p: product_list){
+//			for(String i: p){
+//				System.out.print(i);
+//
+//			}
+//			System.out.println();
+//		}
+//		System.out.println("Products created for " + structure_name);
+	}
+
 }

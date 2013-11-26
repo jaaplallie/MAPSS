@@ -191,23 +191,23 @@ public class MapssFileWriter {
 			PrintWriter structureWriter = new PrintWriter("structures/" + structure_name + ".txt");
 			EquipletAgent[][] grid = Grid.getGrid();
 			
-			boolean safe_grid = false;
-			structureWriter.println("Name: "+structure_name);
-			structureWriter.println("Size: " +grid.length+"x"+grid[0].length);
-			structureWriter.print("Relations: ");
+			//structureWriter.println("Name: "+structure_name);
+			//structureWriter.println("Size: " +grid.length+"x"+grid[0].length);
+			//structureWriter.print("Relations: ");
+			
+			structureWriter.println(grid.length+"x"+grid[0].length);
 			for (Object neighbor : Grid.getNeighbors(structure_name)) {
-				structureWriter.print(neighbor);
+				structureWriter.println(neighbor);
 			}
-			structureWriter.println("");
+			//structureWriter.println("");
 			
 			
 			if (ProductStepGenerators.getProducts(structure_name) != null){
 				ArrayList<Object[]> products = ProductStepGenerators.getBatch(structure_name);
-				structureWriter.print("Products & steps: ");
 				for (Object[] productsteps : products) {
 					
 					for (Object s: productsteps){
-						structureWriter.print(s+"-");
+						structureWriter.print(s+" ");
 					}
 					structureWriter.println("");
 				}
@@ -225,9 +225,7 @@ public class MapssFileWriter {
 	}
 	
 	
-	public static void loadGrid(){
-		
-	}
+
 	
 	public static void createLogFile(String name){
 		try {

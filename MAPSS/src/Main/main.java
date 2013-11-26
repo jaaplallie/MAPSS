@@ -3,6 +3,7 @@ package Main;
 import java.awt.EventQueue;
 
 import Backend.AgentEnvironmentCreator;
+import Backend.MapssFileReader;
 import Backend.ProgramData;
 import Gui.MainWindow;
 
@@ -22,7 +23,7 @@ public class main{
 					window.frame.setVisible(true);
 					
 					
-					
+					MapssFileReader.loadStructures();
 
 					
 				} catch (Exception e) {
