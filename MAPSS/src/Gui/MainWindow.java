@@ -64,10 +64,10 @@ public class MainWindow implements WindowListener{
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frame.getContentPane().add(tabbedPane);
         
-		CreateGridModule createGridModule = new CreateGridModule();
+		CreateGraphicalGridModule createGraphicalGridModule = new CreateGraphicalGridModule();
 		//ProductListEditorModule productListEditorModule = new ProductListEditorModule();
 		
-		builder.append(createGridModule);
+		builder.append(createGraphicalGridModule);
 		builder.nextLine();
 		
 		JPanel topologieSetupTab = builder.getPanel();

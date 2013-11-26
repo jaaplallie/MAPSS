@@ -2,6 +2,7 @@ package GraphicalGridBuilder;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -168,7 +169,7 @@ public class GraphicalGrid extends JFrame{
 		saveGrid_Btn.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				getTextualGrid();
+				System.out.println(getCustomGridString());
 				saveGrid_Btn.setEnabled(false);
 			}
 		});
@@ -204,6 +205,105 @@ public class GraphicalGrid extends JFrame{
 		return returnPanel;
 	}
 
+	private Boolean verify(){
+		return true;
+	}
+	
+	public String getCustomGridString(){
+		String customGridString = "";
+		ArrayList<GraphicalGridEquiplet> equiplets = new ArrayList<GraphicalGridEquiplet>();
+		ArrayList<String> connections = new ArrayList<String>();
+		
+		for(int targetY = 0; targetY < grid.length; targetY++){
+			for(int targetX = 0; targetX < grid[targetY].length; targetX++){
+				GraphicalGridObject currentObj = grid[targetY][targetX].getInputObject();
+				if (currentObj instanceof GraphicalGridEquiplet) {
+					equiplets.add((GraphicalGridEquiplet)currentObj);
+					connections.add("");
+				} 
+			}
+		}
+		
+		System.out.println("EquipletsList Size = " + equiplets.size());
+		
+		for(int targetY = 0; targetY < grid.length; targetY++){
+			for(int targetX = 0; targetX < grid[targetY].length; targetX++){
+				GraphicalGridObject currentObj = grid[targetY][targetX].getInputObject();
+				if (currentObj instanceof GraphicalGridEquiplet) {
+					System.out.println("TARGETX=[" + targetX + "] TARGETY=[" + targetY + "]");
+					System.out.println("Equiplet detected!");
+					//isEquiplet do nothing yet
+					//connectionsGrid[targetY][targetX] = equipletLocation
+				} 
+				else if (currentObj instanceof GraphicalGridHorizontalTransport) {
+					System.out.println("TARGETX=[" + targetX + "] TARGETY=[" + targetY + "]");
+					int indexeq1 = equiplets.indexOf((GraphicalGridEquiplet)grid[(targetY)][(targetX-1)].getInputObject());
+					int indexeq2 = equiplets.indexOf((GraphicalGridEquiplet)grid[(targetY)][(targetX+1)].getInputObject());
+					System.out.println("Creating Horizontal Connection between " + indexeq1 + " and " + indexeq2);
+					connections.set(indexeq1, connections.get(indexeq1) + "" + indexeq2+"-");
+					connections.set(indexeq2, connections.get(indexeq2) + "" + indexeq1+"-");
+				}
+				else if (currentObj instanceof GraphicalGridVerticalTransport) {
+					System.out.println("TARGETX=[" + targetX + "] TARGETY=[" + targetY + "]");
+					int indexeq1 = equiplets.indexOf((GraphicalGridEquiplet)grid[(targetY-1)][(targetX)].getInputObject());
+					int indexeq2 = equiplets.indexOf((GraphicalGridEquiplet)grid[(targetY+1)][(targetX)].getInputObject());
+					System.out.println("Creating Horizontal Connection between " + indexeq1 + " and " + indexeq2);
+					connections.set(indexeq1, connections.get(indexeq1) + "" + indexeq2+"-");
+					connections.set(indexeq2, connections.get(indexeq2) + "" + indexeq1+"-");
+				}
+				else if (currentObj instanceof GraphicalGridBackSlashTransport) {
+					System.out.println("TARGETX=[" + targetX + "] TARGETY=[" + targetY + "]");
+					int indexeq1 = equiplets.indexOf((GraphicalGridEquiplet)grid[(targetY-1)][(targetX+1)].getInputObject());
+					int indexeq2 = equiplets.indexOf((GraphicalGridEquiplet)grid[(targetY+1)][(targetX-1)].getInputObject());
+					System.out.println("Creating Horizontal Connection between " + indexeq1 + " and " + indexeq2);
+					connections.set(indexeq1, connections.get(indexeq1) + "" + indexeq2+"-");
+					connections.set(indexeq2, connections.get(indexeq2) + "" + indexeq1+"-");
+				}
+				else if (currentObj instanceof GraphicalGridForwardSlashTransport) {
+					System.out.println("TARGETX=[" + targetX + "] TARGETY=[" + targetY + "]");
+					int indexeq1 = equiplets.indexOf((GraphicalGridEquiplet)grid[(targetY-1)][(targetX-1)].getInputObject());
+					int indexeq2 = equiplets.indexOf((GraphicalGridEquiplet)grid[(targetY+1)][(targetX+1)].getInputObject());
+					System.out.println("Creating Horizontal Connection between " + indexeq1 + " and " + indexeq2);
+					connections.set(indexeq1, connections.get(indexeq1) + "" + indexeq2+"-");
+					connections.set(indexeq2, connections.get(indexeq2) + "" + indexeq1+"-");
+				}
+				else if (currentObj instanceof GraphicalGridCrossedTransport) {
+					System.out.println("TARGETX=[" + targetX + "] TARGETY=[" + targetY + "]");
+					int indexeq1 = equiplets.indexOf((GraphicalGridEquiplet)grid[(targetY-1)][(targetX-1)].getInputObject());
+					int indexeq2 = equiplets.indexOf((GraphicalGridEquiplet)grid[(targetY+1)][(targetX+1)].getInputObject());
+					int indexeq3 = equiplets.indexOf((GraphicalGridEquiplet)grid[(targetY-1)][(targetX+1)].getInputObject());
+					int indexeq4 = equiplets.indexOf((GraphicalGridEquiplet)grid[(targetY+1)][(targetX-1)].getInputObject());
+					System.out.println("Creating Horizontal Connection between [" + indexeq1 + " and " + indexeq2 + "] and [" + indexeq3 + " and " + indexeq4 + "]");
+					connections.set(indexeq1, connections.get(indexeq1) + "" + indexeq2+"-");
+					connections.set(indexeq2, connections.get(indexeq2) + "" + indexeq1+"-");
+					connections.set(indexeq3, connections.get(indexeq3) + "" + indexeq4+"-");
+					connections.set(indexeq4, connections.get(indexeq4) + "" + indexeq3+"-");
+				}
+				else if (currentObj instanceof GraphicalGridTPathTransport) {
+					System.out.println("TARGETX=[" + targetX + "] TARGETY=[" + targetY + "]");
+					System.out.println("TPath detected!");
+				}
+				else if (currentObj instanceof GraphicalGridNothingObject) {
+					System.out.println("TARGETX=[" + targetX + "] TARGETY=[" + targetY + "]");
+					System.out.println("Nothing Object detected!");
+					//isNothing = do Nothing
+				}
+			}
+		}
+		
+		for(String str : connections){
+			if (str.length() > 0 && str.charAt(str.length()-1)=='-') {
+			    str = str.substring(0, str.length()-1);
+			}
+			customGridString += str.trim() + ",";
+		}
+		if (customGridString.length() > 0 && customGridString.charAt(customGridString.length()-1)==',') {
+			customGridString = customGridString.substring(0, customGridString.length()-1);
+		}
+		customGridString = customGridString.trim();
+		return customGridString;
+	}
+	
 	public String[] getTextualGrid(){
 		String[] textualGrid = new String[grid.length];
 		StringBuilder lineBuilder = new StringBuilder();
