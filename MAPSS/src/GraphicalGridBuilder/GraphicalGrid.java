@@ -6,13 +6,16 @@ import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
 
 public class GraphicalGrid extends JFrame{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -618628616694879189L;
 	String name = "";
 	GraphicalGridTarget[][] grid;
 	JPanel interfacePanel = new JPanel();
@@ -194,6 +197,7 @@ public class GraphicalGrid extends JFrame{
 					}
 				);
 				//returnPanel.add(grid[targetY][targetX].getButton(), "cell " + targetX + " " + targetY + ",alignx center,growy");
+				grid[targetY][targetX].getButton().setEnabled(false);
 				gridPanel.add(grid[targetY][targetX].getButton(), "cell " + targetX + " " + targetY + ",growx");
 			}
 		}
@@ -205,8 +209,70 @@ public class GraphicalGrid extends JFrame{
 		return returnPanel;
 	}
 
-	private Boolean verify(){
-		return true;
+	private Boolean verify(int subjectY, int subjectX){
+		Boolean success = false;
+		GraphicalGridTarget subject = null;
+		GraphicalGridTarget northTarget = null;
+		GraphicalGridTarget westTarget = null;
+		GraphicalGridTarget eastTarget = null;
+		GraphicalGridTarget southTarget = null;
+		GraphicalGridTarget northWestTarget = null;
+		GraphicalGridTarget northEastTarget = null;
+		GraphicalGridTarget southWestTarget = null;
+		GraphicalGridTarget southEastTarget = null;
+		
+		if(subjectY == -1 || subjectX == -1){
+			success = false;
+			return success;
+		}
+		else{
+			subject = grid[subjectY][subjectX];
+			
+			//checks for CornerStoneTargets && BorderTargets (smaller than 8 influence range of targets)
+			if(subjectY == 0){
+				if(subjectX == 0){
+					//north west cornerstone
+					//southTarget, southEastTarget, eastTarget 
+				}
+				else if(subjectX == grid[grid.length].length){
+					//north east cornerstone
+					//westTarget, southWestTarget, southTarget
+					
+				}
+				else{
+					//north border target
+					//westTarget, southWestTarget, southTarget, southEastTarget, eastTarget
+					
+				}
+			}
+			else if(subjectY == grid.length){
+				if(subjectX == 0){
+					//south west cornerstone
+					//northTarget, northEastTarget, eastTarget
+				}
+				else if(subjectX == grid[grid.length].length){
+					//south east cornerstone
+					//westTarget, northWestTarget, northTarget
+				}
+				else{
+					//south border target
+					
+				}
+			}
+			else if(subjectX == 0){
+				//west border
+				
+			}
+			else if(subjectX == grid[grid.length].length){
+				//east border
+				
+			}
+			else{
+				//checks for InnerGridTargets (influence range of 8 targets)
+				
+			}
+		}
+		return success;
 	}
 	
 	public String getCustomGridString(){

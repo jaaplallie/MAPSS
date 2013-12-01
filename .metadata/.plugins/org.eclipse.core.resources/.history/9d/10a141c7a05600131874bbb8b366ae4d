@@ -15,8 +15,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JSplitPane;
 
 import Backend.AgentEnvironmentCreator;
+import Backend.Grid;
 import Backend.ProgramData;
 import GraphicalGridBuilder.GraphicalGrid;
 
