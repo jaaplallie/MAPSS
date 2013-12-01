@@ -20,12 +20,13 @@ import org.w3c.dom.NodeList;
 
 import Agents.EquipletAgent;
 import Agents.ProductAgent;
+import Gui.ChartPresenter;
 
 
 public class MapssFileReader {
 	static AgentContainer container = AgentEnvironmentCreator.getContainer();
-	static ArrayList[] neighbors;
-	
+	static ArrayList<Integer>[] neighbors;
+	static boolean first = true;
 	
 	public MapssFileReader(){
 		
@@ -33,8 +34,9 @@ public class MapssFileReader {
 	
 	
 	public static void loadStructures(){
-		File dir = new File("structures");
 		
+		File dir = new File("structures");
+		int filecounter = 0;
 		
 		for (File file : dir.listFiles()) {
 		    if (file.getName().endsWith((".txt"))) {
@@ -44,21 +46,21 @@ public class MapssFileReader {
 					fr = new FileReader("structures/" +file.getName());
 			    	BufferedReader br = new BufferedReader(fr); 
 			    	String s; 
-			    	
-			    	int counter = 0;
+			    	boolean safe = false;
+			    	int neighbor_counter = 0;
 			    	int x = 0;
 			    	int y = 0;
 			    	ArrayList<String[]> product_list = new ArrayList<String[]>();
 			    	
 			    	while((s = br.readLine()) != null) { 
 			    		
-			    		if (counter == 0){
+			    		if (neighbor_counter == 0){
 			    			//neighbors = new ArrayList[0];
 			    			String [] ss = s.split("x");
 			    			x = Integer.parseInt(ss[0]);
 			    			y = Integer.parseInt(ss[0]);
 			    			neighbors = new ArrayList[x*y];
-			    		} else if (counter <= x*y) {
+			    		} else if (neighbor_counter <= x*y) {
 			    			s = s.replace("[", "");
 			    			s = s.replace("]", "");
 			    			s = s.replace(" ", "");
@@ -69,41 +71,39 @@ public class MapssFileReader {
 			    			ArrayList<Integer> known_equiplets = new ArrayList<Integer>();
 			    			
 			    			for (String product_step: ss){
-			    				System.out.println(product_step);
+			    				//System.out.println(product_step);
 			    				known_equiplets.add(Integer.parseInt(product_step));
 			    				
 			    			}
-			    			neighbors[counter-1] = known_equiplets;
+			    			neighbors[neighbor_counter-1] = known_equiplets;
 			    		} else {
 			    			
+			    			safe = true;
 			    			String[] steps = s.split(" ");
-			    			
-			    			for (String sup: steps){
-			    				System.out.print(sup);
-			    			}
-			    			System.out.println("");
-			    			
-			    			
+			    			//System.out.println("s is: "+s);
 			    			product_list.add(steps);
+			    			
 			    		}
-			    		counter++;
+			    		neighbor_counter++;
 			    	} 
 					
 			    	String name = file.getName().replace(".txt", "");
-			    	
-			    	for (List i: neighbors){
-			    		for (Object o: i){
-			    			System.out.println(o);
-			    		}
+			    	filecounter++;
+			    	System.out.println(Grid.getStructureNames().size());
+			    	if (Grid.getStructureNames().size() < filecounter){
+			    		Grid.createStructure(x, y, name, neighbors);
 			    	}
 			    	
-			    	Grid.createCustom(x, y, name, neighbors);
 			    	
-			    	ProductStepGenerators.addProductBatch(name, product_list);
-			    	
+
 			    	
 			    	
+			    	if (safe == true){
+			    		ProductStepGenerators.addProductBatch(name, product_list);
+			    	}
+
 			    	fr.close(); 
+			    	ChartPresenter.updateChartStructures();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -196,7 +196,8 @@ public class MapssFileReader {
 				
 			}
 			if(gridXSize != -1 && gridYSize != -1){
-				new_scenario.createGrid(gridXSize, gridYSize);
+				
+				//new_scenario.createGrid(gridXSize, gridYSize);
 				new_scenario.insertAgents(createdEqs);
 			}
 			else{

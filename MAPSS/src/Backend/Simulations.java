@@ -1,6 +1,11 @@
 package Backend;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import jade.wrapper.StaleProxyException;
 import Agents.EquipletAgent;
@@ -22,7 +27,7 @@ public class Simulations {
 		AgentEnvironmentCreator.start();
 		Grid.setGrid(structure_name);
 		Matrix.setMatrix(structure_name);
-		ArrayList<Object[]> products = ProductStepGenerators.getBatch(structure_name);
+		ArrayList<String[]> products = ProductStepGenerators.getBatch(structure_name);
 		
 		System.out.println("Creating the nessesary files.....");
 		System.out.println("Generating a set of products and giving them product agents.....");
@@ -34,7 +39,7 @@ public class Simulations {
 		Grid.logNeighbors();
 		Matrix.logMatrix();
 		MapssFileWriter.writeLogLn("**************************************************************************");
-		
+		System.out.println(products.size());
 		for (int i =0; i < products.size(); i++){
 			Object[] arguments = products.get(i);
 
@@ -52,11 +57,62 @@ public class Simulations {
 		double average = Grid.getAverageProductStepPath();
 		MapssFileWriter.writeLogLn("The average path for each product step is: " + Grid.getAverageProductStepPath() + " long");
 		MapssFileWriter.writeLogLn("The average path for each product is: " + Grid.getAverageProductPath() + " long");
-		MapssFileWriter.closeLog();
+//		
+//		clearProducts();
+//		AgentEnvironmentCreator.destroyMainContainer();
+//		Grid.clearProductStepPaths();
+//		Grid.clearProductPaths();
+//		
+//		
+//
+//		
+//		AgentEnvironmentCreator.start();
+//		Object[] args = new Object[0];
+//		String s;
+//		int counter = 0;
+//		try {
+//			BufferedReader br = new BufferedReader(new FileReader("C:/Test.txt"));
+//			while ((s = br.readLine()) != null) {
+//				
+//				
+//				Pattern step_pattern = Pattern.compile("(<STEPS>)(.*)(</STEPS>)");
+//				Matcher step_matcher = step_pattern.matcher(s);
+//				while (step_matcher.find()) {
+//					String temp = step_matcher.group(2);
+//					args = temp.split(",");
+//				}
+//				
+//				ProductAgent smith = new ProductAgent("Product" + counter , args);
+//				try {
+//					AgentEnvironmentCreator.addProductAgent(smith);
+//					Thread.sleep(1);
+//				} catch (StaleProxyException | InterruptedException e) {
+//					e.printStackTrace();
+//				}
+//				
+//				if (counter >= 1000){
+//					break;
+//				}
+//				counter++;
+//				
+//			}
+//			br.close();
+//		}
+//		catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		
+//		MapssFileWriter.writeLogLn("The average path for each product step is: " + Grid.getAverageProductStepPath() + " long");
+//		MapssFileWriter.writeLogLn("The average path for each product is: " + Grid.getAverageProductPath() + " long");
+//		
 		clearProducts();
 		AgentEnvironmentCreator.destroyMainContainer();
 		Grid.clearProductStepPaths();
 		Grid.clearProductPaths();
+		
+		
+		MapssFileWriter.closeLog();
+
 		System.out.println("Simulation " + log_name + " is finished");
 		
 		return average;

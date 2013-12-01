@@ -24,10 +24,10 @@ public class Scenario {
 		this.scenarioName = scenarioName;
 	}
 
-	public void createGrid(int x, int y){
-		Grid.create(x, y);
-		scenario_EquipletGrid = Grid.getGrid();
-	}
+//	public void createGrid(int x, int y){
+//		Grid.create(x, y);
+//		scenario_EquipletGrid = Grid.getGrid();
+//	}
 	
 	public void insertAgents(ArrayList<EquipletAgent> eqs){
 		scenario_Grid.insert(eqs);

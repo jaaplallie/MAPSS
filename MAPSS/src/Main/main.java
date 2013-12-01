@@ -21,11 +21,7 @@ public class main{
 					ProgramData pd = new ProgramData();
 					MainWindow window = new MainWindow();
 					window.frame.setVisible(true);
-					
-					
 					MapssFileReader.loadStructures();
-
-					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
