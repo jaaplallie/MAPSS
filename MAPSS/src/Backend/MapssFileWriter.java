@@ -202,14 +202,11 @@ public class MapssFileWriter {
 				System.out.println(products);
 				for (String[] productsteps : products) {
 					for (String s: productsteps){
-						
 						structureWriter.print(s+" ");
-						//System.out.print("Dit is s: "+s);
 					}
 					structureWriter.println("");
-					//System.out.print("hmm: " + productsteps);
 				}
-				//System.out.println("product saved");
+
 			}
 
 			structureWriter.close();

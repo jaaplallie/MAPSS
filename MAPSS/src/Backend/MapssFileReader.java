@@ -53,12 +53,15 @@ public class MapssFileReader {
 			    	ArrayList<String[]> product_list = new ArrayList<String[]>();
 			    	
 			    	while((s = br.readLine()) != null) { 
-			    		
+			    		System.out.println("neighbor_counter is: "+neighbor_counter);
+			    		System.out.println("x*y is: "+x*y);
 			    		if (neighbor_counter == 0){
 			    			//neighbors = new ArrayList[0];
 			    			String [] ss = s.split("x");
 			    			x = Integer.parseInt(ss[0]);
-			    			y = Integer.parseInt(ss[0]);
+			    			System.out.println("x is: "+x);
+			    			y = Integer.parseInt(ss[1]);
+			    			System.out.println("y is: "+y);
 			    			neighbors = new ArrayList[x*y];
 			    		} else if (neighbor_counter <= x*y) {
 			    			s = s.replace("[", "");
