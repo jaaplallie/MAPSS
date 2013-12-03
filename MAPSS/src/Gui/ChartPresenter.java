@@ -66,7 +66,8 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
 	
 	
 	JButton add_btn = new JButton("Add structure to simulation");
-	JButton simulation_btn = new JButton("Run simulation (takes along time)");
+	JButton add_all_btn = new JButton("Add all structures");
+	JButton simulation_btn = new JButton("Run simulation");
 	
 	protected static ArrayList<String> selected_topologies = new ArrayList<String>();
 	
@@ -98,6 +99,8 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
         builder.nextLine();
         builder.append("", add_btn);
         builder.nextLine();
+        builder.append("", add_all_btn);
+        builder.nextLine();
         builder.appendSeparator();
         builder.nextLine();
         builder.append("", check);
@@ -121,7 +124,7 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
         structureBox.addActionListener(this);
         simulation_btn.addActionListener(this);
         add_btn.addActionListener(this);
-        
+        add_all_btn.addActionListener(this);
 	}
 	
 	public void setEnabled(Component[] components, Boolean b){
@@ -212,6 +215,14 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
         	else{
         		
         	}
+        }
+        else if(e.getSource().equals(add_all_btn)){
+
+        	for (int i = 0 ; i < structureBox.getItemCount(); i++){
+        		String selected = (String) structureBox.getItemAt(i);
+            	selected_topologies.add(selected);
+        	}
+        	System.out.println("All scenario's added");
         }
         else if(e.getSource().equals(add_btn)){
         	String selected = (String) structureBox.getSelectedItem();
