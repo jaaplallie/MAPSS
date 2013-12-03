@@ -2,6 +2,8 @@ package Gui;
 
 import jade.wrapper.StaleProxyException;
 
+import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,8 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -33,7 +37,7 @@ import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 
 public class MainWindow implements WindowListener{
-	
+	private JPanel versionBox;
 	static ChartPresenter chartpres;
 	public JFrame frame;
 	private DefaultFormBuilder builder = new ProgramData().getNewBuilder();
@@ -59,16 +63,16 @@ public class MainWindow implements WindowListener{
 		frame.setBounds(100, 100, 1031, 565);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.addWindowListener(this);
-		frame.setTitle("MAPSS - Multi Agent Production System Simulator");
+		frame.setTitle("MAPSS - Multi Agent Production System Simulator - " + ProgramData.getSoftwareVersion());
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		frame.getContentPane().add(tabbedPane);
         
-		//CreateGraphicalGridModule createGraphicalGridModule = new CreateGraphicalGridModule();
-		//builder.append(createGraphicalGridModule);
+		CreateGraphicalGridModule createGraphicalGridModule = new CreateGraphicalGridModule();
+		builder.append(createGraphicalGridModule);
 		
-		CreateGridModule createGridModule = new CreateGridModule();
-		builder.append(createGridModule);
+		//CreateGridModule createGridModule = new CreateGridModule();
+		//builder.append(createGridModule);
 		
 		builder.nextLine();
 		

@@ -103,7 +103,7 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
         builder.nextLine();
         builder.appendSeparator();
         builder.nextLine();
-        builder.append(check);
+        builder.append("", check);
         builder.nextLine();
         builder.append("", simulation_btn);
         
@@ -114,7 +114,7 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
         progressBar.setValue(0);
         progressBar.setStringPainted(true);
         
-        builder.append(progressBar);
+        builder.append("", progressBar);
 
         splitPane.setLeftComponent(chartContainer);
         splitPane.setRightComponent(builder.getPanel());
