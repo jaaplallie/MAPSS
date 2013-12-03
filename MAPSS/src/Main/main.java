@@ -19,6 +19,7 @@ public class main{
 				try {
 					AgentEnvironmentCreator aec = new AgentEnvironmentCreator();
 					ProgramData pd = new ProgramData();
+					pd.onProgramStart();
 					MainWindow window = new MainWindow();
 					window.frame.setVisible(true);
 					MapssFileReader.loadStructures();
