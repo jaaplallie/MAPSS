@@ -99,15 +99,6 @@ public class ProductStepGenerators {
 		
 		batch_names.add(structure_name);
 		product_batches.add(products);
-//		System.out.println("Products created for " + structure_name);
-//		for (String[] A: products){
-//			for (String p: A){
-//				System.out.print(p);
-//	
-//				System.out.println("");
-//			}
-//		}
-		
 		
 		MapssFileWriter.saveStructure(structure_name, Grid.getNeighbors(structure_name), products);
 
@@ -146,39 +137,24 @@ public class ProductStepGenerators {
 	}
 	
 	public static String[] generate25PercentPopularSteps(int amount){
+		// This function generates a list of product steps. In this version there is 
+		// a 25% chance of the product step being unavaible. When that happens they
+		// get a new product step.
 		
-		
-		// This function generates a list of product steps. In this version 25% of the 
-		// values are more likely to get chosen. (because they might offer multiple steps)
 		String[]steps = new String[amount];
-		
-//		int doubles[] = new int[gridsteps/4];
-//		for (int i = 0; i < gridsteps/4; i++){
-//			doubles[i] = (int) (Math.random()*gridsteps);
-//		}
+		int doubles[] = new int[gridsteps/4];
 
 		for (int j = 0; j < amount; j++){    
-			
-			
-			Integer step = (int) (Math.random()*(gridsteps-1));
-			
-			//Integer range = gridsteps+(gridsteps/4);
-			//Integer step = (int) (Math.random()*(range-1));
+			Integer range = gridsteps+(gridsteps/4);
+			Integer step = (int) (Math.random()*(range-1));
     	    
-    	    //if (step >= gridsteps){
-			if (step < 8){
-
-    	    	//Integer tmp = doubles[step-gridsteps];
-
-    	    	//Integer tmp = (int) (Math.random()*(gridsteps-1));
-    	    	//steps[j] = tmp.toString();
-				steps[j] = step.toString();
+    	    if (step >= gridsteps){
+    	    	Integer tmp = doubles[step-gridsteps];
+    	    	steps[j] = tmp.toString();
     	    } else {
-    	    	j--; /* reject step and try again */
     	    	steps[j] = step.toString();
     	    }
 		}
-
 		return steps;
 	}
 	
@@ -189,7 +165,6 @@ public class ProductStepGenerators {
 		for (String[] p: product_list){
 			for(String i: p){
 				System.out.print(i);
-
 			}
 			System.out.println();
 		}
