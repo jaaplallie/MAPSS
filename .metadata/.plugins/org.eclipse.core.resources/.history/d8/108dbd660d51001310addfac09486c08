@@ -1,5 +1,0 @@
-<<<<<<< HEAD
-( ap-description  :name "145.89.154.220:1099/JADE" :ap-services (set ( ap-service  :name fipa.mts.mtp.http.std :type fipa.mts.mtp.http.std :addresses (sequence http://Jaaps-Laptop:7778/acc))))
-=======
-( ap-description  :name "145.89.124.166:1099/JADE" :ap-services (set ( ap-service  :name fipa.mts.mtp.http.std :type fipa.mts.mtp.http.std :addresses (sequence http://145.89.124.166:51848/acc))))
->>>>>>> branch 'master' of https://github.com/jaaplallie/MAPSS.git

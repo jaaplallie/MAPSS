@@ -1,0 +1,37 @@
+package GraphicalGridBuilder;
+
+public class GraphicalGridEquiplet extends GraphicalGridObject {
+
+	String name = "";
+	
+
+	public GraphicalGridEquiplet(){
+		textualIcon = "O";
+		this.setImageIcon("img/grid_icons/equiplet.png");
+		canBeConnectedWith = {
+			new GraphicalGridHorizontalTransport(),
+			new GraphicalGridVerticalTransport(),
+			new GraphicalGridBackSlashTransport(),
+			new GraphicalGridForwardSlashTransport(),
+			new GraphicalGridCrossedTransport(),
+			new GraphicalGridTPathTransport()
+			};
+	}
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	@Override
+	public boolean checkConnected(String direction, GraphicalGridObject target) {
+		Boolean returnVal = false;
+		
+		
+		
+		return returnVal;
+	}
+}

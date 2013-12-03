@@ -52,4 +52,26 @@ public class GraphicalGridTarget{
 		
 		return returnVal;
 	}
+	
+	public boolean checkConnected(String direction, GraphicalGridTarget changedSubject) {
+		Boolean returnVal = false;
+		String subjectCallsFromDirection = "";
+		switch(direction){
+			case "N": subjectCallsFromDirection = "S"; break;
+			case "W": subjectCallsFromDirection = "E"; break;
+			case "E": subjectCallsFromDirection = "W"; break;
+			case "S": subjectCallsFromDirection = "N"; break;
+			case "NW": subjectCallsFromDirection = "SE"; break;
+			case "NE": subjectCallsFromDirection = "SW"; break;
+			case "SW": subjectCallsFromDirection = "NE"; break;
+			case "SE": subjectCallsFromDirection = "NW"; break;
+		}
+		returnVal = targetPossibilities[currentlyDisplayedPossibility].checkConnected(subjectCallsFromDirection, changedSubject.getInputObject());
+		return returnVal;
+	}
+	
+	protected void updateButton(){
+		targetPossibilities[currentlyDisplayedPossibility].verifyIcon();
+		returnButton.setIcon(targetPossibilities[currentlyDisplayedPossibility].getImageIcon());
+	}
 }

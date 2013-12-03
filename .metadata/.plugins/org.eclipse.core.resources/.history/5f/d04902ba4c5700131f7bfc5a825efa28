@@ -1,0 +1,46 @@
+package GraphicalGridBuilder;
+
+import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
+
+public abstract class GraphicalGridObject {
+	
+	String textualIcon = " ";
+	ImageIcon imageIcon = new ImageIcon();
+	String textualInputRepresentation = "";
+	GraphicalGridObject[] canBeConnectedWith;
+	//"img/grid_icons/add.png"
+	//addBtn.setIcon(icon); 
+	
+	public GraphicalGridObject(){
+	}
+
+	protected void setCanBeConnectedWith(GraphicalGridObject[] canBeConnectedWith) {
+		this.canBeConnectedWith = canBeConnectedWith;
+	}
+
+	public String getTextualIcon() {
+		return textualIcon;
+	}
+
+	public void setTextualIcon(String textualIcon) {
+		this.textualIcon = textualIcon;
+	}
+	
+	public ImageIcon getImageIcon() {
+		return imageIcon;
+	}
+
+	public void setImageIcon(String imageIcon) {
+		this.imageIcon = new ImageIcon(imageIcon);
+	}
+	
+	protected void setTextualInputRepresentation(String tir){
+		textualInputRepresentation = tir;
+	}
+	
+	public String getTextualInputRepresentation(){
+		return textualInputRepresentation;
+	}
+}

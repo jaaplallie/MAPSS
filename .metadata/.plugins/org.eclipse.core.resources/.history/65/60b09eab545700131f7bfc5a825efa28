@@ -1,0 +1,38 @@
+package GraphicalGridBuilder;
+
+
+public class GraphicalGridBackSlashTransport extends GraphicalGridObject {
+
+	GraphicalGridEquiplet eq1, eq2;
+	
+	public GraphicalGridBackSlashTransport(){
+		textualIcon = "/";
+		this.setImageIcon("img/grid_icons/backslash.png");
+	}
+
+	public GraphicalGridEquiplet getEq1() {
+		return eq1;
+	}
+
+	public void setEq1(GraphicalGridEquiplet eq1) {
+		this.eq1 = eq1;
+	}
+
+	public GraphicalGridEquiplet getEq2() {
+		return eq2;
+	}
+
+	public void setEq2(GraphicalGridEquiplet eq2) {
+		this.eq2 = eq2;
+	}
+
+	@Override
+	public boolean checkConnected(String direction, GraphicalGridObject target) {
+		Boolean returnVal = false;
+		
+		
+		
+		return returnVal;
+	}
+	
+}
