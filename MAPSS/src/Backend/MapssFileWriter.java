@@ -186,32 +186,61 @@ public class MapssFileWriter {
 	}
 	
 	
-	public static void saveStructure(String structure_name){
+	public static void saveStructure(String structure_name, ArrayList<Integer>[] neighbors, ArrayList<String[]> products){
+		try {
+			PrintWriter structureWriter = new PrintWriter("structures/" + structure_name + ".txt");
+			EquipletAgent[][] grid = Grid.getStructure(structure_name);
+			
+			structureWriter.println(grid.length+"x"+grid[0].length);
+			for (ArrayList<Integer> neighbor : neighbors) {
+				structureWriter.println(neighbor);
+			}
+			
+			
+			if (products != null){
+				//ArrayList<String[]> products = ProductStepGenerators.getBatch(structure_name);
+				System.out.println(products);
+				for (String[] productsteps : products) {
+					for (String s: productsteps){
+						structureWriter.print(s+" ");
+					}
+					structureWriter.println("");
+				}
+
+			}
+
+			structureWriter.close();
+			
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public static void saveOldStructure(String structure_name){
+		
 		try {
 			PrintWriter structureWriter = new PrintWriter("structures/" + structure_name + ".txt");
 			EquipletAgent[][] grid = Grid.getGrid();
-			
-			//structureWriter.println("Name: "+structure_name);
-			//structureWriter.println("Size: " +grid.length+"x"+grid[0].length);
-			//structureWriter.print("Relations: ");
 			
 			structureWriter.println(grid.length+"x"+grid[0].length);
 			for (Object neighbor : Grid.getNeighbors(structure_name)) {
 				structureWriter.println(neighbor);
 			}
-			//structureWriter.println("");
 			
 			
 			if (ProductStepGenerators.getProducts(structure_name) != null){
-				ArrayList<Object[]> products = ProductStepGenerators.getBatch(structure_name);
+				ArrayList<String[]> products = ProductStepGenerators.getBatch(structure_name);
+				System.out.println(products);
 				for (Object[] productsteps : products) {
-					
 					for (Object s: productsteps){
+						
 						structureWriter.print(s+" ");
 					}
-					structureWriter.println("");
+					System.out.println("product saved");
 				}
-				
 			}
 
 			structureWriter.close();

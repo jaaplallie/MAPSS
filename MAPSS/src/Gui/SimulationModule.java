@@ -70,8 +70,6 @@ public class SimulationModule extends JPanel implements ActionListener{
         startScenario_btn.addActionListener(this);
         productStepComboBox.addActionListener(this);
         add(builder.getPanel());
-        
-
 	}
 	
 	public static void updateProductStructures(){
@@ -81,8 +79,6 @@ public class SimulationModule extends JPanel implements ActionListener{
 		}
 	}
 	
-
-	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getSource().equals(startScenario_btn)){
 			if(ProgramData.getCurrentlyLoadedScenario() == null){
@@ -130,9 +126,6 @@ public class SimulationModule extends JPanel implements ActionListener{
 		    	ProductStepGenerators.generateProductBatch(number_of_products, max_product_steps, type, structure_name);
 			
 			}
-
 		}
-
 	}
-
 }

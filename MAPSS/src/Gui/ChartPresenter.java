@@ -34,6 +34,7 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import Agents.EquipletAgent;
 import Backend.ChartCreator;
 import Backend.Grid;
+import Backend.MapssFileReader;
 import Backend.ProductStepGenerators;
 import Backend.ProgramData;
 import Backend.Simulations;
@@ -48,7 +49,7 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
 	JPanel saveAsContainer = new JPanel();
 	JComboBox<String> chartComboBox = new JComboBox<String>();
 	JComboBox<String> saveAsComboBox = new JComboBox<String>();
-	JCheckBox check = new JCheckBox("Different color for each category");
+	JCheckBox check = new JCheckBox("Different color for each (similar) structure");
 	Map<Integer, String> chartNamingDictionary = new HashMap<Integer, String>();
 	Map<Integer, JFreeChart> chartObjectDictionary = new HashMap<Integer, JFreeChart>();
 	ChartPanel chartContainer = new ChartPanel(null);
@@ -59,9 +60,6 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
 	
 	JLabel imageLabel = new JLabel();
 	
-	private JPanel loadingPanel = new JPanel();
-	private JLabel loadingLabel = new JLabel();
-	
 	int simulation_counter = 1;
 	
 	static JComboBox<String> structureBox = new JComboBox<String>();
@@ -71,8 +69,6 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
 	JButton simulation_btn = new JButton("Run simulation (takes along time)");
 	
 	protected static ArrayList<String> selected_topologies = new ArrayList<String>();
-	
-
 	
 	
 	public ChartPresenter(){
@@ -90,8 +86,6 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
 		saveAsComboBox.setVisible(true);
 		simulation_btn.setVisible(true);
 		add_btn.setVisible(true);
-		
-		
 		
         builder.append("Chart:", chartComboBox);
         builder.nextLine();
@@ -112,7 +106,6 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
         
         builder.nextLine();
         builder.appendSeparator();
-        //builder.append(loadingPanel);
         
         progressBar = new JProgressBar(0, 100);
         progressBar.setValue(0);
@@ -129,15 +122,6 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
         simulation_btn.addActionListener(this);
         add_btn.addActionListener(this);
         
-        
-
-//		setEnabled(loadingPanel.getComponents(), true);
-//		
-//		ImageIcon ii = new ImageIcon("images/loading_animation.gif");
-//		loadingLabel.setIcon(ii);
-//      loadingPanel.add(loadingLabel);
-//        
-//      loadingLabel.setVisible(false);
 	}
 	
 	public void setEnabled(Component[] components, Boolean b){
@@ -174,8 +158,13 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
 	
 	public static void updateChartStructures(){
 		structureBox.removeAllItems();
+		
 		for (String name: Grid.getStructureNames()){
-			structureBox.addItem(name);
+			System.out.println("trying: "+name);
+			if (ProductStepGenerators.getBatch(name) != null){
+				structureBox.addItem(name);
+			}
+			
 		}
 	}
 	
@@ -235,6 +224,8 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
         	task = new Task();
             task.addPropertyChangeListener(this);
             task.execute();
+            
+            //
         	
         }
         
@@ -252,7 +243,7 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
     		
     		int total_products = 0;
     		for (int i = 0; i < selected_topologies.size(); i++){
-    			ArrayList<Object[]> products = ProductStepGenerators.getBatch(selected_topologies.get(i));
+    			ArrayList<String[]> products = ProductStepGenerators.getBatch(selected_topologies.get(i));
     			total_products += products.size();
     			System.out.println(selected_topologies.get(i));
     		}
@@ -267,15 +258,15 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
     			int Y = Grid.getY();
     			String name = selected_topologies.get(i).split(""+X)[0];
     			
-    			//if (check.isSelected()) {
+    			if (check.isSelected()) {
+    				data_set.addValue(value1, name, X + "x" + Y);
+    			} else{
     				data_set.addValue(value1, X + "x" + Y, name);
-    			//} else{
-    			//	data_set.addValue(value1, X + "x" + Y, name);
-    			//}
+    			}
 	
     		}
     		
-    		JFreeChart chart = ChartCreator.drawBarChart("Simulation" + simulation_counter , "x", "y", data_set);
+    		JFreeChart chart = ChartCreator.drawBarChart("MAPSS Simulation Result " + simulation_counter , "x", "y", data_set);
     		ChartPresenter chartpres = MainWindow.getChart();
     		chartpres.addChart(chart);
     		simulation_counter ++;
@@ -289,6 +280,7 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
         @Override
         public void done() {
         	progressBar.setValue(0);
+        	selected_topologies.clear();
         }
     }
 

@@ -40,8 +40,8 @@ public class ProductAgent extends Agent {
 		return returnVal;
 	}
 	
-	protected void setup() { 
-		addBehaviour(new WakerBehaviour(this, 0) { 
+	protected void setup()  { 
+		addBehaviour(new WakerBehaviour(this, 0)  { 
 			 protected void handleElapsedTimeout() { 
 				MapssFileWriter.writeLogLn("Hi. I'm product agent " + getAID().getLocalName() + "."); 
 				Object[] args = myAgent.getArguments();
@@ -73,7 +73,14 @@ public class ProductAgent extends Agent {
 				
 				
 				if (safe_grid == true & right_sized_grid == true){
-					int start_position = (int)(Math.random()*(grid.length*grid[0].length));
+					//int start_position = (int)(Math.random()*(grid.length*grid[0].length));
+					int start_position = 0;
+					if (args[0] == null){
+						
+					} else {
+						start_position = Integer.parseInt(args[0].toString());
+					}
+					
 					int[] start_xy_values = Grid.getEquipletPosition(start_position);
 					//ArrayList<Integer> productPath = 
 					
@@ -89,8 +96,12 @@ public class ProductAgent extends Agent {
 					
 					productPath = new int[]{start_position};
 					
-					for (Object o : args) {
-						next_position = Integer.parseInt(o.toString());
+					//Object O = args[0];
+					
+					//for (Object o : args) {
+					for (int i = 1; i < args.length; i++){
+						next_position = Integer.parseInt(args[i].toString());
+						//next_position = Integer.parseInt(o.toString());
 						int path[] = Grid.calculateDifferentPath(current_position, next_position);
 						Grid.addProductStepPath(path);
 						
@@ -115,12 +126,16 @@ public class ProductAgent extends Agent {
 					}
 					MapssFileWriter.writeLogLn("");
 					
+					Simulations.addFinishedProduct();
+					ChartPresenter.updateProgress(1);
+					
 					MapssFileWriter.writeLogLn("Total hops needed for this product: " + hops);
 					double average = hops/args.length;
 					MapssFileWriter.writeLogLn("Average number of hops needed for each product step: " + average);
 			
-					Simulations.addFinishedProduct();
-					ChartPresenter.updateProgress(1);
+					
+					
+					
 					
 				} else {
 					MapssFileWriter.writeLogLn("Unfortunately I can't find a suitable grid so no calculations for me");
@@ -132,7 +147,11 @@ public class ProductAgent extends Agent {
 					}
 				}
 				MapssFileWriter.writeLogLn("");
+				
+				myAgent.doDelete();
 			 } 
+			 
+			  
 		} );	
 	} 
 	

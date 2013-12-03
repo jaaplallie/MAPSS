@@ -2,7 +2,6 @@ package Backend;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import Agents.EquipletAgent;
 import Gui.ChartPresenter;
 import Gui.SimulationModule;
@@ -21,12 +20,12 @@ public class Grid {
 	
 	private static int x = 0;
 	private static int y = 0;
-	protected static List[] equiplet_positions;
-	protected static List[] neighbors;
+	protected static ArrayList<Integer>[] equiplet_positions;
+	protected static ArrayList<Integer>[] neighbors;
 	protected static EquipletAgent[][] grid;
 	
-	protected static ArrayList<List[]> position_list = new ArrayList<List[]>();
-	protected static ArrayList<List[]> neighbor_list = new ArrayList<List[]>();
+	protected static ArrayList<ArrayList<Integer>[]> position_list = new ArrayList<ArrayList<Integer>[]>();
+	protected static ArrayList<ArrayList<Integer>[]> neighbor_list = new ArrayList<ArrayList<Integer>[]>();
 	protected static ArrayList<int[]> product_paths = new ArrayList<int[]>();
 	protected static ArrayList<int[]> productstep_paths = new ArrayList<int[]>();
 	protected static ArrayList<EquipletAgent[][]> saved_grids = new ArrayList<EquipletAgent[][]>();
@@ -34,65 +33,13 @@ public class Grid {
 	
 	public Grid(){
 	}
-	
 
 	/*****************************************Creation Functions***********************************************/
 
-	public static void createNormalGrid(int width, int length, String name){
+	public static void createStructure(int width , int length, String name, ArrayList<Integer>[] neighbors){
 		x=width;
 		y=length;
 		
-		List[] neighbors = new ArrayList[x*y];
-		equiplet_positions = new ArrayList[width*length];
-		grid = new EquipletAgent[width][length];
-
-		int stepnr = 0;
-		for (int y = 0; y < length; y++){
-			for (int x = 0; x < width; x++){
-				ArrayList<Integer> known_equiplets = new ArrayList<Integer>();
-				
-				if (y != 0){ //if not first row
-					known_equiplets.add(stepnr-width);
-				}
-				if (stepnr != (width*(y+1))-1){ //if not end of row
-					known_equiplets.add(stepnr+1);
-				}
-				if (stepnr+width < length*width){ //if not last row
-					known_equiplets.add(stepnr+width);
-				}
-				if (stepnr != width*y){ //if not start of row
-					known_equiplets.add(stepnr-1);
-				}
-				neighbors[stepnr] = known_equiplets;
-				System.out.println(known_equiplets);
-				ArrayList<Integer> position = new ArrayList<Integer>();
-				position.add(x);
-				position.add(y);
-				equiplet_positions[stepnr] = position;
-				stepnr++;
-			}
-		}	
-		
-		neighbor_list.add(neighbors);
-		saved_grids.add(grid);
-		grid_names.add(name+x+"x"+y);
-		position_list.add(equiplet_positions);
-		
-		Matrix.createMatrix(width, length, name);
-		
-		MapssFileWriter.saveStructure(name+x+"x"+y);
-		
-		ChartPresenter.updateChartStructures();
-		SimulationModule.updateProductStructures();
-		
-		
-	}
-	
-	public static void createCustom(int width , int length , String relations){
-		x=width;
-		y=length;
-		
-		List[] neighbors = new ArrayList[x*y];
 		equiplet_positions = new ArrayList[width*length];
 		grid = new EquipletAgent[width][length];
 
@@ -107,108 +54,17 @@ public class Grid {
 				stepnr++;
 			}
 		}	
-	
-		List<Integer> tempList;
-		int telnr = 0;
-		for (String s : relations.split(",")){
-			System.out.println("Derp: "+s);
-			String[] temp = s.split("-");
-			tempList = new ArrayList<Integer>();
-			for (int i = 0; i < temp.length; i++){
-				
-				int tempInt = Integer.parseInt(temp[i]);
-				//System.out.print("Derp: "+tempInt);
-				tempList.add(tempInt);
-			}
-			neighbors[telnr] = tempList;
 
-			telnr++;
-		}
-		
-		neighbor_list.add(neighbors);
-		saved_grids.add(grid);
-		grid_names.add("Custom"+x+"x"+y);
-		position_list.add(equiplet_positions);
-		
-		MapssFileWriter.saveStructure("Custom"+x+"x"+y);
-		
-		ChartPresenter.updateChartStructures();
-		SimulationModule.updateProductStructures();
-
-		
-		//Matrix.createMatrix(width, length, name);
-		
-//		int stepnr = 0;
-//		for (int y = 0; y < length; y++){
-//			for (int x = 0; x < width; x++){				
-//				Agents.EquipletAgent new_Equiplet = new Agents.EquipletAgent(stepnr, new int[]{x,y}, new Object[]{});	
-//				grid[x][y] = new_Equiplet;					
-//				ArrayList<Integer> position = new ArrayList<Integer>();
-//				position.add(x);
-//				position.add(y);
-//				equiplet_positions[stepnr] = position;
-//				stepnr++;
-//			}
-//		}
-//		
-//		System.out.println(String.format("Grid X[%s] Y[%s] created. \n[%s] Equiplets installed.", width+"", length+"", count()+""));
-		//Matrix.createMatrix(width, length, structure_name);
-	}
-	
-	public static void createCustom(int width , int length, String name, List[] neighbors){
-		x=width;
-		y=length;
-		
-		//List[] neighbors = new ArrayList[x*y];
-		equiplet_positions = new ArrayList[width*length];
-		grid = new EquipletAgent[width][length];
-
-		int stepnr = 0;
-		for (int y = 0; y < length; y++){
-			for (int x = 0; x < width; x++){
-				
-				ArrayList<Integer> position = new ArrayList<Integer>();
-				position.add(x);
-				position.add(y);
-				equiplet_positions[stepnr] = position;
-				stepnr++;
-			}
-		}	
-	
 		neighbor_list.add(neighbors);
 		saved_grids.add(grid);
 		grid_names.add(name);
 		position_list.add(equiplet_positions);
 		
-		//MapssFileWriter.saveStructure("Custom"+x+"x"+y);
-		
 		Matrix.createMatrix(width, length, name);
-		
 		ChartPresenter.updateChartStructures();
 		SimulationModule.updateProductStructures();
 	}
 	
-	public static void create(int width , int length ){
-		grid = new EquipletAgent[width][length];
-		equiplet_positions = new ArrayList[(width*length)];
-
-		x = width;
-		y = length;
-		int stepnr = 0;
-		for (int y = 0; y < length; y++){
-			for (int x = 0; x < width; x++){				
-				Agents.EquipletAgent new_Equiplet = new Agents.EquipletAgent(stepnr, new int[]{x,y}, new Object[]{});
-				grid[x][y] = new_Equiplet;					
-				ArrayList<Integer> position = new ArrayList<Integer>();
-				position.add(x);
-				position.add(y);
-				equiplet_positions[stepnr] = position;
-				stepnr++;
-			}
-		}
-		System.out.println(String.format("Grid X[%s] Y[%s] created. \n[%s] Equiplets installed.", width+"", length+"", count()+""));
-		//Matrix.createMatrix(width, length);
-	}
 	
 	public void insert(ArrayList<EquipletAgent> eqs){
 		for(EquipletAgent ea : eqs){
@@ -245,7 +101,7 @@ public class Grid {
 				position.add(ea.getPosition()[1]); //create position for the matrix
 				equiplet_positions[ea.getCode()-1] = position;
 			}
-			System.out.println(String.format("Grid X[%s] Y[%s] created. \n[%s] Equiplets installed.", (max_X+1)+"", (max_Y+1)+"", count()+""));
+			System.out.println(String.format("Grid X[%s] Y[%s] created. \n[%s] Equiplets installed.", (max_X+1)+"", (max_Y+1)+"", max_Y*max_X+""));
 			//Matrix.createMatrix((max_X), (max_Y), structure_name);
 		}
 		else{
@@ -346,17 +202,6 @@ public class Grid {
 		return returnvalue;
 	}
 	
-	public static int count(){
-		int y = 0;
-		int x = 0;
-		for (y = 0; y < grid.length; y++){
-			for (x = 0; x < grid[y].length; x++){
-			}
-		}
-		int returnVal = y * x;
-		return returnVal;
-	}
-	
 	/*****************************************End of Calculations***********************************************/
 	
 	/*****************************************Getters/Setters***********************************************/
@@ -382,7 +227,7 @@ public class Grid {
 		return found;
 	}
 	
-	public static List[] getNeighbors(String structure_name){
+	public static ArrayList<Integer>[] getNeighbors(String structure_name){
 		return neighbor_list.get(Grid.getIndex(structure_name));
 	}
 	
@@ -406,6 +251,18 @@ public class Grid {
 		return grid;
 	}
 	
+	public static EquipletAgent[][] getStructure(String structure_name){
+		int counter = 0, found = 0;
+		for(String s: grid_names){
+			if (s == structure_name){
+				found = counter;
+				break;
+			}
+			counter++;
+		}
+		return saved_grids.get(found);
+	}
+	
 	public static int[] getEquipletPosition(int equiplet_number){
 		List<Integer> equiplet_coordinates = equiplet_positions[equiplet_number];
 		
@@ -414,7 +271,6 @@ public class Grid {
 		int position[] = {x,y};
 		return position;
 	}
-	
 	
 	public static double getAverageProductPath(){
 		double path_total = 0;

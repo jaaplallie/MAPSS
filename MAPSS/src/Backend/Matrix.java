@@ -5,8 +5,8 @@ import java.util.List;
 
 public class Matrix {
 
-	protected static List[][] matrix;
-	protected static ArrayList<List[][]> matrix_list = new ArrayList<List[][]>();
+	protected static ArrayList<Integer>[][] matrix;
+	protected static ArrayList<ArrayList<Integer>[][]> matrix_list = new ArrayList<ArrayList<Integer>[][]>();
 	
 	public static void createMatrix(int grid_width, int grid_length, String structure_name){
 		
@@ -29,15 +29,15 @@ public class Matrix {
 	
 	public static void setMatrix(String structure_name){
 		int index = Grid.getIndex(structure_name);
-		List[][] matrixie = matrix_list.get(index);
+		ArrayList<Integer>[][] matrixie = matrix_list.get(index);
 		matrix = matrixie;
 	}
 	
 	public static void logMatrix(){
 		MapssFileWriter.writeLogLn("Matrix layout:");
-		for (List[] i : matrix){
+		for (ArrayList<Integer>[] i : matrix){
 			String output = "";
-			for (List j : i){
+			for (ArrayList<Integer> j : i){
 				output += " " + j;
 			}
 			MapssFileWriter.writeLogLn(output);
@@ -45,10 +45,10 @@ public class Matrix {
 	}
 	
 	public static int getDistance(int start, int end){
-		List value = matrix[start][end];
+		ArrayList<Integer> value = matrix[start][end];
 		int distance = 0;
-		for (Object o : value){
-			distance += Math.abs((int)o);
+		for (int i : value){
+			distance += Math.abs(i);
 		}
 		return distance;
 	}

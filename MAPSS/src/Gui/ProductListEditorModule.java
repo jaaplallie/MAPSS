@@ -4,9 +4,6 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
 
-import Backend.ProgramData;
-
-import com.jgoodies.forms.builder.DefaultFormBuilder;
 import com.jgoodies.forms.factories.*;
 import com.jgoodies.forms.layout.*;
 

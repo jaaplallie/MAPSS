@@ -6,6 +6,7 @@ import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Map.Entry;
 
 import javax.swing.JButton;
@@ -34,6 +35,8 @@ public class CreateGridModule extends JPanel implements ActionListener{
 	private JButton buildGrid_Btn = new JButton("Build Grid");
 	private JPanel previewPanel = new JPanel();
 	private JPanel gridSizePanel = new JPanel();
+	
+	static ArrayList[] neighbors;
 	
 	private JTextField grid_string = new JTextField("1-2,0-3,0-3,1-2");
 	private JButton buildCustomGrid_Btn = new JButton("Build Custom Grid");
@@ -99,9 +102,7 @@ public class CreateGridModule extends JPanel implements ActionListener{
 			"Error: Please enter numbers that are at least 2", "Error Message",
 			JOptionPane.ERROR_MESSAGE);
 		} else {
-			//setEnabled(gridSizePanel.getComponents(), false);
-			
-			//Grid gc = new Grid();
+
 			switch (source.getText()) {
 				case "Build Grid":
 					previewPanel.removeAll();
@@ -114,9 +115,39 @@ public class CreateGridModule extends JPanel implements ActionListener{
 					
 					String name = name_field.getText();
 					if (name != null && name.isEmpty()){
-						name = x_size+"X"+y_size;
+						name = "No_name"+x_size+"x"+y_size;
+					} else {
+						name += x_size+"x"+y_size;
 					}
-					Grid.createNormalGrid(x_size, y_size, name);
+					
+					neighbors = new ArrayList[x_size*y_size];
+					
+					int stepnr = 0;
+					for (int y = 0; y < y_size; y++){
+						for (int x = 0; x < x_size; x++){
+							ArrayList<Integer> known_equiplets = new ArrayList<Integer>();
+							
+							if (y != 0){ //if not first row
+								known_equiplets.add(stepnr-x_size);
+							}
+							if (stepnr != (x_size*(y+1))-1){ //if not end of row
+								known_equiplets.add(stepnr+1);
+							}
+							if (stepnr+x_size < y_size*x_size){ //if not last row
+								known_equiplets.add(stepnr+x_size);
+							}
+							if (stepnr != x_size*y){ //if not start of row
+								known_equiplets.add(stepnr-1);
+							}
+							
+							neighbors[stepnr] = known_equiplets;
+							stepnr++;
+						}
+					}
+					
+					Grid.createStructure(x_size, y_size, name, neighbors);
+					MapssFileWriter.saveStructure(name, neighbors, null);
+					//Grid.createNormalGrid(x_size, y_size, name);
 					
 					break;
 				case "Build Custom Grid":
@@ -128,8 +159,10 @@ public class CreateGridModule extends JPanel implements ActionListener{
 					invalidate();
 					validate();
 					repaint();
+					
+					
 			
-					Grid.createCustom(x_size, y_size, grid_string.getText());
+					//Grid.createCustom(x_size, y_size, grid_string.getText());
 
 					break;
 				default:
