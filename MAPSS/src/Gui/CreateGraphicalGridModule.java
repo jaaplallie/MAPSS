@@ -4,10 +4,13 @@ import jade.wrapper.StaleProxyException;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -30,7 +33,7 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 	JPanel editorPanel = new JPanel();
 	JPanel graphicalGridPanel = new JPanel();
 	JComboBox<String> graphicalGridComboBox = new JComboBox<String>();
-	private JButton newGraphicalGrid_btn, editGraphicalGrid_btn, removeGraphicalGrid_btn;
+	private JButton newGraphicalGrid_btn, editGraphicalGrid_btn, removeGraphicalGrid_btn, saveGrid_btn;
 	private JSpinner input_xSize = new JSpinner();
 	private JSpinner input_ySize = new JSpinner();
 	private JButton buildGraphicalGrid_Btn;
@@ -62,13 +65,22 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 		removeGraphicalGrid_btn.setBorder(BorderFactory.createEmptyBorder());
 		removeGraphicalGrid_btn.setContentAreaFilled(false);
 		removeGraphicalGrid_btn.addActionListener(this);
-		builder.append(newGraphicalGrid_btn);
-		builder.append(editGraphicalGrid_btn);
-		builder.append(removeGraphicalGrid_btn);
-		builder.append(graphicalGridComboBox);
-		optionsPanel = builder.getPanel();
-		builder = new ProgramData().getNewBuilder();
-		add(optionsPanel, BorderLayout.NORTH);
+		saveGrid_btn = new JButton();
+		ImageIcon saveIcon = new ImageIcon("img/icons/disk.png");
+		saveGrid_btn.setIcon(saveIcon);
+		saveGrid_btn.setBorder(BorderFactory.createEmptyBorder());
+		saveGrid_btn.setContentAreaFilled(false);
+		saveGrid_btn.addActionListener(this);
+		optionsPanel.add(newGraphicalGrid_btn);
+		optionsPanel.add(Box.createRigidArea(new Dimension(10,0)));
+		optionsPanel.add(editGraphicalGrid_btn);
+		optionsPanel.add(Box.createRigidArea(new Dimension(10,0)));
+		optionsPanel.add(removeGraphicalGrid_btn);
+		optionsPanel.add(Box.createRigidArea(new Dimension(10,0)));
+		optionsPanel.add(graphicalGridComboBox);
+		optionsPanel.add(Box.createRigidArea(new Dimension(10,0)));
+		optionsPanel.add(saveGrid_btn);
+		optionsPanel.add(Box.createRigidArea(new Dimension(10,0)));
 		
 		builder.append(new JLabel("Size x-axis :"), input_xSize);
 		builder.nextLine();
@@ -76,10 +88,12 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 		buildGraphicalGrid_Btn.addActionListener(this);
 		builder.append(new JLabel("Size y-axis :"), input_ySize, buildGraphicalGrid_Btn);
 		editorPanel = builder.getPanel();
-		
-		gridPane.add(editorPanel);
-		gridPane.add(graphicalGridPanel);
-		add(gridPane, BorderLayout.CENTER);
+		builder = new ProgramData().getNewBuilder();
+		optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.X_AXIS));
+		optionsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		add(optionsPanel, BorderLayout.NORTH);
+		add(editorPanel, BorderLayout.CENTER);
+		add(graphicalGridPanel, BorderLayout.SOUTH);
 	}
 	
 	private void updateGraphicalGridComboBox(){
