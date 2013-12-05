@@ -9,10 +9,10 @@ import Gui.SimulationModule;
 /****************************************************************************************
 
 Hello there. To save you some time here is a small table of contents for this file:
-- Creation Functions. Functions that are used to create the grid or any other structure.
-- Calculations. Pretty self explanatory. There's a few attempts at math there.
-- Getters/Setters. Can you guess?
-- Other. Everything else. Includes a few log functions + few functions to clear/change some values.
+1. Creation Functions. Functions that are used to create the grid or any other structure.
+2. Calculations. Pretty self explanatory. There's a few attempts at math there.
+3. Getters/Setters. Can you guess?
+4. Other. Everything else. Includes a few log functions + few functions to clear/change some values.
 
 ****************************************************************************************/
 
@@ -34,7 +34,7 @@ public class Grid {
 	public Grid(){
 	}
 
-	/*****************************************Creation Functions***********************************************/
+	/***************************************** 1. Creation Functions***********************************************/
 
 	public static void createStructure(int width , int length, String name, ArrayList<Integer>[] neighbors){
 		x=width;
@@ -63,6 +63,7 @@ public class Grid {
 		Matrix.createMatrix(width, length, name);
 		ChartPresenter.updateChartStructures();
 		SimulationModule.updateProductStructures();
+		
 	}
 	
 	
@@ -112,7 +113,7 @@ public class Grid {
 	
 	/*****************************************End of Creation Functions***********************************************/
 	
-	/*****************************************Calculations***********************************************/
+	/***************************************** 2. Calculations***********************************************/
 
 	public static int[] calculateDifferentPath(int start_equiplet_number, int end_equiplet_number) {
 		int max = x*y;
@@ -204,7 +205,7 @@ public class Grid {
 	
 	/*****************************************End of Calculations***********************************************/
 	
-	/*****************************************Getters/Setters***********************************************/
+	/***************************************** 3. Getters/Setters***********************************************/
 	
 	public static void setGrid(String structure_name){
 		int index = Grid.getIndex(structure_name);
@@ -291,7 +292,7 @@ public class Grid {
 	/*****************************************End of Getters/Setters***********************************************/
 		
 	
-	/*****************************************Other***********************************************/
+	/***************************************** 4. Other***********************************************/
 
 	public static void addProductPath(int[] path){
 		product_paths.add(path);

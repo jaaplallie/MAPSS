@@ -102,8 +102,14 @@ public class CreateGridModule extends JPanel implements ActionListener{
 			"Error: Please enter numbers that are at least 2", "Error Message",
 			JOptionPane.ERROR_MESSAGE);
 		} else {
-
+			String name = name_field.getText();
+			if (name != null && name.isEmpty()){
+				name = "No_name"+x_size+"x"+y_size;
+			} else {
+				name += x_size+"x"+y_size;
+			}
 			switch (source.getText()) {
+			
 				case "Build Grid":
 					previewPanel.removeAll();
 					GraphicalGrid graphicalGrid = new GraphicalGrid(x_size, y_size);
@@ -112,13 +118,6 @@ public class CreateGridModule extends JPanel implements ActionListener{
 					invalidate();
 					validate();
 					repaint();
-					
-					String name = name_field.getText();
-					if (name != null && name.isEmpty()){
-						name = "No_name"+x_size+"x"+y_size;
-					} else {
-						name += x_size+"x"+y_size;
-					}
 					
 					neighbors = new ArrayList[x_size*y_size];
 					
@@ -161,6 +160,24 @@ public class CreateGridModule extends JPanel implements ActionListener{
 					repaint();
 					
 					
+					neighbors = new ArrayList[x_size*y_size];
+					ArrayList<Integer> tempList;
+	                int telnr = 0;
+	                String relations = grid_string.toString();
+					
+					for (String s : relations.split(",")){
+                        String[] temp = s.split("-");
+                        tempList = new ArrayList<Integer>();
+                        for (int i = 0; i < temp.length; i++){
+                                int tempInt = Integer.parseInt(temp[i]);
+                                tempList.add(tempInt);
+                        }
+                        neighbors[telnr] = tempList;
+                        telnr++;
+					}
+					
+					Grid.createStructure(x_size, y_size, name, neighbors);
+					MapssFileWriter.saveStructure(name, neighbors, null);
 			
 					//Grid.createCustom(x_size, y_size, grid_string.getText());
 

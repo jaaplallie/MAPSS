@@ -43,6 +43,7 @@ public class ProductAgent extends Agent {
 	protected void setup()  { 
 		addBehaviour(new WakerBehaviour(this, 0)  { 
 			 protected void handleElapsedTimeout() { 
+				System.out.println(getAID().getLocalName());
 				MapssFileWriter.writeLogLn("Hi. I'm product agent " + getAID().getLocalName() + "."); 
 				Object[] args = myAgent.getArguments();
 				String output = "";
