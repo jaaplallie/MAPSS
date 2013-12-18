@@ -88,19 +88,24 @@ public class GraphicalGridForwardSlashTransport extends GraphicalGridObject {
 	
 	@Override
 	protected void verifyIcon() {
+		ImageIcon tmpImageIcon = this.getImageIcon();
+		
 		if(NWDC){
 			if (SEDC){
-				this.setImageIcon("img/grid_icons/forwardslashNC.png");
+				tmpImageIcon = new ImageIcon("img/grid_icons/forwardslashNC.png");
 			}
 			else{
-				this.setImageIcon("img/grid_icons/forwardslashNWNC.png");
+				tmpImageIcon = new ImageIcon("img/grid_icons/forwardslashNWNC.png");
 			}
 		}
 		else if (SEDC){
-			this.setImageIcon(this.rotateIcon(new ImageIcon("img/grid_icons/forwardslashNWNC.png"), 180));
+			tmpImageIcon = this.rotateIcon(new ImageIcon("img/grid_icons/forwardslashNWNC.png"), 90);
+			tmpImageIcon = this.rotateIcon(tmpImageIcon, 90);
 		}
 		else{
-			this.setImageIcon("img/grid_icons/forwardslash.png");
+			tmpImageIcon = new ImageIcon("img/grid_icons/forwardslash.png");
 		}
+		
+		this.setImageIcon(tmpImageIcon);
 	}
 }

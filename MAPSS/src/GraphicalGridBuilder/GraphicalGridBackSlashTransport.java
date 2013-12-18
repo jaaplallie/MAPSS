@@ -89,19 +89,22 @@ public class GraphicalGridBackSlashTransport extends GraphicalGridObject {
 
 	@Override
 	protected void verifyIcon() {
+		ImageIcon tmpImageIcon = this.getImageIcon();
 		if(NEDC){
 			if (SWDC){
-				this.setImageIcon("img/grid_icons/backslashNC.png");
+				tmpImageIcon = new ImageIcon("img/grid_icons/backslashNC.png");
 			}
 			else{
-				this.setImageIcon("img/grid_icons/backslashNENC.png");
+				tmpImageIcon = new ImageIcon("img/grid_icons/backslashNENC.png");
 			}
 		}
 		else if (SWDC){
-			this.setImageIcon(this.rotateIcon(new ImageIcon("img/grid_icons/backslashNENC.png"), 180));
+			tmpImageIcon = this.rotateIcon(new ImageIcon("img/grid_icons/backslashNENC.png"), 90);
+			tmpImageIcon = this.rotateIcon(tmpImageIcon, 90);
 		}
 		else{
-			this.setImageIcon("img/grid_icons/backslash.png");
+			tmpImageIcon = new ImageIcon("img/grid_icons/backslash.png");
 		}
+		this.setImageIcon(tmpImageIcon);
 	}
 }

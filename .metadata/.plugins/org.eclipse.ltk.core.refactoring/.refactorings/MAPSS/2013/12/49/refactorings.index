@@ -3,3 +3,5 @@
 1386076209663	Rename field 'input_xSize'
 1386076216657	Rename field 'input_ySize'
 1386077291780	Rename field 'buildGraphicalGrid_Btn'
+1386155488683	Rename local variable 'topologieSetupTab'
+1386157215317	Rename method 'switchComponentEnabledState'
