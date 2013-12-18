@@ -1,11 +1,9 @@
 package Gui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -14,15 +12,15 @@ import javax.swing.JRootPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
-import Backend.Scenario;
-
-import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.layout.FormLayout;
 import net.miginfocom.swing.MigLayout;
-import javax.swing.JButton;
+import Backend.Scenario;
 
 public class scenarioConflictPopup extends JFrame implements ActionListener{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -718685378351904341L;
 	private JPanel contentPane;
 	private JTextField textField;
 	JButton btnNewButton;

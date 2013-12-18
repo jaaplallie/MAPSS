@@ -1,23 +1,16 @@
 package Gui;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Random;
 
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -31,14 +24,11 @@ import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 
-import Agents.EquipletAgent;
 import Backend.ChartCreator;
 import Backend.Grid;
-import Backend.MapssFileReader;
 import Backend.ProductStepGenerators;
 import Backend.ProgramData;
 import Backend.Simulations;
-import GraphicalGridBuilder.GraphicalGrid;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 

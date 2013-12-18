@@ -1,13 +1,10 @@
 package Gui;
 
-import jade.wrapper.StaleProxyException;
-
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Map.Entry;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -16,17 +13,18 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 
-import Backend.AgentEnvironmentCreator;
 import Backend.Grid;
 import Backend.MapssFileWriter;
-import Backend.Matrix;
-import Backend.ProductStepGenerators;
 import Backend.ProgramData;
 import GraphicalGridBuilder.GraphicalGrid;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 public class CreateGridModule extends JPanel implements ActionListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8789955424265486379L;
 	//
 	DefaultFormBuilder builder = new ProgramData().getNewBuilder();
 	private JSpinner input_xSize = new JSpinner();

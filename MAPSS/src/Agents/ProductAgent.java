@@ -11,6 +11,10 @@ import Backend.Simulations;
 import Gui.ChartPresenter;
 
 public class ProductAgent extends Agent { 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7280082099131651728L;
 	Grid gc;
 	String code;
 	Object[] args;
@@ -42,7 +46,12 @@ public class ProductAgent extends Agent {
 	
 	protected void setup()  { 
 		addBehaviour(new WakerBehaviour(this, 0)  { 
-			 protected void handleElapsedTimeout() { 
+			 /**
+			 * 
+			 */
+			private static final long serialVersionUID = 7246863708750792663L;
+
+			protected void handleElapsedTimeout() { 
 				MapssFileWriter.writeLogLn("Hi. I'm product agent " + getAID().getLocalName() + "."); 
 				Object[] args = myAgent.getArguments();
 				String output = "";

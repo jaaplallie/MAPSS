@@ -2,9 +2,7 @@ package Gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -13,16 +11,18 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 
 import Backend.AgentEnvironmentCreator;
-import Backend.ChartCreator;
 import Backend.Grid;
 import Backend.ProductStepGenerators;
 import Backend.ProgramData;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.layout.FormLayout;
 
 public class SimulationModule extends JPanel implements ActionListener{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7220211678403298456L;
 	private DefaultFormBuilder builder = new ProgramData().getNewBuilder();
 	private JButton startScenario_btn = new JButton("Start Scenario in JADE");
 	

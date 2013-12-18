@@ -17,7 +17,6 @@ INDEX VERSION 1.126+C:\Users\Jaap\Git\MAPSS\.metadata\.plugins\org.eclipse.jdt.c
 664829517.index
 1174553776.index
 1995173708.index
-1175317222.index
 3065916431.index
 1753745039.index
 3133528496.index

@@ -8,7 +8,7 @@ import Backend.ProgramData;
 import Gui.MainWindow;
 
 
-public class main{	
+public class Main{	
 	/**
 	 * Launch the application.
 	 */
@@ -17,6 +17,7 @@ public class main{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					@SuppressWarnings("unused")
 					AgentEnvironmentCreator aec = new AgentEnvironmentCreator();
 					ProgramData pd = new ProgramData();
 					pd.onProgramStart();

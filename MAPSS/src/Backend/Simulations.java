@@ -1,16 +1,10 @@
 package Backend;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import jade.wrapper.StaleProxyException;
-import Agents.EquipletAgent;
+
+import java.util.ArrayList;
+
 import Agents.ProductAgent;
-import Gui.ChartPresenter;
 
 public class Simulations {	
 	public static int finished_products;
