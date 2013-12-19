@@ -1,11 +1,20 @@
 package Gui;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.event.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 
-import com.jgoodies.forms.factories.*;
-import com.jgoodies.forms.layout.*;
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+
+import com.jgoodies.forms.factories.FormFactory;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.RowSpec;
 
 public class ProductListEditorModule extends JPanel {
 	
@@ -14,8 +23,8 @@ public class ProductListEditorModule extends JPanel {
 	 */
 	private static final long serialVersionUID = -6622313351868642228L;
 	
-	DefaultListModel productListModel = new DefaultListModel();
-	JList productList = new JList(productListModel);
+	DefaultListModel<String> productListModel = new DefaultListModel<String>();
+	JList<String> productList = new JList<String>(productListModel);
 	JScrollPane productListScrollPane = new JScrollPane(productList);
 	JPanel productFormContainer = new JPanel();
 	

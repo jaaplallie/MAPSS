@@ -1,13 +1,16 @@
 package Agents;
 
 
-import jade.core.AID;
-import jade.core.Agent; 
+import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import Backend.Grid;
  
 public class SchedulingAgent extends Agent { 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5622265932486253175L;
 	private int[][][] timetable; 
 	private int time;
 	//Dit is momenteel iets minder leeg
@@ -26,6 +29,11 @@ public class SchedulingAgent extends Agent {
 	
 	
 	private class WaitForMessages extends CyclicBehaviour {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = -6860382376677613594L;
+
 		public void action() {
 			ACLMessage msg = myAgent.receive(); 
 			if (msg != null) { 

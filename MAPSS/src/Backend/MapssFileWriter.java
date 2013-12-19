@@ -1,17 +1,16 @@
 package Backend;
 
-import java.util.ArrayList;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -19,10 +18,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.xml.sax.SAXParseException;
 
 import Agents.EquipletAgent;
 import Agents.ProductAgent;
@@ -191,7 +188,7 @@ public class MapssFileWriter {
 	
 	public static void saveStructure(String structure_name, ArrayList<Integer>[] neighbors, ArrayList<String[]> products){
 		try {
-			PrintWriter structureWriter = new PrintWriter("scenarios/" + structure_name + ".txt");
+			PrintWriter structureWriter = new PrintWriter("structures/" + structure_name + ".txt");
 			EquipletAgent[][] grid = Grid.getStructure(structure_name);
 			
 			structureWriter.println(grid.length+"x"+grid[0].length);
@@ -200,17 +197,7 @@ public class MapssFileWriter {
 			}
 			
 			
-//			if (products != null){
-//				//ArrayList<String[]> products = ProductStepGenerators.getBatch(structure_name);
-//				//System.out.println(products);
-//				for (String[] productsteps : products) {
-//					for (String s: productsteps){
-//						structureWriter.print(s+" ");
-//					}
-//					structureWriter.println("");
-//				}
-//
-//			}
+
 
 			structureWriter.close();
 			
@@ -223,16 +210,15 @@ public class MapssFileWriter {
 	
 	
 	public static void saveProducts(String structure_name, ArrayList<String[]> products){
+		
 		try {
+			 PrintWriter structureWriter = new PrintWriter(new BufferedWriter(
+					new FileWriter("structures/" + structure_name + ".txt", true)));
+			EquipletAgent[][] grid = Grid.getGrid();
 			
-			PrintWriter structureWriter;
-			structureWriter = new PrintWriter(new BufferedWriter(
-					new FileWriter("scenarios/" + structure_name + ".txt", true)));
-
-
 			if (products != null){
 				//ArrayList<String[]> products = ProductStepGenerators.getBatch(structure_name);
-				//System.out.println(products);
+				System.out.println(products);
 				for (String[] productsteps : products) {
 					for (String s: productsteps){
 						structureWriter.print(s+" ");
@@ -241,6 +227,7 @@ public class MapssFileWriter {
 				}
 
 			}
+			
 
 			structureWriter.close();
 			
@@ -249,9 +236,12 @@ public class MapssFileWriter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 	}
 	
+	
 
+	
 	public static void createLogFile(String name){
 		try {
 			logWriter = new PrintWriter("logs/" + name + ".txt");

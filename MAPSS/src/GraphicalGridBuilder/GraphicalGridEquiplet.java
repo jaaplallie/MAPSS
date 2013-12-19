@@ -1,5 +1,7 @@
 package GraphicalGridBuilder;
 
+import javax.swing.ImageIcon;
+
 public class GraphicalGridEquiplet extends GraphicalGridObject {
 
 	String name = "";
@@ -84,11 +86,14 @@ public class GraphicalGridEquiplet extends GraphicalGridObject {
 	
 	@Override
 	protected void verifyIcon() {
+		ImageIcon tmpImageIcon = this.getImageIcon();
 		if(NDC && NEDC && EDC && SEDC && SDC && SWDC && WDC && NWDC){
 			this.setImageIcon("img/grid_icons/equipletNC.png");
+			tmpImageIcon = new ImageIcon("img/grid_icons/equipletNC.png");
 		}
 		else{
-			this.setImageIcon("img/grid_icons/equiplet.png");
+			tmpImageIcon = new ImageIcon("img/grid_icons/equiplet.png");
 		}
+		this.setImageIcon(tmpImageIcon);
 	}
 }

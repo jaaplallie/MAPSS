@@ -106,19 +106,22 @@ public class GraphicalGridVerticalTransport extends GraphicalGridObject {
 	
 	@Override
 	protected void verifyIcon() {
+		ImageIcon tmpImageIcon = this.getImageIcon();
 		if(NDC){
 			if (SDC){
-				this.setImageIcon(this.rotateIcon(new ImageIcon("img/grid_icons/horizontalNC.png"), 90));
+				tmpImageIcon = this.rotateIcon(new ImageIcon("img/grid_icons/horizontalNC.png"), 90);
 			}
 			else{
-				this.setImageIcon(this.rotateIcon(new ImageIcon("img/grid_icons/horizontalWNC.png"), 90));
+				tmpImageIcon = this.rotateIcon(new ImageIcon("img/grid_icons/horizontalWNC.png"), 90);
 			}
 		}
 		else if (SDC){
-			this.setImageIcon(this.rotateIcon(new ImageIcon("img/grid_icons/horizontalWNC.png"), 270));
+			tmpImageIcon = this.rotateIcon(new ImageIcon("img/grid_icons/horizontalWNC.png"), -90);
 		}
 		else{
-			this.setImageIcon("img/grid_icons/vertical.png");
+			tmpImageIcon = new ImageIcon("img/grid_icons/vertical.png");
 		}
+		
+		this.setImageIcon(tmpImageIcon);
 	}
 }

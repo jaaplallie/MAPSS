@@ -6,8 +6,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -21,18 +19,19 @@ import javax.swing.ListSelectionModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import net.miginfocom.swing.MigLayout;
-import Backend.AgentEnvironmentCreator;
-import Backend.ProgramData;
-import Backend.Scenario;
 import Backend.MapssFileReader;
 import Backend.MapssFileWriter;
+import Backend.ProgramData;
+import Backend.Scenario;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
-import com.jgoodies.forms.layout.FormLayout;
 
 public class ScenarioImportExportWindow extends JFrame implements ActionListener, FocusListener{
 
-	private JPanel contentPane;
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7146199946402340955L;
 	private DefaultFormBuilder screenBuilder = new ProgramData().getNewBuilder();
 	JButton loadButton, importButton, exportButton, removeButton;
 	private JList<Scenario> scenarioList;

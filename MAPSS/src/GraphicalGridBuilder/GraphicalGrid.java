@@ -194,7 +194,6 @@ public class GraphicalGrid extends JFrame{
 					new ActionListener(){
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
-							
 							saveGrid_Btn.setEnabled(true);
 							verify(btn_y, btn_X);
 						}
@@ -241,7 +240,7 @@ public class GraphicalGrid extends JFrame{
 					southTarget = grid[(subjectY+1)][(subjectX)];
 					southEastTarget = grid[(subjectY+1)][(subjectX+1)];
 				}
-				else if(subjectX == (grid[grid.length-1].length)){
+				else if(subjectX == (grid[grid.length-1].length-1)){
 					//north east cornerstone
 					//westTarget, southWestTarget, southTarget
 					westTarget = grid[(subjectY)][(subjectX-1)];
@@ -266,7 +265,7 @@ public class GraphicalGrid extends JFrame{
 					eastTarget = grid[(subjectY)][(subjectX+1)];
 					northEastTarget = grid[(subjectY-1)][(subjectX+1)];
 				}
-				else if(subjectX == grid[grid.length-1].length){
+				else if(subjectX == grid[grid.length-1].length-1){
 					//south east cornerstone
 					//westTarget, northWestTarget, northTarget
 					northTarget = grid[(subjectY-1)][(subjectX)];
@@ -292,7 +291,7 @@ public class GraphicalGrid extends JFrame{
 				northEastTarget = grid[(subjectY-1)][(subjectX+1)];
 				southEastTarget = grid[(subjectY+1)][(subjectX+1)];
 			}
-			else if(subjectX == grid[grid.length-1].length){
+			else if(subjectX == grid[grid.length-1].length-1){
 				//east border
 				//northTarget, northWestTarget, westTarget, southWestTarget, southTarget
 				northTarget = grid[(subjectY-1)][(subjectX)];

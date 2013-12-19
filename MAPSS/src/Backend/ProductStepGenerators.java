@@ -1,9 +1,7 @@
 package Backend;
 
-import java.awt.List;
 import java.util.ArrayList;
 
-import Agents.EquipletAgent;
 import Gui.ChartPresenter;
 
 /***************************************************************************

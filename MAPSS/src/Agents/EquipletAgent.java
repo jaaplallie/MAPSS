@@ -2,13 +2,15 @@ package Agents;
 
 import jade.core.Agent;
 import jade.core.behaviours.WakerBehaviour;
-import jade.wrapper.AgentController;
-import Backend.Grid;
 
 //comment test
 
 public class EquipletAgent extends Agent { 
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4937213014716759346L;
 	int code = -1;
 	int position[];
 	Object[] args;
@@ -45,7 +47,12 @@ public class EquipletAgent extends Agent {
 	
 	protected void setup() { 
 		addBehaviour(new WakerBehaviour(this, 0) { 
-			 protected void handleElapsedTimeout() {
+			 /**
+			 * 
+			 */
+			private static final long serialVersionUID = -408062989440625342L;
+
+			protected void handleElapsedTimeout() {
 //				 //int[] equiplet_xy_values = Grid.getEquipletPosition(getCode(), );				 	 
 //				 System.out.println(
 //					 "Hi. I'm equiplet agent " + getAID().getLocalName() + "." +

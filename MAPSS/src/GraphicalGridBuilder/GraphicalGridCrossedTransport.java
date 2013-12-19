@@ -135,60 +135,64 @@ public class GraphicalGridCrossedTransport extends GraphicalGridObject {
 	
 	@Override
 	protected void verifyIcon() {
+		ImageIcon tmpImageIcon = this.getImageIcon();
 		textualIcon = "X";
 		if(textualIcon.equals("+")){
 			//not implemented yet
 		}
 		else{
 			if(NWDC && !NEDC && !SWDC && !SEDC){
-				this.setImageIcon("img/grid_icons/crossedslashNWNC.png");
+				tmpImageIcon = new ImageIcon("img/grid_icons/crossedslashNWNC.png");
 			}
 			else if(!NWDC && NEDC && !SWDC && !SEDC){
-				this.setImageIcon(this.rotateIcon(new ImageIcon("img/grid_icons/crossedslashNWNC.png"), 90));
+				tmpImageIcon = this.rotateIcon(new ImageIcon("img/grid_icons/crossedslashNWNC.png"), 90);
 			}
 			else if(!NWDC && !NEDC && SWDC && !SEDC){
-				this.setImageIcon(this.rotateIcon(new ImageIcon("img/grid_icons/forwardslashNWNC.png"), 270));
+				tmpImageIcon = this.rotateIcon(new ImageIcon("img/grid_icons/forwardslashNWNC.png"), -90);
 			}
 			else if(!NWDC && !NEDC && !SWDC && SEDC){
-				this.setImageIcon(this.rotateIcon(new ImageIcon("img/grid_icons/forwardslashNWNC.png"), 180));
+				tmpImageIcon = this.rotateIcon(new ImageIcon("img/grid_icons/forwardslashNWNC.png"), 90);
+				tmpImageIcon = this.rotateIcon(tmpImageIcon, 90);
 			}//--
 			else if(NWDC && NEDC && !SWDC && !SEDC){
-				this.setImageIcon(this.rotateIcon(new ImageIcon("img/grid_icons/crossedslashNWSWNC.png"), 90));
+				tmpImageIcon = this.rotateIcon(new ImageIcon("img/grid_icons/crossedslashNWSWNC.png"), 90);
 			}
 			else if(!NWDC && NEDC && SWDC && !SEDC){
-				this.setImageIcon("img/grid_icons/crossedslashNESWNC.png");
+				tmpImageIcon = new ImageIcon("img/grid_icons/crossedslashNESWNC.png");
 			}
 			else if(!NWDC && !NEDC && SWDC && SEDC){
-				this.setImageIcon(this.rotateIcon(new ImageIcon("img/grid_icons/crossedslashNWSWNC.png"), 270));
+				tmpImageIcon = this.rotateIcon(new ImageIcon("img/grid_icons/crossedslashNWSWNC.png"), -90);
 			}
 			else if(NWDC && !NEDC && !SWDC && SEDC){
-				this.setImageIcon(this.rotateIcon(new ImageIcon("img/grid_icons/crossedslashNESWNC.png"), 90));
+				tmpImageIcon = this.rotateIcon(new ImageIcon("img/grid_icons/crossedslashNESWNC.png"), 90);
 			}
 			else if(NWDC && !NEDC && SWDC && !SEDC){
-				this.setImageIcon("img/grid_icons/crossedslashNWSWNC.png");
+				tmpImageIcon = new ImageIcon("img/grid_icons/crossedslashNWSWNC.png");
 			}
 			else if(!NWDC && NEDC && !SWDC && SEDC){
-				this.setImageIcon(this.rotateIcon(new ImageIcon("img/grid_icons/crossedslashNWSWNC.png"), 180));
+				tmpImageIcon = this.rotateIcon(new ImageIcon("img/grid_icons/crossedslashNWSWNC.png"), 90);
+				tmpImageIcon = this.rotateIcon(tmpImageIcon, 90);
 			}//--
 			else if(NWDC && NEDC && SWDC && !SEDC){
-				this.setImageIcon(this.rotateIcon(new ImageIcon("img/grid_icons/crossedslash3NC.png"), 270));
+				tmpImageIcon = this.rotateIcon(new ImageIcon("img/grid_icons/crossedslash3NC.png"), -90);
 			}
 			else if(!NWDC && NEDC && SWDC && SEDC){
-				this.setImageIcon(this.rotateIcon(new ImageIcon("img/grid_icons/crossedslash3NC.png"), 90));
+				tmpImageIcon = this.rotateIcon(new ImageIcon("img/grid_icons/crossedslash3NC.png"), 90);;
 			}
 			else if(NWDC && !NEDC && SWDC && SEDC){
-				this.setImageIcon(this.rotateIcon(new ImageIcon("img/grid_icons/crossedslash3NC.png"), 180));
+				tmpImageIcon = this.rotateIcon(new ImageIcon("img/grid_icons/crossedslash3NC.png"), 90);
+				tmpImageIcon = this.rotateIcon(tmpImageIcon, 90);
 			}
 			else if(NWDC && NEDC && !SWDC && SEDC){
-				this.setImageIcon("img/grid_icons/crossedslash3NC.png");
+				tmpImageIcon = new ImageIcon("img/grid_icons/crossedslash3NC.png");
 			}
 			else if(NWDC && NEDC && SWDC && SEDC){
-				this.setImageIcon("img/grid_icons/crossedslashNC.png");
+				tmpImageIcon = new ImageIcon("img/grid_icons/crossedslashNC.png");
 			}
 			else{
-				this.setImageIcon("img/grid_icons/crossedslash.png");
+				tmpImageIcon = new ImageIcon("img/grid_icons/crossedslash.png");
 			}
-			
 		}
+		this.setImageIcon(tmpImageIcon);
 	}
 }
