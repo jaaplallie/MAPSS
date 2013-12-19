@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import Backend.AgentEnvironmentCreator;
 import Backend.MapssFileReader;
 import Backend.ProgramData;
+import Backend.Scenario;
 import Gui.MainWindow;
 
 
@@ -16,6 +17,7 @@ public class main{
 		System.out.println("Multi-Agent Production System Simulator (MAPSS) started.");
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+
 				try {
 					AgentEnvironmentCreator aec = new AgentEnvironmentCreator();
 					ProgramData pd = new ProgramData();

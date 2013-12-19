@@ -48,6 +48,7 @@ public class ProductAgent extends Agent {
 				Object[] args = myAgent.getArguments();
 				String output = "";
 				int[] productPath;
+				int[] otherPath;
 				 
 				boolean right_sized_grid = true;
 				for (Object o : args) {
@@ -74,7 +75,6 @@ public class ProductAgent extends Agent {
 				
 				
 				if (safe_grid == true & right_sized_grid == true){
-					//int start_position = (int)(Math.random()*(grid.length*grid[0].length));
 					int start_position = 0;
 					if (args[0] == null){
 						
@@ -83,56 +83,132 @@ public class ProductAgent extends Agent {
 					}
 					
 					int[] start_xy_values = Grid.getEquipletPosition(start_position);
-					//ArrayList<Integer> productPath = 
 					
 					MapssFileWriter.writeLogLn("I start at equiplet number: " + start_position); 
-					MapssFileWriter.writeLogLn("That equiplet's position is " + 
-							" x:" + start_xy_values[0] + 
-							", y:" + start_xy_values[1]); 
 					
 					int current_position = start_position;
 					int next_position;
-					double hops = 0;
-					ArrayList<Integer> hops_per_step_counter = new ArrayList<Integer>();
+					double hops_in_path = 0;
+					double hops_in_other_path = 0;
 					
 					productPath = new int[]{start_position};
+					otherPath = new int[]{start_position};
 					
-					//Object O = args[0];
-					
-					//for (Object o : args) {
+					boolean destination_reachable = true;
 					for (int i = 1; i < args.length; i++){
 						next_position = Integer.parseInt(args[i].toString());
-						//next_position = Integer.parseInt(o.toString());
-						int path[] = Grid.calculateDifferentPath(current_position, next_position);
-						Grid.addProductStepPath(path);
 						
-						current_position = next_position;
-						hops += path.length;
+						// Fetch 2 path's
+						int first_path[] = Grid.calculatePath(current_position, next_position, 0, Grid.getCurrentNeighbors());
+						for (int j: first_path){
+							if (j == Grid.getMaxvalue()+1){
+								destination_reachable = false;
+								break;
+							}
+						}
 						
-						int[] tempPath = new int[(int) hops+1];
-						System.arraycopy(productPath, 0, tempPath, 0, productPath.length);
-						System.arraycopy(path, 0, tempPath, productPath.length, path.length);
+						int second_path[] = Grid.calculatePath(current_position, next_position, 1, Grid.getCurrentNeighbors());
+						for (int j: second_path){
+							if (j == Grid.getMaxvalue()+1){
+								destination_reachable = false;
+								break;
+							}
+						}
 						
-						productPath = new int[(int) hops+1];
-						productPath = tempPath;
+						if (destination_reachable == true){
+							current_position = next_position;
+							
+							hops_in_path += first_path.length;
+							
+							int[] tempPath = new int[(int) hops_in_path+1];
+							System.arraycopy(productPath, 0, tempPath, 0, productPath.length);
+							System.arraycopy(first_path, 0, tempPath, productPath.length, first_path.length);
+							
+							productPath = new int[(int) hops_in_path+1];
+							productPath = tempPath;
+							
+							
+							hops_in_other_path += second_path.length;
+							
+							tempPath = new int[(int) hops_in_other_path+1];
+							System.arraycopy(otherPath, 0, tempPath, 0, otherPath.length);
+							System.arraycopy(second_path, 0, tempPath, otherPath.length, second_path.length);
+							
+							otherPath = new int[(int) hops_in_other_path+1];
+							otherPath = tempPath;
+							
+							
+							// Choose the shortest path
+							int chosen_path[];
+							if (productPath.length <= otherPath.length){
+								chosen_path = first_path;
+								
+							} else {
+								chosen_path = second_path;
+							}
+							
+							Grid.addProductStepPath(chosen_path);
+							
+						} else {
+							break;
+						}
 						
-						hops_per_step_counter.add(path.length);
 					}	
 					
-					Grid.addProductPath(productPath);
 					
-					MapssFileWriter.writeLog("Path I need to complete the product: ");
-					for (int o: productPath){
-						MapssFileWriter.writeLog(o+" ");
+					
+					
+					
+					if (destination_reachable == true){
+						//Grid.addProductPath(productPath);
+						
+						Simulations.addFinishedProduct();
+						MapssFileWriter.writeLog("Path I need to complete the product: ");
+						for (int o: productPath){
+							MapssFileWriter.writeLog(o+" ");
+						}
+						MapssFileWriter.writeLogLn("");
+						MapssFileWriter.writeLogLn("Total hops needed for this: " + hops_in_path);
+						double average = hops_in_path/((args.length)-1);
+						
+						MapssFileWriter.writeLogLn("Average number of hops needed for each product step: " + average);
+						MapssFileWriter.writeLogLn("");
+						
+						MapssFileWriter.writeLog("Alternative path: ");
+						for (int o: otherPath){
+							MapssFileWriter.writeLog(o+" ");
+						}
+						MapssFileWriter.writeLogLn("");
+						MapssFileWriter.writeLogLn("Total hops needed for this: " + hops_in_other_path);
+						double other_average = hops_in_other_path/((args.length)-1);
+						
+						MapssFileWriter.writeLogLn("Average number of hops needed for each product step: " + other_average);
+						
+						//Use the shortest path.
+						if (average <= other_average){
+							Grid.addPathLenght(average);
+						} else {
+							Grid.addPathLenght(other_average);
+						}
+						
+						
+					} else {
+						MapssFileWriter.writeLog("I couldn't reach everything. This is as far as I got: ");
+						
+						Simulations.addUnfinishedProduct();
+						for (int o: productPath){
+							MapssFileWriter.writeLog(o+" ");
+						}
+						MapssFileWriter.writeLogLn("");
 					}
-					MapssFileWriter.writeLogLn("");
 					
-					Simulations.addFinishedProduct();
+					
+					
+					//Simulations.addFinishedProduct();
+					
 					ChartPresenter.updateProgress(1);
 					
-					MapssFileWriter.writeLogLn("Total hops needed for this product: " + hops);
-					double average = hops/args.length;
-					MapssFileWriter.writeLogLn("Average number of hops needed for each product step: " + average);
+					
 			
 					
 					

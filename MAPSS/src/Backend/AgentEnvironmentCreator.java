@@ -42,26 +42,26 @@ public class AgentEnvironmentCreator {
 	@SuppressWarnings("static-access")
 	public static void startScenario(){
 		Scenario started_Scenario = ProgramData.getCurrentlyLoadedScenario();
-		System.out.println("\nScenario " + started_Scenario.scenarioName + " started.");
-		EquipletAgent[][] Grid = started_Scenario.scenario_Grid.getGrid();
-		for (int y = 0; y < started_Scenario.scenario_Grid.getY(); y++){
-			for (int x = 0; x < started_Scenario.scenario_Grid.getX(); x++){
-				try {
-					addEquipletAgent(Grid[x][y]);
-				} catch (StaleProxyException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		for(ProductAgent pa : started_Scenario.getScenario_Products()){
-			try {
-				addProductAgent(pa);
-			} catch (StaleProxyException e) {
-				e.printStackTrace();
-			}
-		}
+//		System.out.println("\nScenario " + started_Scenario.scenarioName + " started.");
+//		EquipletAgent[][] Grid = started_Scenario.scenario_Grid.getGrid();
+//		for (int y = 0; y < started_Scenario.scenario_Grid.getY(); y++){
+//			for (int x = 0; x < started_Scenario.scenario_Grid.getX(); x++){
+//				try {
+//					addEquipletAgent(Grid[x][y]);
+//				} catch (StaleProxyException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		}
+//		for(ProductAgent pa : started_Scenario.getScenario_Products()){
+//			try {
+//				addProductAgent(pa);
+//			} catch (StaleProxyException e) {
+//				e.printStackTrace();
+//			}
+//		}
 		
-		System.out.println("\nScenario " + started_Scenario.scenarioName + " finished.");
+		//System.out.println("\nScenario " + started_Scenario.scenarioName + " finished.");
 	}
 	
 	public static void start(){

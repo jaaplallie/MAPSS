@@ -14,13 +14,19 @@ import Gui.ChartPresenter;
 
 public class Simulations {	
 	public static int finished_products;
+	public static int unfinished_products;
 	
 	public static void addFinishedProduct() {
 		finished_products ++;
 	}
 	
+	public static void addUnfinishedProduct() {
+		unfinished_products ++;
+	}
+	
 	public static void clearProducts(){
 		finished_products = 0;
+		unfinished_products = 0;
 	}
 	
 	public static double productAgentsInRegularGridSimulation(String structure_name, String log_name){
@@ -53,11 +59,11 @@ public class Simulations {
 			}
 		}
 		
-		while (finished_products < products.size()){} //Wait until each product agent is finished
+		while ((finished_products + unfinished_products) < products.size()){} //Wait until each product agent is finished
 
-		double average = Grid.getAverageProductStepPath();
-		MapssFileWriter.writeLogLn("The average path for each product step is: " + Grid.getAverageProductStepPath() + " long");
-		MapssFileWriter.writeLogLn("The average path for each product is: " + Grid.getAverageProductPath() + " long");
+		double average = Grid.getTotalAverageProductSteps()/products.size();
+		MapssFileWriter.writeLogLn("The average path for each product step is: " + average + " long");
+		//MapssFileWriter.writeLogLn("The average path for each product is: " + Grid.getAverageProductPath() + " long");
 
 		clearProducts();
 		AgentEnvironmentCreator.destroyMainContainer();
@@ -70,4 +76,6 @@ public class Simulations {
 		
 		return average;
 	}
+
+
 }
