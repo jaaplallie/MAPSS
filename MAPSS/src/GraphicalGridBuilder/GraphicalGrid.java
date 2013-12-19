@@ -489,6 +489,33 @@ public class GraphicalGrid extends JFrame{
 		}
 		return textualGrid;
 	}
+	
+	public void inputSavableFormat(String input){
+		String[] inputLines = input.split(System.getProperty("line.separator"));
+		
+		for(String s : inputLines){
+			String[] lineObjects = s.split(",");
+		}
+	}
+	
+	public StringBuilder toSavableFormat(){
+		StringBuilder sb = new StringBuilder();
+		
+		for(int targetY = 0; targetY < grid.length; targetY++){
+			sb.append("[");
+			for(int targetX = 0; targetX < grid[targetY].length; targetX++){
+				GraphicalGridObject currentObj = grid[targetY][targetX].getInputObject();
+				sb.append(currentObj.getTextualInputRepresentation());
+				if(targetX != grid[targetY].length){
+					sb.append(",");
+				}
+			}
+			sb.append("]");
+			sb.append(System.getProperty("line.separator"));
+		}
+		
+		return sb;
+	}
 
 	@Override
 	public String toString() {
