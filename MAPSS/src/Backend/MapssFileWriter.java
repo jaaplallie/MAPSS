@@ -1,7 +1,10 @@
 package Backend;
 
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
@@ -43,19 +46,19 @@ public class MapssFileWriter {
 			Element rootElement = doc.createElement("SCN");
 			doc.appendChild(rootElement);
 			doc.createAttribute("NAME");
-			if(!scenario.scenarioName.isEmpty() || scenario.scenarioName != null){
-				scenarioName = scenario.scenarioName;
-			}
-			else{
-				scenarioName = defaultString;
-			}
+//			if(!scenario.scenarioName.isEmpty() || scenario.scenarioName != null){
+//				scenarioName = scenario.scenarioName;
+//			}
+//			else{
+//				scenarioName = defaultString;
+//			}
 			rootElement.setAttribute("NAME", scenarioName);
 			Element grd = doc.createElement("GRD");
 			doc.createAttribute("XSIZE");
 			doc.createAttribute("YSIZE");
 			//check
-			grd.setAttribute("XSIZE", scenario.scenario_Grid.getX()+"");
-			grd.setAttribute("YSIZE", scenario.scenario_Grid.getY()+"");
+//			grd.setAttribute("XSIZE", scenario.scenario_Grid.getX()+"");
+//			grd.setAttribute("YSIZE", scenario.scenario_Grid.getY()+"");
 			Element eqs = doc.createElement("EQS");
 			
 			EquipletAgent[][] fetched_Grid = Grid.getGrid();
@@ -115,29 +118,29 @@ public class MapssFileWriter {
 			rootElement.appendChild(grd);
 			
 			//<P>P6<NPS>18</NPS><STEPS>11,2,11,0,14,11,16,1,6,9,21,15,18,3,6,19,7,11,</STEPS></P>
-			for(ProductAgent pa : scenario.scenario_Products){
-				String prod_code = pa.getCode();
-				String prod_steps = pa.getArgsString();
-				
-				if(!prod_code.isEmpty()){
-					if(!prod_steps.isEmpty()){
-						Element new_prod = doc.createElement("P");
-						Element new_prod_name = doc.createElement("NAME");
-						Element new_prod_steps = doc.createElement("STEPS");
-						new_prod_name.appendChild(doc.createTextNode(prod_code));
-						new_prod_steps.appendChild(doc.createTextNode(prod_steps));
-						new_prod.appendChild(new_prod_name);
-						new_prod.appendChild(new_prod_steps);
-						rootElement.appendChild(new_prod);
-					}
-					else{
-						System.out.println("prod steps empty where prod code is: " + prod_code);
-					}
-				}
-				else{
-					System.out.println("prod code empty");
-				}
-			}
+//			for(ProductAgent pa : scenario.scenario_Products){
+//				String prod_code = pa.getCode();
+//				String prod_steps = pa.getArgsString();
+//				
+//				if(!prod_code.isEmpty()){
+//					if(!prod_steps.isEmpty()){
+//						Element new_prod = doc.createElement("P");
+//						Element new_prod_name = doc.createElement("NAME");
+//						Element new_prod_steps = doc.createElement("STEPS");
+//						new_prod_name.appendChild(doc.createTextNode(prod_code));
+//						new_prod_steps.appendChild(doc.createTextNode(prod_steps));
+//						new_prod.appendChild(new_prod_name);
+//						new_prod.appendChild(new_prod_steps);
+//						rootElement.appendChild(new_prod);
+//					}
+//					else{
+//						System.out.println("prod steps empty where prod code is: " + prod_code);
+//					}
+//				}
+//				else{
+//					System.out.println("prod code empty");
+//				}
+//			}
 			
 			try {
 				// write the content into xml file
@@ -194,17 +197,7 @@ public class MapssFileWriter {
 			}
 			
 			
-			if (products != null){
-				//ArrayList<String[]> products = ProductStepGenerators.getBatch(structure_name);
-				System.out.println(products);
-				for (String[] productsteps : products) {
-					for (String s: productsteps){
-						structureWriter.print(s+" ");
-					}
-					structureWriter.println("");
-				}
 
-			}
 
 			structureWriter.close();
 			
@@ -216,34 +209,30 @@ public class MapssFileWriter {
 	}
 	
 	
-	public static void saveOldStructure(String structure_name){
+	public static void saveProducts(String structure_name, ArrayList<String[]> products){
 		
 		try {
-			PrintWriter structureWriter = new PrintWriter("structures/" + structure_name + ".txt");
+			 PrintWriter structureWriter = new PrintWriter(new BufferedWriter(
+					new FileWriter("structures/" + structure_name + ".txt", true)));
 			EquipletAgent[][] grid = Grid.getGrid();
 			
-			structureWriter.println(grid.length+"x"+grid[0].length);
-			for (Object neighbor : Grid.getNeighbors(structure_name)) {
-				structureWriter.println(neighbor);
-			}
-			
-			
-			if (ProductStepGenerators.getProducts(structure_name) != null){
-				ArrayList<String[]> products = ProductStepGenerators.getBatch(structure_name);
+			if (products != null){
+				//ArrayList<String[]> products = ProductStepGenerators.getBatch(structure_name);
 				System.out.println(products);
-				for (Object[] productsteps : products) {
-					for (Object s: productsteps){
-						
+				for (String[] productsteps : products) {
+					for (String s: productsteps){
 						structureWriter.print(s+" ");
 					}
-					System.out.println("product saved");
+					structureWriter.println("");
 				}
+
 			}
+			
 
 			structureWriter.close();
 			
 			
-		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

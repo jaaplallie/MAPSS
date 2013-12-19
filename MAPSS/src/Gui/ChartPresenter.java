@@ -153,7 +153,6 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
 		structureBox.removeAllItems();
 		
 		for (String name: Grid.getStructureNames()){
-			System.out.println("trying: "+name);
 			if (ProductStepGenerators.getBatch(name) != null){
 				structureBox.addItem(name);
 			}

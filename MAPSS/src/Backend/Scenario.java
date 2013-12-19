@@ -6,59 +6,52 @@ import Agents.EquipletAgent;
 import Agents.ProductAgent;
 
 public class Scenario {
-	String scenarioName;
-	Grid scenario_Grid = new Grid();
-	EquipletAgent[][] scenario_EquipletGrid;
-	ArrayList<ProductAgent> scenario_Products;
+	String name;
+	//Grid scenario_Grid = new Grid();
+	EquipletAgent[][] structure;
+	int[] positions;
+	ArrayList<Integer>[] neighbors;
+	int[] products;
+	int[][] matrix;
 	
-	public Scenario(String scenarioName){
-		this.scenarioName = scenarioName;
-		scenario_Products = new ArrayList<ProductAgent>();
+	//EquipletAgent[][] scenario_EquipletGrid;
+	//ArrayList<ProductAgent> scenario_Products;
+	
+	
+	
+	
+	public Scenario(
+			String scenarioName,
+			int x_size,
+			int y_size,
+			int[] positions,
+			ArrayList<Integer>[] neighbors,
+			int[] products
+			){
+		this.name = scenarioName;
+		this.structure = Grid.createStructure(x_size, y_size, scenarioName, neighbors);
+		//this.positions
+		//scenario_Products = new ArrayList<ProductAgent>();
 	}
 	
 	public String getScenarioName() {
-		return scenarioName;
+		return name;
 	}
 
 	public void setScenarioName(String scenarioName) {
-		this.scenarioName = scenarioName;
+		this.name = scenarioName;
 	}
 
-//	public void createGrid(int x, int y){
-//		Grid.create(x, y);
-//		scenario_EquipletGrid = Grid.getGrid();
+
+	
+//	public EquipletAgent[][] getGrid(){
+//		return Grid;
 //	}
-	
-	public void insertAgents(ArrayList<EquipletAgent> eqs){
-		scenario_Grid.insert(eqs);
-	}
-	
-	public void insertAgentsCreateGrid(ArrayList<EquipletAgent> eqs){
-		scenario_Grid.createGridAndInsert(eqs);
-	}
-	
-	public EquipletAgent[][] getGrid(){
-		return scenario_EquipletGrid;
+
+	public int[] getProducts() {
+		return products;
 	}
 
-	public ArrayList<ProductAgent> getScenario_Products() {
-		return scenario_Products;
-	}
-	
-	public void addProduct(ProductAgent pa){
-		System.out.println(
-				String.format(
-						"ProductAgent [%s] added to grid.", 
-						pa.getCode()
-				)
-		);
-		scenario_Products.add(pa);
-	}
-
-	@Override
-	public String toString() {
-		return "" + scenarioName + "";
-	}
 	
 	
 }

@@ -39,7 +39,6 @@ public class CreateGridModule extends JPanel implements ActionListener{
 	private JTextField grid_string = new JTextField("1-2,0-3,0-3,1-2");
 	private JButton buildCustomGrid_Btn = new JButton("Build Custom Grid");
 	
-	
 	public CreateGridModule() {
 		buildScreen();
 	}
@@ -60,10 +59,8 @@ public class CreateGridModule extends JPanel implements ActionListener{
 		
         builder.append(new JLabel("Input string:"), grid_string);
         builder.append(buildCustomGrid_Btn);
-
-
+        builder.nextLine();
 		
-		builder.nextLine();
 		builder.appendSeparator("Preview");
 		builder.append(previewPanel);
 		
@@ -100,8 +97,12 @@ public class CreateGridModule extends JPanel implements ActionListener{
 			"Error: Please enter numbers that are at least 2", "Error Message",
 			JOptionPane.ERROR_MESSAGE);
 		} else {
-
+			String name = name_field.getText();
+			if (name != null && name.isEmpty()){
+				name = "No_name"+x_size+"x"+y_size;
+			} 
 			switch (source.getText()) {
+			
 				case "Build Grid":
 					previewPanel.removeAll();
 					GraphicalGrid graphicalGrid = new GraphicalGrid(x_size, y_size);
@@ -110,13 +111,6 @@ public class CreateGridModule extends JPanel implements ActionListener{
 					invalidate();
 					validate();
 					repaint();
-					
-					String name = name_field.getText();
-					if (name != null && name.isEmpty()){
-						name = "No_name"+x_size+"x"+y_size;
-					} else {
-						name += x_size+"x"+y_size;
-					}
 					
 					neighbors = new ArrayList[x_size*y_size];
 					
@@ -143,13 +137,12 @@ public class CreateGridModule extends JPanel implements ActionListener{
 						}
 					}
 					
+					name += "("+x_size+"x"+y_size+")";
 					Grid.createStructure(x_size, y_size, name, neighbors);
 					MapssFileWriter.saveStructure(name, neighbors, null);
-					//Grid.createNormalGrid(x_size, y_size, name);
-					
 					break;
-				case "Build Custom Grid":
 					
+				case "Build Custom Grid":
 					previewPanel.removeAll();
 					GraphicalGrid graphicalGrid2 = new GraphicalGrid(x_size, y_size);
 					previewPanel.add(graphicalGrid2.draw(), BorderLayout.CENTER);
@@ -158,21 +151,58 @@ public class CreateGridModule extends JPanel implements ActionListener{
 					validate();
 					repaint();
 					
+					String relation_list = grid_string.getText();
+					String[] relations = relation_list.split(",");
 					
+					if (x_size*y_size > relations.length){
+						neighbors = new ArrayList[x_size*y_size];
+					} else {
+						neighbors = new ArrayList[relations.length];
+					}
+					
+					ArrayList<Integer> tempList;
+	                int telnr = 0;
+	                System.out.println("relations = "+relations.length);
+					
+					for (String s : relations){
+                        String[] temp = s.split("-");
+                        tempList = new ArrayList<Integer>();
+                        for (int i = 0; i < temp.length; i++){
+                        	try {
+                                int tempInt = Integer.parseInt(temp[i]);
+                                tempList.add(tempInt);
+                        	}
+                            catch (NumberFormatException exc){
+                            }
+                        }
+                        neighbors[telnr] = tempList;
+                        telnr++;
+					}
+					
+					if (x_size*y_size > relations.length){
+						//if the given x and y size results in a grid bigger then the string covers then fill
+						//the remaining with blanks.
+						for (int i =0; i<(x_size*y_size - relations.length);i++){
+							tempList = new ArrayList<Integer>();
+							neighbors[telnr] = tempList;
+	                        telnr++;
+	                        System.out.println("+1 blank");
+						}
+					}
+					
+					
+					name += "(Custom)";
+					Grid.createStructure(x_size, y_size, name, neighbors);
+					MapssFileWriter.saveStructure(name, neighbors, null);
 			
 					//Grid.createCustom(x_size, y_size, grid_string.getText());
 
 					break;
+				
 				default:
 					break;
 			}
 			
-//			try {
-//				AgentEnvironmentCreator.addSchedulerAgent();
-//				AgentEnvironmentCreator.addRemoteMonitoringAgent();
-//			} catch (StaleProxyException spe) {
-//				spe.printStackTrace();
-//			}
 			
 		}
 	}

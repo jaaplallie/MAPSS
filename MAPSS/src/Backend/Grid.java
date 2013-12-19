@@ -10,10 +10,10 @@ import Gui.SimulationModule;
 /****************************************************************************************
 
 Hello there. To save you some time here is a small table of contents for this file:
-- Creation Functions. Functions that are used to create the grid or any other structure.
-- Calculations. Pretty self explanatory. There's a few attempts at math there.
-- Getters/Setters. Can you guess?
-- Other. Everything else. Includes a few log functions + few functions to clear/change some values.
+1. Creation Functions. Functions that are used to create the grid or any other structure.
+2. Calculations. Pretty self explanatory. There's a few attempts at math there.
+3. Getters/Setters. Can you guess?
+4. Other. Everything else. Includes a few log functions + few functions to clear/change some values.
 
 ****************************************************************************************/
 
@@ -21,28 +21,31 @@ public class Grid {
 	
 	private static int x = 0;
 	private static int y = 0;
-	protected static ArrayList<Integer>[] equiplet_positions;
-	protected static ArrayList<Integer>[] neighbors;
-	protected static EquipletAgent[][] grid;
+
+	protected static String name_of_current_structure;
 	
 	protected static ArrayList<ArrayList<Integer>[]> position_list = new ArrayList<ArrayList<Integer>[]>();
 	protected static ArrayList<ArrayList<Integer>[]> neighbor_list = new ArrayList<ArrayList<Integer>[]>();
-	protected static ArrayList<int[]> product_paths = new ArrayList<int[]>();
-	protected static ArrayList<int[]> productstep_paths = new ArrayList<int[]>();
+
 	protected static ArrayList<EquipletAgent[][]> saved_grids = new ArrayList<EquipletAgent[][]>();
 	protected static ArrayList<String> grid_names = new ArrayList<String>();
+	
+	protected static ArrayList<int[]> product_paths = new ArrayList<int[]>();
+	protected static ArrayList<int[]> productstep_paths = new ArrayList<int[]>();
+	
+	protected static double product_lengths = 0;
 	
 	public Grid(){
 	}
 
-	/*****************************************Creation Functions***********************************************/
+	/***************************************** 1. Creation Functions***********************************************/
 
-	public static void createStructure(int width , int length, String name, ArrayList<Integer>[] neighbors){
+	public static EquipletAgent[][] createStructure(int width , int length, String name, ArrayList<Integer>[] neighbors){
 		x=width;
 		y=length;
 		
-		equiplet_positions = new ArrayList[width*length];
-		grid = new EquipletAgent[width][length];
+		ArrayList<Integer>[] equiplet_positions = new ArrayList[width*length];
+		EquipletAgent[][] grid = new EquipletAgent[width][length];
 
 		int stepnr = 0;
 		for (int y = 0; y < length; y++){
@@ -61,9 +64,13 @@ public class Grid {
 		grid_names.add(name);
 		position_list.add(equiplet_positions);
 		
-		Matrix.createMatrix(width, length, name);
+		Grid.setGrid(name);
+		
+		Matrix.createGridMatrix(width, length);
 		ChartPresenter.updateChartStructures();
 		SimulationModule.updateProductStructures();
+		
+		return grid;
 	}
 	
 	
@@ -72,51 +79,51 @@ public class Grid {
 			int pos_X = ea.getPosition()[0];
 			int pos_Y = ea.getPosition()[1];
 			
-			grid[pos_X][pos_Y] = ea;
+			//EquipletAgent[][] grid[pos_X][pos_Y] = ea;
 		}
 	}
 	
-	public boolean createGridAndInsert(ArrayList<EquipletAgent> eqs){
-		int max_X = -1;
-		int max_Y = -1;
-		
-		for(EquipletAgent ea : eqs){
-			if(ea.getPosition()[0] > max_X){
-				max_X = ea.getPosition()[0];
-			}
-			if(ea.getPosition()[1] > max_Y){
-				max_Y = ea.getPosition()[1];
-			}
-		}
-		
-		if(max_X != -1 && max_Y != -1){
-			//size the array and ArrayList according to max sizes
-			grid = new EquipletAgent[max_X+1][max_Y+1];
-			equiplet_positions = new ArrayList[(max_X+1)+(max_Y+1)];
-			
-			//put every EquipletAgent at the correct position in the multidimensional grid array
-			for(EquipletAgent ea : eqs){
-				grid[ea.getPosition()[0]][ea.getPosition()[1]] = ea;
-				ArrayList<Integer> position = new ArrayList<Integer>();
-				position.add(ea.getPosition()[0]); //create position for the matrix
-				position.add(ea.getPosition()[1]); //create position for the matrix
-				equiplet_positions[ea.getCode()-1] = position;
-			}
-			System.out.println(String.format("Grid X[%s] Y[%s] created. \n[%s] Equiplets installed.", (max_X+1)+"", (max_Y+1)+"", max_Y*max_X+""));
-			//Matrix.createMatrix((max_X), (max_Y), structure_name);
-		}
-		else{
-			return false;
-		}
-		return true;
-	}
+//	public boolean createGridAndInsert(ArrayList<EquipletAgent> eqs){
+//		int max_X = -1;
+//		int max_Y = -1;
+//		
+//		for(EquipletAgent ea : eqs){
+//			if(ea.getPosition()[0] > max_X){
+//				max_X = ea.getPosition()[0];
+//			}
+//			if(ea.getPosition()[1] > max_Y){
+//				max_Y = ea.getPosition()[1];
+//			}
+//		}
+//		
+//		if(max_X != -1 && max_Y != -1){
+//			//size the array and ArrayList according to max sizes
+//			EquipletAgent[][] grid = new EquipletAgent[max_X+1][max_Y+1];
+//			ArrayList<Integer>[] equiplet_positions = new ArrayList[(max_X+1)+(max_Y+1)];
+//			
+//			//put every EquipletAgent at the correct position in the multidimensional grid array
+//			for(EquipletAgent ea : eqs){
+//				grid[ea.getPosition()[0]][ea.getPosition()[1]] = ea;
+//				ArrayList<Integer> position = new ArrayList<Integer>();
+//				position.add(ea.getPosition()[0]); //create position for the matrix
+//				position.add(ea.getPosition()[1]); //create position for the matrix
+//				equiplet_positions[ea.getCode()-1] = position;
+//			}
+//			//System.out.println(String.format("Grid X[%s] Y[%s] created. \n[%s] Equiplets installed.", (max_X+1)+"", (max_Y+1)+"", max_Y*max_X+""));
+//			//Matrix.createMatrix((max_X), (max_Y), structure_name);
+//		}
+//		else{
+//			return false;
+//		}
+//		return true;
+//	}
 	
 	/*****************************************End of Creation Functions***********************************************/
 	
-	/*****************************************Calculations***********************************************/
+	/***************************************** 2. Calculations***********************************************/
 
-	public static int[] calculateDifferentPath(int start_equiplet_number, int end_equiplet_number) {
-		int max = x*y;
+	public static int[] calculatePath(int start_equiplet_number, int end_equiplet_number, int mode, ArrayList<Integer>[] neighbors) {
+		int max = x*y, temp_distance = x*y;
 
 		int[] visited = new int[max];
 		int[] recorded_distances = new int[max];
@@ -133,6 +140,9 @@ public class Grid {
 		
 		ArrayList<Integer> path = new ArrayList<Integer>();
 		
+		int index = getIndex(name_of_current_structure);
+		
+		
 		while(true){
 			//Checks the neighbors of the current node and compares the distances.
 			//The next equiplet is chosen and the current equiplet will be marked as "visited".
@@ -143,22 +153,34 @@ public class Grid {
 				int new_distance = max;
 				for (int i = 0; i <max; i++){
 					if (visited[i]!=1){
-						if (recorded_distances[i] < new_distance){
-							new_distance = recorded_distances[i];
-							current_equiplet = i;
+						
+						// It will happen that 2 or more equiplets have the shortest distance.
+						// "mode" determines wich one will proceed. 
+						// The difference between functions is < and <= 
+						if (mode > 0) {
+							if (recorded_distances[i] <= new_distance){
+								new_distance = recorded_distances[i];
+								current_equiplet = i;
+							}
+						} else {
+							if (recorded_distances[i] < new_distance){
+								new_distance = recorded_distances[i];
+								current_equiplet = i;
+							}
 						}
 					}
 				}
 				
 				//New_distace still being max means that there are no suitable equiplets left. The function stops
 				if (new_distance == max){
-					System.out.println("Destination cannot be reached");
-					path.add(max+1);
+					//System.out.println("Destination cannot be reached");
+					path.add(max+1); //add an unlikely number to show that it's unreachable
 					break;
 				}
 			
 			} else {
-				int temp_distance = max;
+
+				//ArrayList<Integer>[] neighbors = neighbor_list.get(index);
 				for (Object neighbor : neighbors[current_equiplet]){
 					int neighborint = (int)neighbor;
 					
@@ -170,11 +192,20 @@ public class Grid {
 						if (recorded_distances[neighborint] > distance_to_check){
 							recorded_distances[neighborint] = distance_to_check;
 						} 
-						
-						if (recorded_distances[neighborint] < temp_distance){
-							temp_distance = recorded_distances[neighborint];
-							next_equiplet = neighborint;
-							//System.out.println("possible: " + next_equiplet);
+							
+						// It will happen that 2 or more equiplets have the shortest distance.
+						// "mode" determines wich one will proceed. 
+						// The difference between functions is < and <= 
+						if (mode > 0) {
+							if (recorded_distances[neighborint] < temp_distance){
+								temp_distance = recorded_distances[neighborint];
+								next_equiplet = neighborint;
+							}
+						} else {
+							if (recorded_distances[neighborint] <= temp_distance){
+								temp_distance = recorded_distances[neighborint];
+								next_equiplet = neighborint;
+							}
 						}
 					}
 				}
@@ -205,16 +236,16 @@ public class Grid {
 	
 	/*****************************************End of Calculations***********************************************/
 	
-	/*****************************************Getters/Setters***********************************************/
+	/***************************************** 3. Getters/Setters***********************************************/
 	
 	public static void setGrid(String structure_name){
-		int index = Grid.getIndex(structure_name);
-		grid = saved_grids.get(index);
-		x=grid.length;
-		y=grid[0].length;
-		equiplet_positions = position_list.get(index);
-		neighbors = neighbor_list.get(index);
+		name_of_current_structure = structure_name;
 	}
+	
+	public static EquipletAgent[][] getGrid(){
+		int index = Grid.getIndex(name_of_current_structure);
+        return saved_grids.get(index);
+}
 	
 	public static int getIndex(String structure_name){
 		int counter = 0, found = 0;
@@ -232,6 +263,11 @@ public class Grid {
 		return neighbor_list.get(Grid.getIndex(structure_name));
 	}
 	
+	public static ArrayList<Integer>[] getCurrentNeighbors (){
+		return neighbor_list.get(Grid.getIndex(name_of_current_structure));
+	}
+	
+	
 	public static ArrayList<String> getStructureNames(){
 		return grid_names;
 	}
@@ -245,12 +281,20 @@ public class Grid {
 	}
 	
 	public static int getMaxvalue(){
-		return x*y;
+		int count = 0;
+		int index = getIndex(name_of_current_structure);
+		ArrayList<Integer>[] neighbors = neighbor_list.get(index);
+		for (ArrayList<Integer> AI: neighbors){
+			//System.out.println("AI size: "+AI.size());
+			if (AI.size() > 0){
+				
+				count++;
+			}
+		}
+		//System.out.println("Count: "+count);
+		return count;
 	}
 
-	public static EquipletAgent[][] getGrid(){
-		return grid;
-	}
 	
 	public static EquipletAgent[][] getStructure(String structure_name){
 		int counter = 0, found = 0;
@@ -265,6 +309,9 @@ public class Grid {
 	}
 	
 	public static int[] getEquipletPosition(int equiplet_number){
+		int index = Grid.getIndex(name_of_current_structure);
+		
+		ArrayList<Integer>[] equiplet_positions = position_list.get(index);
 		List<Integer> equiplet_coordinates = equiplet_positions[equiplet_number];
 		
 		int x = equiplet_coordinates.get(0);
@@ -273,12 +320,13 @@ public class Grid {
 		return position;
 	}
 	
-	public static double getAverageProductPath(){
-		double path_total = 0;
-		for (int i = 0; i < product_paths.size(); i++){
-			path_total += product_paths.get(i).length;
-		}
-		return path_total/product_paths.size();
+	public static double getTotalAverageProductSteps(){
+//		double path_total = 0;
+//		for (int i = 0; i < product_paths.size(); i++){
+//			path_total += product_paths.get(i).length;
+//		}
+//		return path_total/product_paths.size();
+		return product_lengths;
 	}
 	
 	public static double getAverageProductStepPath(){
@@ -292,10 +340,15 @@ public class Grid {
 	/*****************************************End of Getters/Setters***********************************************/
 		
 	
-	/*****************************************Other***********************************************/
+	/***************************************** 4. Other***********************************************/
 
 	public static void addProductPath(int[] path){
 		product_paths.add(path);
+	}
+	
+	public static void addPathLenght(double hops) {
+		product_lengths += hops;
+		
 	}
 	
 	public static void addProductStepPath(int[] path){
@@ -304,6 +357,7 @@ public class Grid {
 	
 	public static void clearProductPaths(){
 		product_paths.clear();
+		product_lengths = 0;
 	}
 	
 	public static void clearProductStepPaths(){
@@ -312,7 +366,7 @@ public class Grid {
 	
 	public void logProductPaths(){
 		for (int i = 0; i < product_paths.size(); i++){
-			System.out.print("The path of product " + i + " is: ");	
+			MapssFileWriter.writeLog("The path of product " + i + " is: ");	
 			for (int o: product_paths.get(i)){
 				MapssFileWriter.writeLog(o+" ");
 			}
@@ -322,11 +376,17 @@ public class Grid {
 	}
 	
 	public static void logGrid(){
+		int index = Grid.getIndex(name_of_current_structure);
+		EquipletAgent[][] grid = saved_grids.get(index);
 		MapssFileWriter.writeLogLn("Grid layout");
 		int stepnr = 0;
 		for (int y = 0; y < grid[0].length; y++){
 			String output = "";
 			for (int x = 0; x < grid.length; x++){
+				
+				if (stepnr < 10){
+					output += " ";
+				}
 				output += " " + stepnr;
 				stepnr++;
 			}
@@ -336,11 +396,15 @@ public class Grid {
 	}
 	
 	public static void logNeighbors() {
+		int index = getIndex(name_of_current_structure);
+		ArrayList<Integer>[] neighbors = neighbor_list.get(index);
 		for (int i = 0; i < neighbors.length; i++){
 			MapssFileWriter.writeLogLn("Equiplet " + i + " kent: " + neighbors[i]);	
 		}
 		MapssFileWriter.writeLogLn("");
 	}
+
+
 	
 	/*****************************************End of Other***********************************************/
 

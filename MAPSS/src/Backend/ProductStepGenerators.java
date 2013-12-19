@@ -11,35 +11,13 @@ import Gui.ChartPresenter;
 
 public class ProductStepGenerators {
 	private static int gridsteps;
-	//private static ArrayList<String[]> products;
 	private static ArrayList<ArrayList<String[]>> product_batches = new ArrayList<ArrayList<String[]>>();
 	private static ArrayList<String> batch_names = new ArrayList<String>();
-	
-	public static void setgridsteps(int amount){
-		gridsteps = amount;
-	}
-	
-	public static int randomInt(int range) {
-		// Xorshift random number generator
-		//System.out.println("test");
-		long rand = range+1;
-		rand ^= (rand << 21);
-		rand ^= (rand >>> 35);
-		rand ^= (rand << 4);
-		
-		if (rand < 0 || rand > range){
-			rand = randomInt(range);
-		}
-		
-		System.out.println(rand);
-		
-		return (int) rand;
-	}
 	
 	public static ArrayList<String[]> getBatch(String name){
 		int counter = 0, found = 0;
 		for(String s: batch_names){
-			System.out.println(s);
+			//System.out.println(s);
 			if (s == name){
 				found = counter;
 				break;
@@ -75,8 +53,10 @@ public class ProductStepGenerators {
 		
 		ArrayList<String[]> products = new ArrayList<String[]>();
 		for (int i =0; i < product_count; i++){
-			int amount = (int)(Math.random()*(max_product_steps-1));
+			int amount = (int)(Math.random()*(max_product_steps));
 			amount++;
+			amount++;
+			// we need a minimum of 2 product steps
 			String[] steps = {};
 			
 			switch(type){
@@ -98,7 +78,22 @@ public class ProductStepGenerators {
 		batch_names.add(structure_name);
 		product_batches.add(products);
 		
-		MapssFileWriter.saveStructure(structure_name, Grid.getNeighbors(structure_name), products);
+		
+//		if (products != null){
+//		//ArrayList<String[]> products = ProductStepGenerators.getBatch(structure_name);
+//		//System.out.println(products);
+//		for (String[] productsteps : products) {
+//			for (String s: productsteps){
+//				structureWriter.print(s+" ");
+//			}
+//			structureWriter.println("");
+//		}
+//
+//	}
+		
+		
+		MapssFileWriter.saveProducts(structure_name, products);
+		//MapssFileWriter.saveStructure(structure_name, Grid.getNeighbors(structure_name), products);
 
 		System.out.println(type + " products created for " + structure_name);
 		
@@ -111,7 +106,7 @@ public class ProductStepGenerators {
 		String[] steps = new String[nps];
 		
     	for (int j = 0; j < nps; j++){      	
-    	    Integer step = (int)(Math.random()*(gridsteps-1));
+    	    Integer step = (int)(Math.random()*(gridsteps));
     	    steps[j] = step.toString();
     	}
     	
@@ -123,8 +118,8 @@ public class ProductStepGenerators {
 		String[]steps = new String[nps];
 		
 		for (int j = 0; j < nps; j++){     	
-			Integer step = (int) (Math.random()*(gridsteps-1));
-			Integer tmp = (int) (Math.random()*(gridsteps-1));
+			Integer step = (int) (Math.random()*(gridsteps));
+			Integer tmp = (int) (Math.random()*(gridsteps));
 		    if(step >= tmp){
 		    	steps[j] = step.toString();
 		    } else {
@@ -160,12 +155,6 @@ public class ProductStepGenerators {
 		batch_names.add(structure_name);
 		product_batches.add(product_list);	
 		
-		for (String[] p: product_list){
-			for(String i: p){
-				System.out.print(i);
-			}
-			System.out.println();
-		}
 		System.out.println("Products created for " + structure_name);
 	}
 

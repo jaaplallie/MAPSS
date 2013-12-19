@@ -118,17 +118,17 @@ public class ScenarioImportExportWindow extends JFrame implements ActionListener
 		    int retrival = chooser.showOpenDialog(null);
 		    if (retrival == JFileChooser.APPROVE_OPTION) {
 		        try {
-		        	readScenario = xmlReader.openScenarioXml(chooser.getSelectedFile().toPath().toString());
-		        	ProgramData.setCurrentlyLoadedScenario(readScenario);
-		        	for(Object o : ProgramData.getScenarioListModel().toArray()){
-		        		Scenario s = (Scenario) o;
-		        		if(s.getScenarioName().equals(readScenario.getScenarioName())){
-		        			scenarioConflictPopup scp = new scenarioConflictPopup(readScenario, this);
-		        			scp.setVisible(true);
-		        			this.setEnabled(false);
-		        		}
-		        	}
-		        	ProgramData.getScenarioListModel().addElement(readScenario);
+//		        	readScenario = xmlReader.openScenarioXml(chooser.getSelectedFile().toPath().toString());
+//		        	ProgramData.setCurrentlyLoadedScenario(readScenario);
+//		        	for(Object o : ProgramData.getScenarioListModel().toArray()){
+//		        		Scenario s = (Scenario) o;
+//		        		if(s.getScenarioName().equals(readScenario.getScenarioName())){
+//		        			scenarioConflictPopup scp = new scenarioConflictPopup(readScenario, this);
+//		        			scp.setVisible(true);
+//		        			this.setEnabled(false);
+//		        		}
+//		        	}
+//		        	ProgramData.getScenarioListModel().addElement(readScenario);
 		            JOptionPane.showMessageDialog(
 		            		null, 
 		            		"File succesfully opened." + 
