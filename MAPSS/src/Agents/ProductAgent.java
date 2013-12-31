@@ -5,8 +5,11 @@ import jade.core.behaviours.WakerBehaviour;
 
 import java.util.ArrayList;
 
+import Backend.Calculations;
 import Backend.Grid;
 import Backend.MapssFileWriter;
+import Backend.Scenario;
+import Backend.ScenarioList;
 import Backend.Simulations;
 import Gui.ChartPresenter;
 
@@ -15,10 +18,16 @@ public class ProductAgent extends Agent {
 	String code;
 	Object[] args;
 	
-	public ProductAgent(String code, Object[] args){
+	public ProductAgent(String code, int[] arguments){
 		this.code = code;
-		this.args = args;
-		setArguments(args);
+		
+		Object[] temp = new Object[arguments.length];
+		for (int i = 0; i < arguments.length; i++) {
+			temp[i]= arguments[i];
+		}
+		this.args = temp;
+		
+		setArguments(temp);
 	}
 	
 	public String getCode() {
@@ -49,32 +58,22 @@ public class ProductAgent extends Agent {
 				String output = "";
 				int[] productPath;
 				int[] otherPath;
+				
+				Scenario S = ScenarioList.getScenario(Grid.getCurrentName());
 				 
 				boolean right_sized_grid = true;
 				for (Object o : args) {
 					 output = output + o.toString() + " ";  
-					 if (Grid.getMaxvalue() < Integer.parseInt(o.toString())){
+					 if (S.getMax() < Integer.parseInt(o.toString())){
 						 right_sized_grid = false;
 					 }
 				}
 
 				MapssFileWriter.writeLogLn("These are my product's steps: " + output); 
-				
-				//Checking if the grid exists and if there's anything useful in it
-				EquipletAgent[][] grid = Grid.getGrid();
-				
-				boolean safe_grid = false;
-				if (grid != null){
-					for (Object ob : grid) {
-						if (ob != null ) {
-							safe_grid = true;
-							break;
-						}
-					}
-				}
+
 				
 				
-				if (safe_grid == true & right_sized_grid == true){
+				if (right_sized_grid == true){
 					int start_position = 0;
 					if (args[0] == null){
 						
@@ -82,7 +81,7 @@ public class ProductAgent extends Agent {
 						start_position = Integer.parseInt(args[0].toString());
 					}
 					
-					int[] start_xy_values = Grid.getEquipletPosition(start_position);
+					//int[] start_xy_values = S.getEquipletPosition(start_position);
 					
 					MapssFileWriter.writeLogLn("I start at equiplet number: " + start_position); 
 					
@@ -99,17 +98,24 @@ public class ProductAgent extends Agent {
 						next_position = Integer.parseInt(args[i].toString());
 						
 						// Fetch 2 path's
-						int first_path[] = Grid.calculatePath(current_position, next_position, 0, Grid.getCurrentNeighbors());
+						
+						int first_path[] = Calculations.calculatePath(current_position, next_position, 0, S);
+						//int first_path[] = S.getPath(current_position, next_position);
+
+						for (int derp: first_path){
+							System.out.print(derp+ " ");
+						}
+						System.out.println();
 						for (int j: first_path){
-							if (j == Grid.getMaxvalue()+1){
+							if (j == S.getMax()+1){
 								destination_reachable = false;
 								break;
 							}
 						}
 						
-						int second_path[] = Grid.calculatePath(current_position, next_position, 1, Grid.getCurrentNeighbors());
+						int second_path[] = S.getAlternativePath(current_position, next_position);
 						for (int j: second_path){
-							if (j == Grid.getMaxvalue()+1){
+							if (j == S.getMax()+1){
 								destination_reachable = false;
 								break;
 							}
@@ -147,7 +153,7 @@ public class ProductAgent extends Agent {
 								chosen_path = second_path;
 							}
 							
-							Grid.addProductStepPath(chosen_path);
+							//Grid.addProductStepPath(chosen_path);
 							
 						} else {
 							break;
@@ -216,9 +222,6 @@ public class ProductAgent extends Agent {
 					
 				} else {
 					MapssFileWriter.writeLogLn("Unfortunately I can't find a suitable grid so no calculations for me");
-					if (safe_grid == false){
-						MapssFileWriter.writeLogLn("The grid is either not there or it contains empty values");
-					}
 					if (right_sized_grid == false){
 						MapssFileWriter.writeLogLn("The current grid is too small for my product steps");
 					}

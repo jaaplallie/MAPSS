@@ -209,7 +209,7 @@ public class MapssFileWriter {
 	}
 	
 	
-	public static void saveProducts(String structure_name, ArrayList<String[]> products){
+	public static void saveProducts(String structure_name, ArrayList<int[]> products){
 		
 		try {
 			 PrintWriter structureWriter = new PrintWriter(new BufferedWriter(
@@ -219,8 +219,8 @@ public class MapssFileWriter {
 			if (products != null){
 				//ArrayList<String[]> products = ProductStepGenerators.getBatch(structure_name);
 				System.out.println(products);
-				for (String[] productsteps : products) {
-					for (String s: productsteps){
+				for (int[] productsteps : products) {
+					for (int s: productsteps){
 						structureWriter.print(s+" ");
 					}
 					structureWriter.println("");
@@ -239,7 +239,91 @@ public class MapssFileWriter {
 		
 	}
 	
+	public static void saveScenario(Scenario S){
+		try {
+			PrintWriter structureWriter = new PrintWriter("test/" + S.name + "Scenario.txt");
+			//EquipletAgent[][] grid = Grid.getStructure(structure_name);
+			
+			structureWriter.println(S.x+"x"+S.y);
+			for (ArrayList<Integer> neighbor : S.neighbors) {
+				structureWriter.println(neighbor);
+			}
+			
+			if (S.products != null){
+				//ArrayList<String[]> products = ProductStepGenerators.getBatch(structure_name);
+				//System.out.println(S.products);
+				for (int[] productsteps : S.products) {
+					for (int s: productsteps){
+						structureWriter.print(s+" ");
+					}
+					structureWriter.println("");
+				}
+			}
+
+
+			structureWriter.close();
+			
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 	
+	public static void savePaths(Scenario S){
+		writeLogLn("Paths between equiplets:");
+		int count = 0;
+		int equiplet = 0;
+		for (int[] path: S.paths_between_equiplets){
+			if (count == 0){
+				writeLogLn("Equiplet: "+equiplet);
+				equiplet++;
+			} 
+			writeLog(equiplet+" to "+count+": ");
+			count++;
+			
+			
+			for (int derp: path){
+				writeLog(derp+ " ");
+			}
+			writeLogLn("");
+			
+			
+			
+			
+			if (count >= S.x*S.y){
+				count = 0;
+			} 
+			//writeLog(count+ ": ");
+			
+			
+			
+			
+		}
+		
+//		writeLogLn("Possible other paths");
+//		count = 0;
+//		row = 0;
+//		for (int[] path: S.paths_between_equiplets){
+//			if (count >= S.x){
+//				count = 0;
+//				writeLog(row+ ": ");
+//				row++;
+//			} else {
+//				writeLog(" ");
+//			}
+//			writeLog(count+ ": ");
+//			
+//			for (int derp: path){
+//				writeLog(derp+ " ");
+//			}
+//			writeLogLn("");
+//			
+//			count++;
+//		}
+		
+	}
 
 	
 	public static void createLogFile(String name){

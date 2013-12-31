@@ -73,7 +73,7 @@ public class scenarioConflictPopup extends JFrame implements ActionListener{
 			}
 			else{
 				System.out.println("Text check passed.");
-				scenario.setScenarioName(textField.getText());
+				//scenario.setScenarioName(textField.getText());
 				parent.setEnabled(true);
 				parent.validate();
 				this.dispose();

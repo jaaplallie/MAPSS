@@ -17,6 +17,10 @@ public class Main{
 		System.out.println("Multi-Agent Production System Simulator (MAPSS) started.");
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+				
+				
+				//Scenario s = new Scenario(null, 3, 3, null, null, null);
+				//System.out.println(s.name);
 
 				try {
 					AgentEnvironmentCreator aec = new AgentEnvironmentCreator();

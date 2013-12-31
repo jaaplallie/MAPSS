@@ -14,6 +14,7 @@ import Backend.AgentEnvironmentCreator;
 import Backend.Grid;
 import Backend.ProductStepGenerators;
 import Backend.ProgramData;
+import Backend.ScenarioList;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
@@ -74,7 +75,7 @@ public class SimulationModule extends JPanel implements ActionListener{
 	
 	public static void updateProductStructures(){
 		structureBox.removeAllItems();
-		for (String name: Grid.getStructureNames()){
+		for (String name: ScenarioList.getScenarioNames()){
 			structureBox.addItem(name);
 		}
 	}

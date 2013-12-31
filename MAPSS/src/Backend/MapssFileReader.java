@@ -19,6 +19,7 @@ import org.w3c.dom.NodeList;
 import Agents.EquipletAgent;
 import Agents.ProductAgent;
 import Gui.ChartPresenter;
+import Gui.SimulationModule;
 
 
 public class MapssFileReader {
@@ -48,7 +49,7 @@ public class MapssFileReader {
 			    	int neighbor_counter = 0;
 			    	int x = 0;
 			    	int y = 0;
-			    	ArrayList<String[]> product_list = new ArrayList<String[]>();
+			    	ArrayList<int[]> product_list = new ArrayList<int[]>();
 			    	
 			    	while((s = br.readLine()) != null) { 
 			    		if (neighbor_counter == 0){
@@ -73,7 +74,14 @@ public class MapssFileReader {
 			    		} else {
 			    			
 			    			safe = true;
-			    			String[] steps = s.split(" ");
+			    			String[] temp = s.split(" ");
+			    			
+			    			int[] steps = new int[temp.length];
+			    			
+			    			for (int i = 0; i < temp.length; i++) {
+			    				steps[i]= Integer.parseInt(temp[i]);
+			    			}
+			    			
 			    			product_list.add(steps);
 			    			
 			    		}
@@ -82,23 +90,30 @@ public class MapssFileReader {
 					
 			    	String name = file.getName().replace(".txt", "");
 			    	filecounter++;
+			    	
+			    	// new
+			    	ScenarioList.createAndAddScenario(name, x, y, neighbors, product_list);
+			    	//
+			    	
 
-			    	if (Grid.getStructureNames().size() < filecounter){
-			    		Grid.createStructure(x, y, name, neighbors);
-			    	}
+//			    	if (Grid.getStructureNames().size() < filecounter){
+//			    		Grid.createStructure(x, y, name, neighbors);
+//			    	}
 			    	
 			    	if (safe == true){
 			    		ProductStepGenerators.addProductBatch(name, product_list);
 			    	}
 
 			    	fr.close(); 
-			    	ChartPresenter.updateChartStructures();
+			    	
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 	    	}
-		}	
+		}
+		ChartPresenter.updateChartStructures();
+		SimulationModule.updateProductStructures();
 	}
 	
 //	

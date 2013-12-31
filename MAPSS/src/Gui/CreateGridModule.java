@@ -16,6 +16,7 @@ import javax.swing.JTextField;
 import Backend.Grid;
 import Backend.MapssFileWriter;
 import Backend.ProgramData;
+import Backend.ScenarioList;
 import GraphicalGridBuilder.GraphicalGrid;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -112,34 +113,10 @@ public class CreateGridModule extends JPanel implements ActionListener{
 					validate();
 					repaint();
 					
-					neighbors = new ArrayList[x_size*y_size];
-					
-					int stepnr = 0;
-					for (int y = 0; y < y_size; y++){
-						for (int x = 0; x < x_size; x++){
-							ArrayList<Integer> known_equiplets = new ArrayList<Integer>();
-							
-							if (y != 0){ //if not first row
-								known_equiplets.add(stepnr-x_size);
-							}
-							if (stepnr != (x_size*(y+1))-1){ //if not end of row
-								known_equiplets.add(stepnr+1);
-							}
-							if (stepnr+x_size < y_size*x_size){ //if not last row
-								known_equiplets.add(stepnr+x_size);
-							}
-							if (stepnr != x_size*y){ //if not start of row
-								known_equiplets.add(stepnr-1);
-							}
-							
-							neighbors[stepnr] = known_equiplets;
-							stepnr++;
-						}
-					}
-					
 					name += "("+x_size+"x"+y_size+")";
-					Grid.createStructure(x_size, y_size, name, neighbors);
-					MapssFileWriter.saveStructure(name, neighbors, null);
+					Grid.createStructure(x_size, y_size, name);
+					ChartPresenter.updateChartStructures();
+					SimulationModule.updateProductStructures();
 					break;
 					
 				case "Build Custom Grid":
@@ -152,51 +129,10 @@ public class CreateGridModule extends JPanel implements ActionListener{
 					repaint();
 					
 					String relation_list = grid_string.getText();
-					String[] relations = relation_list.split(",");
-					
-					if (x_size*y_size > relations.length){
-						neighbors = new ArrayList[x_size*y_size];
-					} else {
-						neighbors = new ArrayList[relations.length];
-					}
-					
-					ArrayList<Integer> tempList;
-	                int telnr = 0;
-	                System.out.println("relations = "+relations.length);
-					
-					for (String s : relations){
-                        String[] temp = s.split("-");
-                        tempList = new ArrayList<Integer>();
-                        for (int i = 0; i < temp.length; i++){
-                        	try {
-                                int tempInt = Integer.parseInt(temp[i]);
-                                tempList.add(tempInt);
-                        	}
-                            catch (NumberFormatException exc){
-                            }
-                        }
-                        neighbors[telnr] = tempList;
-                        telnr++;
-					}
-					
-					if (x_size*y_size > relations.length){
-						//if the given x and y size results in a grid bigger then the string covers then fill
-						//the remaining with blanks.
-						for (int i =0; i<(x_size*y_size - relations.length);i++){
-							tempList = new ArrayList<Integer>();
-							neighbors[telnr] = tempList;
-	                        telnr++;
-	                        System.out.println("+1 blank");
-						}
-					}
-					
-					
-					name += "(Custom)";
-					Grid.createStructure(x_size, y_size, name, neighbors);
-					MapssFileWriter.saveStructure(name, neighbors, null);
-			
-					//Grid.createCustom(x_size, y_size, grid_string.getText());
+					Grid.createCustom(x_size, y_size, name, relation_list);
 
+					ChartPresenter.updateChartStructures();
+					SimulationModule.updateProductStructures();
 					break;
 				
 				default:
