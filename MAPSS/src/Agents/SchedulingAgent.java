@@ -16,10 +16,10 @@ public class SchedulingAgent extends Agent {
 	//Dit is momenteel iets minder leeg
 	
 	protected void setup() {
-		int length = Grid.getY();
-		int width = Grid.getX();
+//		int length = Grid.getY();
+//		int width = Grid.getX();
 		time = 50;
-		timetable = new int[length][width][time];
+		//timetable = new int[length][width][time];
 		
 		
 		addBehaviour(new WaitForMessages());

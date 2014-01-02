@@ -6,25 +6,30 @@ import java.util.List;
 import Agents.EquipletAgent;
 import Agents.ProductAgent;
 
+/****************************************************************************************
 
+	This class is used as a datafile. It stores the data needed for the 
+	product agent, the product step generator and the simulation class.
+	
+	It will ask Calculations to perform most of the calculations needed for 
+	it's data. 
+	
+	The list below displays most of the data that is stored within.
+	A thing to add is that because it stores 2 different kinds of paths between 
+	equiplets, it is capable of comparing them and tell how much difference
+	there is in %. This is useful for the scheduling.
 
+****************************************************************************************/
 
 public class Scenario {
 	public String name;
 	public int x, y;
-	//EquipletAgent[][] grid_sizes;
 	protected ArrayList<Integer>[] positions;
-	ArrayList<Integer>[] neighbors;
-	ArrayList<int[]> products;
-	ArrayList<Integer>[][] distances_between_equiplets;
-	ArrayList<int[]> paths_between_equiplets;
-	ArrayList<int[]> possible_other_paths;
-	
-	//Grid scenario_Grid = new Grid();
-	//EquipletAgent[][] scenario_EquipletGrid;
-	//ArrayList<ProductAgent> scenario_Products;
-	
-
+	protected ArrayList<Integer>[] neighbors;
+	protected ArrayList<int[]> products;
+	protected ArrayList<Integer>[][] distances_between_equiplets;
+	protected ArrayList<int[]> paths_between_equiplets;
+	protected ArrayList<int[]> possible_other_paths;
 	
 	public Scenario(
 			String scenarioName,
@@ -53,19 +58,12 @@ public class Scenario {
 			}
 		}	
 		
-		this.distances_between_equiplets = Calculations.calcDistances(x_size, y_size, this);
+		this.distances_between_equiplets = Calculations.calculateDistances(x_size, y_size, this);
 		this.paths_between_equiplets = Calculations.calculateAllPaths(this, 0);
 		this.possible_other_paths = Calculations.calculateAllPaths(this, 1);
-		
-		//this.positions
-		//scenario_Products = new ArrayList<ProductAgent>();
 	}
 	
 	public int[] getEquipletPosition(int equiplet_number){
-		//System.out.println("Are you here?");
-		//int index = Grid.getIndex(name_of_current_structure);
-		
-		//ArrayList<Integer>[] equiplet_positions = position_list.get(index);
 		List<Integer> equiplet_coordinates = this.positions[equiplet_number];
 		
 		int x = equiplet_coordinates.get(0);
@@ -82,8 +80,6 @@ public class Scenario {
 	}
 	
 	public int[] getPosition(int equiplet_number){
-		//int index = Grid.getIndex(name_of_current_structure);
-		
 		List<Integer> equiplet_coordinates = this.positions[equiplet_number];
 		
 		int x = equiplet_coordinates.get(0);
@@ -94,7 +90,7 @@ public class Scenario {
 	
 	public void addProducts(ArrayList<int[]> products){
 		this.products = products;
-		MapssFileWriter.saveScenario(this);
+		this.save();
 	}
 	
 	public ArrayList<int[]> getProducts() {
@@ -118,29 +114,45 @@ public class Scenario {
 	}
 	
 	public int[] getAlternativePath (int start, int end){
-		return this.possible_other_paths.get(start*this.y+end+1);
+		return this.possible_other_paths.get((start*(this.y*this.x))+end);
 	}
 	
 	
-	public void comparePaths(){
+	public double comparePaths(){
+		double size = 0;
+		double difference = 0;
 		
+		//Loop between paths
+		for (int i = 0; i < this.paths_between_equiplets.size(); i++){
+
+			//Get one primary and one secondary path
+			int[] first_path = this.paths_between_equiplets.get(i);
+			int[] alternative_path = this.possible_other_paths.get(i);
+			
+			if (first_path.length == alternative_path.length){
+				for (int j = 0; j < first_path.length; j++){
+					size++;
+					
+					//check if values are the same
+					if (first_path[j] != alternative_path[j]){
+						difference++;
+					}
+				} 
+			} else {
+				difference++;
+			}	
+		}
 		
+		double result = ((difference/size)*100);
+		return result;
 	}
-	
-	
-	
-	
-	
-	
 	
 	public void save(){
-		
+		MapssFileWriter.saveScenario(this);
+		MapssFileWriter.createDataFile(this.name);
 	}
 	
-	
-	
-	
-	
+
 	
 //	public String getScenarioName() {
 //		return name;

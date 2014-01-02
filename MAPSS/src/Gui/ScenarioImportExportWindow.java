@@ -158,7 +158,7 @@ public class ScenarioImportExportWindow extends JFrame implements ActionListener
 		    int retrival = chooser.showSaveDialog(null);
 		    if (retrival == JFileChooser.APPROVE_OPTION) {
 		        try {
-		        	xmlWriter.writeScenarioToXML(ProgramData.getScenarioListModel().get(scenarioList.getSelectedIndex()), chooser.getSelectedFile()+".xml");
+		        	//xmlWriter.writeScenarioToXML(ProgramData.getScenarioListModel().get(scenarioList.getSelectedIndex()), chooser.getSelectedFile()+".xml");
 		            JOptionPane.showMessageDialog(
 		            		null, 
 		            		"Scenario succesfully saved as .xml to: \n" +

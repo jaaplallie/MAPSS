@@ -21,12 +21,7 @@ public class ScenarioList {
 	{
 		Scenario S = new Scenario(scenarioName, x_size, y_size, neighbors, products);
 		scenario_list.add(S);
-//		for (int o: S.getPath(0,3)){
-//			System.out.print(o+" ");
-//		}
-//		System.out.println();
-		MapssFileWriter.saveScenario(S);
-		
+		S.save();
 		
 	}
 	

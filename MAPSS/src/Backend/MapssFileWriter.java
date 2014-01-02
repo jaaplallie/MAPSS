@@ -25,226 +25,48 @@ import Agents.EquipletAgent;
 import Agents.ProductAgent;
 
 public class MapssFileWriter {
-	StringBuilder xmlStringBuilder;
 	static PrintWriter logWriter;
 	
-	
 	public MapssFileWriter(){
-		xmlStringBuilder = new StringBuilder();
 	}
 	
-	public void writeScenarioToXML(Scenario scenario, String fileLocation){
-		String defaultString = "Undefined.";
-		String scenarioName = defaultString;
-		
-		  try {
-			DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-	 
-			// root elements
-			Document doc = docBuilder.newDocument();
-			Element rootElement = doc.createElement("SCN");
-			doc.appendChild(rootElement);
-			doc.createAttribute("NAME");
-//			if(!scenario.scenarioName.isEmpty() || scenario.scenarioName != null){
-//				scenarioName = scenario.scenarioName;
-//			}
-//			else{
-//				scenarioName = defaultString;
-//			}
-			rootElement.setAttribute("NAME", scenarioName);
-			Element grd = doc.createElement("GRD");
-			doc.createAttribute("XSIZE");
-			doc.createAttribute("YSIZE");
-			//check
-//			grd.setAttribute("XSIZE", scenario.scenario_Grid.getX()+"");
-//			grd.setAttribute("YSIZE", scenario.scenario_Grid.getY()+"");
-			Element eqs = doc.createElement("EQS");
-			
-			EquipletAgent[][] fetched_Grid = Grid.getGrid();
+	public static void logGrid(Scenario S){
+
+		MapssFileWriter.writeLogLn("Grid layout");
+		int stepnr = 0;
+		for (int y = 0; y < S.y; y++){
+			String output = "";
+			for (int x = 0; x < S.x; x++){
 				
-			for(int x = 0; x < fetched_Grid.length; x++){
-				System.out.println("Grid X = " + fetched_Grid.length);
-				for(int y = 0; y < fetched_Grid[x].length; y++){
-					System.out.println("Grid X = " + fetched_Grid.length + " Y = " + fetched_Grid[x].length);
-					System.out.println("fetchedEQ tostring = " + fetched_Grid[x][y].toString());
-					//<EQ><NAME></NAME><XPOS></XPOS><YPOS></YPOS><ARGS></ARGS></EQ>
-					EquipletAgent fetched_EQ = fetched_Grid[x][y];
-					
-					String eq_name = fetched_EQ.getCode()+"";
-					String eq_xpos = fetched_EQ.getPosition()[0]+"";
-					String eq_ypos = fetched_EQ.getPosition()[1]+"";
-					String eq_args = fetched_EQ.getArgsString();
-					
-					if(!eq_name.isEmpty()){
-						if(!eq_xpos.isEmpty()){
-							if(!eq_ypos.isEmpty()){
-								if(!eq_args.isEmpty()){
-									Element new_eq = doc.createElement("EQ");
-									Element new_eq_name = doc.createElement("NAME");
-									Element new_eq_xpos = doc.createElement("XPOS");
-									Element new_eq_ypos = doc.createElement("YPOS");
-									Element new_eq_args = doc.createElement("ARGS");
-									//check
-									new_eq_name.appendChild(doc.createTextNode(eq_name));
-									new_eq_xpos.appendChild(doc.createTextNode(eq_xpos));
-									new_eq_ypos.appendChild(doc.createTextNode(eq_ypos));	
-									new_eq_args.appendChild(doc.createTextNode(eq_args));
-									new_eq.appendChild(new_eq_name);
-									new_eq.appendChild(new_eq_xpos);
-									new_eq.appendChild(new_eq_ypos);
-									new_eq.appendChild(new_eq_args);
-									eqs.appendChild(new_eq);						
-								}
-								else{
-									System.out.println("args empty where name is: " + eq_name + " and xpos is: " + eq_xpos + " and ypos is: " + eq_ypos);
-								}
-							}
-							else{
-								System.out.println("ypos empty where name is: " + eq_name + " and xpos is: " + eq_xpos);
-							}
-						}
-						else{
-							System.out.println("xpos empty where name is: " + eq_name);
-						}
-					}
-					else{
-						System.out.println("Name empty where arrayPos = [" + x + "][" + y + "]");
-					}
+				if (stepnr < 10){
+					output += " ";
 				}
+				output += " " + stepnr;
+				stepnr++;
 			}
-			
-			grd.appendChild(eqs);
-			rootElement.appendChild(grd);
-			
-			//<P>P6<NPS>18</NPS><STEPS>11,2,11,0,14,11,16,1,6,9,21,15,18,3,6,19,7,11,</STEPS></P>
-//			for(ProductAgent pa : scenario.scenario_Products){
-//				String prod_code = pa.getCode();
-//				String prod_steps = pa.getArgsString();
-//				
-//				if(!prod_code.isEmpty()){
-//					if(!prod_steps.isEmpty()){
-//						Element new_prod = doc.createElement("P");
-//						Element new_prod_name = doc.createElement("NAME");
-//						Element new_prod_steps = doc.createElement("STEPS");
-//						new_prod_name.appendChild(doc.createTextNode(prod_code));
-//						new_prod_steps.appendChild(doc.createTextNode(prod_steps));
-//						new_prod.appendChild(new_prod_name);
-//						new_prod.appendChild(new_prod_steps);
-//						rootElement.appendChild(new_prod);
-//					}
-//					else{
-//						System.out.println("prod steps empty where prod code is: " + prod_code);
-//					}
-//				}
-//				else{
-//					System.out.println("prod code empty");
-//				}
-//			}
-			
-			try {
-				// write the content into xml file
-				TransformerFactory transformerFactory = TransformerFactory.newInstance();
-				Transformer transformer = transformerFactory.newTransformer();
-				DOMSource source = new DOMSource(doc);
-				StreamResult result = new StreamResult(new File(fileLocation));
-				
-				// Output to console for testing
-				//StreamResult result = new StreamResult(System.out);
-				
-				transformer.transform(source, result);
-			}
-			catch (NullPointerException ne) {
-			    ne.printStackTrace();
-			}
-			catch (TransformerConfigurationException tce) {
-			    System.out.println("* Transformer Factory error");
-			    System.out.println(" " + tce.getMessage());
-
-			    Throwable x = tce;
-			    if (tce.getException() != null)
-			        x = tce.getException();
-			    x.printStackTrace(); 
-			} 
-			catch (TransformerException te) {
-			    System.out.println("* Transformation error");
-			    System.out.println(" " + te.getMessage());
-
-			    Throwable x = te;
-			    if (te.getException() != null){
-			        x = te.getException();
-			    }
-			    x.printStackTrace();
-			}
-		  } 
-		  catch (ParserConfigurationException e) {
-			  e.printStackTrace();
-		  }
-		  finally{
-			  System.out.println("Scenario File saved!");
-		  }
+			writeLogLn(output);
+		}
+		writeLogLn("");
 	}
 	
-	
-	public static void saveStructure(String structure_name, ArrayList<Integer>[] neighbors, ArrayList<String[]> products){
-		try {
-			PrintWriter structureWriter = new PrintWriter("structures/" + structure_name + ".txt");
-			EquipletAgent[][] grid = Grid.getStructure(structure_name);
-			
-			structureWriter.println(grid.length+"x"+grid[0].length);
-			for (ArrayList<Integer> neighbor : neighbors) {
-				structureWriter.println(neighbor);
-			}
-			
-			
-
-
-			structureWriter.close();
-			
-			
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	public static void logNeighbors(Scenario S) {
+		ArrayList<Integer>[] neighbors = S.neighbors;
+		for (int i = 0; i < neighbors.length; i++){
+			writeLogLn("Equiplet " + i + " kent: " + neighbors[i]);	
 		}
-	}
-	
-	
-	public static void saveProducts(String structure_name, ArrayList<int[]> products){
-		
-		try {
-			 PrintWriter structureWriter = new PrintWriter(new BufferedWriter(
-					new FileWriter("structures/" + structure_name + ".txt", true)));
-			EquipletAgent[][] grid = Grid.getGrid();
-			
-			if (products != null){
-				//ArrayList<String[]> products = ProductStepGenerators.getBatch(structure_name);
-				System.out.println(products);
-				for (int[] productsteps : products) {
-					for (int s: productsteps){
-						structureWriter.print(s+" ");
-					}
-					structureWriter.println("");
-				}
-
-			}
-			
-
-			structureWriter.close();
-			
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		writeLogLn("");
 	}
 	
 	public static void saveScenario(Scenario S){
 		try {
-			PrintWriter structureWriter = new PrintWriter("test/" + S.name + "Scenario.txt");
-			//EquipletAgent[][] grid = Grid.getStructure(structure_name);
+			PrintWriter structureWriter = new PrintWriter("scenarios/" + S.name + ".txt");
 			
 			structureWriter.println(S.x+"x"+S.y);
+			
+
+			
+			
+			
 			for (ArrayList<Integer> neighbor : S.neighbors) {
 				structureWriter.println(neighbor);
 			}
@@ -270,60 +92,6 @@ public class MapssFileWriter {
 		}
 		
 	}
-	
-	public static void savePaths(Scenario S){
-		writeLogLn("Paths between equiplets:");
-		int count = 0;
-		int equiplet = 0;
-		for (int[] path: S.paths_between_equiplets){
-			if (count == 0){
-				writeLogLn("Equiplet: "+equiplet);
-				equiplet++;
-			} 
-			writeLog(equiplet+" to "+count+": ");
-			count++;
-			
-			
-			for (int derp: path){
-				writeLog(derp+ " ");
-			}
-			writeLogLn("");
-			
-			
-			
-			
-			if (count >= S.x*S.y){
-				count = 0;
-			} 
-			//writeLog(count+ ": ");
-			
-			
-			
-			
-		}
-		
-//		writeLogLn("Possible other paths");
-//		count = 0;
-//		row = 0;
-//		for (int[] path: S.paths_between_equiplets){
-//			if (count >= S.x){
-//				count = 0;
-//				writeLog(row+ ": ");
-//				row++;
-//			} else {
-//				writeLog(" ");
-//			}
-//			writeLog(count+ ": ");
-//			
-//			for (int derp: path){
-//				writeLog(derp+ " ");
-//			}
-//			writeLogLn("");
-//			
-//			count++;
-//		}
-		
-	}
 
 	
 	public static void createLogFile(String name){
@@ -346,4 +114,108 @@ public class MapssFileWriter {
 	public static void closeLog(){
 		logWriter.close();
 	}
+	
+	
+	public static void createDataFile(String name){
+		try {
+			PrintWriter DataWriter = new PrintWriter("data/" + name + ".txt");
+			
+			
+			Scenario S = ScenarioList.getScenario(name);
+			DataWriter.println("********************* "+name+" *********************");
+			DataWriter.println("X: "+S.x);
+			DataWriter.println("Y: "+S.y);
+			DataWriter.println("****************************************************");
+			
+			DataWriter.println("Grid layout: ");
+			int stepnr = 0;
+			for (int y = 0; y < S.y; y++){
+				String output = "";
+				for (int x = 0; x < S.x; x++){
+					
+					if (stepnr < 10){
+						output += " ";
+					}
+					output += " " + stepnr;
+					stepnr++;
+				}
+				DataWriter.println(output);
+			}
+			DataWriter.println("****************************************************");
+			
+			
+			DataWriter.println("Distance Matrix:");
+			for (ArrayList<Integer>[] i : S.distances_between_equiplets){
+				String output = "";
+				for (ArrayList<Integer> j : i){
+					output += " " + j;
+				}
+				DataWriter.println(output);
+			}
+			DataWriter.println("");
+			
+			
+			ArrayList<Integer>[] neighbors = S.neighbors;
+			for (int i = 0; i < neighbors.length; i++){
+				DataWriter.println("Equiplet " + i + " kent: " + neighbors[i]);	
+			}
+			DataWriter.println("****************************************************");
+			
+			
+			DataWriter.println("Paths between equiplets (if a path ends with an impossible "
+					+ "number then that means that the destination is unreachable:");
+			int count = 0;
+			int equiplet = 0;
+			for (int[] path: S.paths_between_equiplets){
+				if (count == 0){
+					DataWriter.println("****************************************************");
+					DataWriter.println("Equiplet: "+equiplet);
+					equiplet++;
+				} 
+				DataWriter.println(equiplet-1+" --> "+count+".");
+				DataWriter.print("Path: ");
+				for (int derp: path){
+					DataWriter.print(derp+ " ");
+				}
+
+				count++;
+				if (count >= S.x*S.y){
+					count = 0;
+				} 
+				DataWriter.println("");
+			}
+			DataWriter.println("****************************************************");
+			DataWriter.println("Possible other paths");
+			count = 0;
+			equiplet = 0;
+			for (int[] path: S.possible_other_paths){
+				if (count == 0){
+					DataWriter.println("****************************************************");
+					DataWriter.println("Equiplet: "+equiplet);
+					equiplet++;
+				} 
+				DataWriter.print(equiplet-1+" --> "+count+": ");
+				count++;
+				
+				for (int derp: path){
+					DataWriter.print(derp+ " ");
+				}
+
+				if (count >= S.x*S.y){
+					count = 0;
+				} 
+				DataWriter.println("");
+			}
+			
+			DataWriter.print("Difference between paths: ");
+			DataWriter.print(S.comparePaths()+"%");
+			DataWriter.println("****************************************************");
+			
+			DataWriter.close();
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
 }

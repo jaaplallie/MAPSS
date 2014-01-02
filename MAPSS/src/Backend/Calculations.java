@@ -3,68 +3,26 @@ package Backend;
 import java.util.ArrayList;
 
 public class Calculations {
-
-	//protected static ArrayList<Integer>[][] matrix;
-	protected static ArrayList<ArrayList<Integer>[][]> matrix_list = new ArrayList<ArrayList<Integer>[][]>();
 	
-//	public static ArrayList<Integer>[][] calculateDistances(int grid_width, int grid_length){
-//		
-//		ArrayList<Integer>[][] matrix = new ArrayList[grid_width*grid_length][grid_length*grid_width];
-//		
-//		for (int x = 0; x < grid_width*grid_length; x++){	
-//			int currentposition[] = Grid.getEquipletPosition(x);
-//				for (int y = 0; y < grid_width*grid_length; y++){
-//					int otherposition[] = Grid.getEquipletPosition(y);
-//					ArrayList<Integer> X = new ArrayList<Integer>();
-//					
-//					X.add(otherposition[0]-currentposition[0]);
-//					X.add(otherposition[1]-currentposition[1]);
-//					matrix[x][y] = X;
-//				}	
-//			}	
-//		matrix_list.add(matrix);
-//
-//		return matrix;
-//	}
 	
-public static ArrayList<Integer>[][] calcDistances(int grid_width, int grid_length, Scenario s){
-		
-	ArrayList<Integer>[][]matrix = new ArrayList[grid_width*grid_length][grid_length*grid_width];
-		
-		for (int x = 0; x < grid_width*grid_length; x++){	
-			int currentposition[] = s.getEquipletPosition(x);
-				for (int y = 0; y < grid_width*grid_length; y++){
-					int otherposition[] = s.getEquipletPosition(y);
-					ArrayList<Integer> X = new ArrayList<Integer>();
-					
-					X.add(otherposition[0]-currentposition[0]);
-					X.add(otherposition[1]-currentposition[1]);
-					matrix[x][y] = X;
+	
+	public static ArrayList<Integer>[][] calculateDistances(int grid_width, int grid_length, Scenario s){
+			
+		ArrayList<Integer>[][]matrix = new ArrayList[grid_width*grid_length][grid_length*grid_width];
+			
+			for (int x = 0; x < grid_width*grid_length; x++){	
+				int currentposition[] = s.getEquipletPosition(x);
+					for (int y = 0; y < grid_width*grid_length; y++){
+						int otherposition[] = s.getEquipletPosition(y);
+						ArrayList<Integer> X = new ArrayList<Integer>();
+						
+						X.add(otherposition[0]-currentposition[0]);
+						X.add(otherposition[1]-currentposition[1]);
+						matrix[x][y] = X;
+					}	
 				}	
-			}	
-		//matrix_list.add(matrix);
-
-		return matrix;
-	}
-	
-	
-//	public static void setMatrix(String structure_name){
-//		int index = Grid.getIndex(structure_name);
-//		ArrayList<Integer>[][] matrixie = matrix_list.get(index);
-//		matrix = matrixie;
-//	}
-	
-	public static void logMatrix(ArrayList<Integer>[][] matrix){
-		MapssFileWriter.writeLogLn("Matrix layout:");
-		for (ArrayList<Integer>[] i : matrix){
-			String output = "";
-			for (ArrayList<Integer> j : i){
-				output += " " + j;
-			}
-			MapssFileWriter.writeLogLn(output);
+			return matrix;
 		}
-		MapssFileWriter.writeLogLn("");
-	}
 	
 	public static int getDistance(int start, int end, Scenario S){
 		ArrayList<Integer> value = S.distances_between_equiplets[start][end];
@@ -75,63 +33,36 @@ public static ArrayList<Integer>[][] calcDistances(int grid_width, int grid_leng
 		return distance;
 	}
 	
-	
 	public static ArrayList<int[]> calculateAllPaths(Scenario current_scenario, int mode){
 		int max = current_scenario.x*current_scenario.y;
-		
-		//ArrayList<int[]>[][] paths = new ArrayList[max][max];
-		
-		
+
 		ArrayList<int[]> paths = new ArrayList<int[]>();
 		
 		for (int i = 0; i < max; i++){
 			for (int j = 0; j < max; j++){
-				
-				System.out.println("Distance between"+i+ "and"+j+": "+getDistance(i,j, current_scenario));
-				
 				int path[] = calculatePath(i, j, mode, current_scenario);
-				
-//				for (int p: path){
-//					System.out.print(p+" ");
-//				}
-//				System.out.println();
-				//paths[i][j].add(path);
 				paths.add(path);
 			}
-			
 		}
-		
 		return paths;
-		
 	}
 	
-	
-	
 	public static int[] calculatePath(int start_equiplet_number, int end_equiplet_number, int mode, Scenario S) {
-		
-		
-		
 		ArrayList<Integer>[] neighbors = S.neighbors;
-		
 		int max = S.x*S.y, temp_distance = max;
 
 		int[] visited = new int[max];
 		int[] recorded_distances = new int[max];
 		
-		//set the distance of all equiplets to "infinite"
+		//set the distance of all equiplets to "infinite" except for the starting one.
 		for (int x = 0; x < max; x++){
 			recorded_distances[x] = max+1;
 		}
-		
 		recorded_distances[start_equiplet_number] = 0;
 		
 		int current_equiplet = start_equiplet_number;
 		int next_equiplet = current_equiplet;
-		
 		ArrayList<Integer> path = new ArrayList<Integer>();
-		
-		//int index = getIndex(name_of_current_structure);
-		
 		
 		while(true){
 			//Checks the neighbors of the current node and compares the distances.

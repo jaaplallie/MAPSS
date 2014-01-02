@@ -34,14 +34,7 @@ public class ProductStepGenerators {
 		//return null;
 	}
 	
-	public static ArrayList<int[]> getProducts(String structure_name){
-		try {
-			return product_batches.get(Grid.getIndex(structure_name));
-		} catch (IndexOutOfBoundsException i){
-			
-		}
-		return null;
-	}
+
 	
 	public static ArrayList<Integer> generateForbiddenList(Scenario S){
 		ArrayList<Integer> forbidden_list = new ArrayList<Integer>();
@@ -59,19 +52,11 @@ public class ProductStepGenerators {
 	
 	
 	public static void generateProductBatch(int product_count, int max_product_steps, String type, String structure_name){
-			
+		
 		Scenario S = ScenarioList.getScenario(structure_name);
-		//Grid.setGrid(structure_name);
-		//gridsteps = Grid.getMaxvalue();
-		//gridsteps = S.x*S.y;
-		// Make sure that gridsteps has a value (setgridsteps) or you will get a list of 0's
-		
-		
 		ArrayList<Integer> forbidden_list = generateForbiddenList(S);
-		
-		
-		
 		ArrayList<int[]> products = new ArrayList<int[]>();
+		
 		for (int i =0; i < product_count; i++){
 			int amount = (int)(Math.random()*(max_product_steps));
 			amount++;
@@ -91,32 +76,11 @@ public class ProductStepGenerators {
 			};
 			products.add(steps);
 		}
-		
 		S.addProducts(products);
 		
-		batch_names.add(structure_name);
-		product_batches.add(products);
-		
-		
-//		if (products != null){
-//		//ArrayList<String[]> products = ProductStepGenerators.getBatch(structure_name);
-//		//System.out.println(products);
-//		for (String[] productsteps : products) {
-//			for (String s: productsteps){
-//				structureWriter.print(s+" ");
-//			}
-//			structureWriter.println("");
-//		}
-//
-//	}
-		
-
-		MapssFileWriter.saveProducts(structure_name, products);
-		//MapssFileWriter.saveStructure(structure_name, Grid.getNeighbors(structure_name), products);
-
 		System.out.println(type + " products created for " + structure_name);
 		
-		MapssFileReader.loadStructures();
+		//MapssFileReader.loadStructures();
 		ChartPresenter.updateChartStructures();
 	}
 	

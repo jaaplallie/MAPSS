@@ -77,7 +77,7 @@ public class MainWindow implements WindowListener{
 		
 		JPanel simulationTab = builder.getPanel();
 		builder = new ProgramData().getNewBuilder();
-		tabbedPane.addTab("Scenario Setup", null, simulationTab, null);
+		tabbedPane.addTab("Product Setup", null, simulationTab, null);
 		
 		DefaultCategoryDataset data2 = new DefaultCategoryDataset();		
 		data2.addValue(9.0, "p1", "Category 1");

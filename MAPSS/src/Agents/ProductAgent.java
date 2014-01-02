@@ -59,7 +59,7 @@ public class ProductAgent extends Agent {
 				int[] productPath;
 				int[] otherPath;
 				
-				Scenario S = ScenarioList.getScenario(Grid.getCurrentName());
+				Scenario S = ScenarioList.getScenario(Simulations.getCurrentName());
 				 
 				boolean right_sized_grid = true;
 				for (Object o : args) {
@@ -71,8 +71,6 @@ public class ProductAgent extends Agent {
 
 				MapssFileWriter.writeLogLn("These are my product's steps: " + output); 
 
-				
-				
 				if (right_sized_grid == true){
 					int start_position = 0;
 					if (args[0] == null){
@@ -80,8 +78,6 @@ public class ProductAgent extends Agent {
 					} else {
 						start_position = Integer.parseInt(args[0].toString());
 					}
-					
-					//int[] start_xy_values = S.getEquipletPosition(start_position);
 					
 					MapssFileWriter.writeLogLn("I start at equiplet number: " + start_position); 
 					
@@ -98,14 +94,9 @@ public class ProductAgent extends Agent {
 						next_position = Integer.parseInt(args[i].toString());
 						
 						// Fetch 2 path's
+						int first_path[] = S.getPath(current_position, next_position);
+						int second_path[] = S.getAlternativePath(current_position, next_position);
 						
-						int first_path[] = Calculations.calculatePath(current_position, next_position, 0, S);
-						//int first_path[] = S.getPath(current_position, next_position);
-
-						for (int derp: first_path){
-							System.out.print(derp+ " ");
-						}
-						System.out.println();
 						for (int j: first_path){
 							if (j == S.getMax()+1){
 								destination_reachable = false;
@@ -113,7 +104,6 @@ public class ProductAgent extends Agent {
 							}
 						}
 						
-						int second_path[] = S.getAlternativePath(current_position, next_position);
 						for (int j: second_path){
 							if (j == S.getMax()+1){
 								destination_reachable = false;
@@ -162,9 +152,6 @@ public class ProductAgent extends Agent {
 					}	
 					
 					
-					
-					
-					
 					if (destination_reachable == true){
 						//Grid.addProductPath(productPath);
 						
@@ -192,9 +179,9 @@ public class ProductAgent extends Agent {
 						
 						//Use the shortest path.
 						if (average <= other_average){
-							Grid.addPathLenght(average);
+							Simulations.addPathLenght(average);
 						} else {
-							Grid.addPathLenght(other_average);
+							Simulations.addPathLenght(other_average);
 						}
 						
 						
@@ -208,17 +195,8 @@ public class ProductAgent extends Agent {
 						MapssFileWriter.writeLogLn("");
 					}
 					
-					
-					
-					//Simulations.addFinishedProduct();
-					
+					Simulations.addFinishedProduct();
 					ChartPresenter.updateProgress(1);
-					
-					
-			
-					
-					
-					
 					
 				} else {
 					MapssFileWriter.writeLogLn("Unfortunately I can't find a suitable grid so no calculations for me");
