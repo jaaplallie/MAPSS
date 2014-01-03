@@ -1,5 +1,5 @@
 package GraphicalGridBuilder;
 
-public class GraphicalGridTransport {
+public class GraphicalGridTransport extends GraphicalGridObject {
 
 }
