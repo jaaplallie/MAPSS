@@ -10,11 +10,10 @@ import Gui.ChartPresenter;
  ***************************************************************************/
 
 public class ProductStepGenerators {
-	private static int gridsteps;
-	private static ArrayList<ArrayList<String[]>> product_batches = new ArrayList<ArrayList<String[]>>();
+	private static ArrayList<ArrayList<int[]>> product_batches = new ArrayList<ArrayList<int[]>>();
 	private static ArrayList<String> batch_names = new ArrayList<String>();
 	
-	public static ArrayList<String[]> getBatch(String name){
+	public static ArrayList<int[]> getBatch(String name){
 		int counter = 0, found = 0;
 		for(String s: batch_names){
 			//System.out.println(s);
@@ -26,7 +25,7 @@ public class ProductStepGenerators {
 		}
 		
 		try {
-			ArrayList<String[]> batch = product_batches.get(counter);
+			ArrayList<int[]> batch = product_batches.get(counter);
 			return batch;
 		} catch (IndexOutOfBoundsException i){
 			return null;
@@ -35,93 +34,91 @@ public class ProductStepGenerators {
 		//return null;
 	}
 	
-	public static ArrayList<String[]> getProducts(String structure_name){
-		try {
-			return product_batches.get(Grid.getIndex(structure_name));
-		} catch (IndexOutOfBoundsException i){
-			
+
+	
+	public static ArrayList<Integer> generateForbiddenList(Scenario S){
+		ArrayList<Integer> forbidden_list = new ArrayList<Integer>();
+		int count = 0;
+		for (ArrayList<Integer> n: S.neighbors){
+			if (n.size() <= 0){
+				forbidden_list.add(count);
+			}
+			count++;
 		}
-		return null;
+		
+		return forbidden_list;
+		
 	}
 	
+	
 	public static void generateProductBatch(int product_count, int max_product_steps, String type, String structure_name){
-			
-		Grid.setGrid(structure_name);
-		gridsteps = Grid.getMaxvalue();
-		// Make sure that gridsteps has a value (setgridsteps) or you will get a list of 0's
 		
+		Scenario S = ScenarioList.getScenario(structure_name);
+		ArrayList<Integer> forbidden_list = generateForbiddenList(S);
+		ArrayList<int[]> products = new ArrayList<int[]>();
 		
-		ArrayList<String[]> products = new ArrayList<String[]>();
 		for (int i =0; i < product_count; i++){
 			int amount = (int)(Math.random()*(max_product_steps));
 			amount++;
 			amount++;
 			// we need a minimum of 2 product steps
-			String[] steps = {};
+			int[] steps = {};
 			
 			switch(type){
 			case "random":
-				steps = ProductStepGenerators.generateRandomSteps(amount);
+				steps = ProductStepGenerators.generateRandomSteps(amount, S.x*S.y, forbidden_list);
 				break;
 			case "increase":
-				steps = ProductStepGenerators.generateIncreasedSteps(amount);
-				break;
-			case "+25%":
-				steps = ProductStepGenerators.generate25PercentPopularSteps(amount);
+				steps = ProductStepGenerators.generateIncreasedSteps(amount, S.x*S.y);
 				break;
 			default:
-				steps = ProductStepGenerators.generateRandomSteps(amount);
+				steps = ProductStepGenerators.generateRandomSteps(amount, S.x*S.y, forbidden_list);
 			};
 			products.add(steps);
 		}
+		S.addProducts(products);
 		
-		batch_names.add(structure_name);
-		product_batches.add(products);
-		
-		
-//		if (products != null){
-//		//ArrayList<String[]> products = ProductStepGenerators.getBatch(structure_name);
-//		//System.out.println(products);
-//		for (String[] productsteps : products) {
-//			for (String s: productsteps){
-//				structureWriter.print(s+" ");
-//			}
-//			structureWriter.println("");
-//		}
-//
-//	}
-		
-		
-		MapssFileWriter.saveProducts(structure_name, products);
-		//MapssFileWriter.saveStructure(structure_name, Grid.getNeighbors(structure_name), products);
-
 		System.out.println(type + " products created for " + structure_name);
 		
-		MapssFileReader.loadStructures();
+		//MapssFileReader.loadStructures();
 		ChartPresenter.updateChartStructures();
 	}
 	
-	public static String[] generateRandomSteps(int nps){
+	public static int[] generateRandomSteps(int nps, int gridsteps, ArrayList<Integer> forbidden_list){
 		/* flat distributed set */
-		String[] steps = new String[nps];
+		int[] steps = new int[nps];
+		
+		boolean safe = true;
 		
     	for (int j = 0; j < nps; j++){      	
     	    Integer step = (int)(Math.random()*(gridsteps));
-    	    steps[j] = step.toString();
+    	    for (int i: forbidden_list){
+    	    	if (i == step){
+    	    		safe = false;
+    	    	}
+    	    }
+    	    
+    	    if (safe == true){
+    	    	steps[j] = step;
+    	    } else {
+    	    	j--;
+    	    	safe = true;
+    	    }
+    	    
     	}
     	
 		return steps;
 	}
 	
-	public static String[] generateIncreasedSteps(int nps){
+	public static int[] generateIncreasedSteps(int nps, int gridsteps){
 		/* increasing set */
-		String[]steps = new String[nps];
+		int[]steps = new int[nps];
 		
 		for (int j = 0; j < nps; j++){     	
 			Integer step = (int) (Math.random()*(gridsteps));
 			Integer tmp = (int) (Math.random()*(gridsteps));
 		    if(step >= tmp){
-		    	steps[j] = step.toString();
+		    	steps[j] = step;
 		    } else {
 		    	j--; /* reject step and try again */
 		    }
@@ -129,29 +126,8 @@ public class ProductStepGenerators {
 		return steps;
 	}
 	
-	public static String[] generate25PercentPopularSteps(int amount){
-		// This function generates a list of product steps. In this version there is 
-		// a 25% chance of the product step being unavaible. When that happens they
-		// get a new product step.
-		
-		String[]steps = new String[amount];
-		int doubles[] = new int[gridsteps/4];
-
-		for (int j = 0; j < amount; j++){    
-			Integer range = gridsteps+(gridsteps/4);
-			Integer step = (int) (Math.random()*(range-1));
-    	    
-    	    if (step >= gridsteps){
-    	    	Integer tmp = doubles[step-gridsteps];
-    	    	steps[j] = tmp.toString();
-    	    } else {
-    	    	steps[j] = step.toString();
-    	    }
-		}
-		return steps;
-	}
 	
-	public static void addProductBatch(String structure_name, ArrayList<String[]> product_list){
+	public static void addProductBatch(String structure_name, ArrayList<int[]> product_list){
 		batch_names.add(structure_name);
 		product_batches.add(product_list);	
 		

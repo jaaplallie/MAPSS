@@ -14,10 +14,11 @@ import Backend.AgentEnvironmentCreator;
 import Backend.Grid;
 import Backend.ProductStepGenerators;
 import Backend.ProgramData;
+import Backend.ScenarioList;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-public class SimulationModule extends JPanel implements ActionListener{
+public class ProductSetup extends JPanel implements ActionListener{
 
 	/**
 	 * 
@@ -39,7 +40,7 @@ public class SimulationModule extends JPanel implements ActionListener{
 	static JComboBox<String> structureBox = new JComboBox<String>();
 	
 	
-	public SimulationModule() {   
+	public ProductSetup() {   
 		
 		productStepComboBox.setEditable(false);
 		productStepComboBox.setVisible(true);
@@ -74,7 +75,7 @@ public class SimulationModule extends JPanel implements ActionListener{
 	
 	public static void updateProductStructures(){
 		structureBox.removeAllItems();
-		for (String name: Grid.getStructureNames()){
+		for (String name: ScenarioList.getScenarioNames()){
 			structureBox.addItem(name);
 		}
 	}

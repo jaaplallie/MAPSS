@@ -5,8 +5,11 @@ import jade.core.behaviours.WakerBehaviour;
 
 import java.util.ArrayList;
 
+import Backend.Calculations;
 import Backend.Grid;
-import Backend.MapssFileWriter;
+import Backend.MapssFileHandler;
+import Backend.Scenario;
+import Backend.ScenarioList;
 import Backend.Simulations;
 import Gui.ChartPresenter;
 
@@ -15,10 +18,16 @@ public class ProductAgent extends Agent {
 	String code;
 	Object[] args;
 	
-	public ProductAgent(String code, Object[] args){
+	public ProductAgent(String code, int[] arguments){
 		this.code = code;
-		this.args = args;
-		setArguments(args);
+		
+		Object[] temp = new Object[arguments.length];
+		for (int i = 0; i < arguments.length; i++) {
+			temp[i]= arguments[i];
+		}
+		this.args = temp;
+		
+		setArguments(temp);
 	}
 	
 	public String getCode() {
@@ -44,37 +53,25 @@ public class ProductAgent extends Agent {
 		addBehaviour(new WakerBehaviour(this, 0)  { 
 			 protected void handleElapsedTimeout() { 
 				System.out.println(getAID().getLocalName());
-				MapssFileWriter.writeLogLn("Hi. I'm product agent " + getAID().getLocalName() + "."); 
+				MapssFileHandler.writeLogLn("Hi. I'm product agent " + getAID().getLocalName() + "."); 
 				Object[] args = myAgent.getArguments();
 				String output = "";
 				int[] productPath;
 				int[] otherPath;
+				
+				Scenario S = ScenarioList.getScenario(Simulations.getCurrentName());
 				 
 				boolean right_sized_grid = true;
 				for (Object o : args) {
 					 output = output + o.toString() + " ";  
-					 if (Grid.getMaxvalue() < Integer.parseInt(o.toString())){
+					 if (S.getMax() < Integer.parseInt(o.toString())){
 						 right_sized_grid = false;
 					 }
 				}
 
-				MapssFileWriter.writeLogLn("These are my product's steps: " + output); 
-				
-				//Checking if the grid exists and if there's anything useful in it
-				EquipletAgent[][] grid = Grid.getGrid();
-				
-				boolean safe_grid = false;
-				if (grid != null){
-					for (Object ob : grid) {
-						if (ob != null ) {
-							safe_grid = true;
-							break;
-						}
-					}
-				}
-				
-				
-				if (safe_grid == true & right_sized_grid == true){
+				MapssFileHandler.writeLogLn("These are my product's steps: " + output); 
+
+				if (right_sized_grid == true){
 					int start_position = 0;
 					if (args[0] == null){
 						
@@ -82,9 +79,7 @@ public class ProductAgent extends Agent {
 						start_position = Integer.parseInt(args[0].toString());
 					}
 					
-					int[] start_xy_values = Grid.getEquipletPosition(start_position);
-					
-					MapssFileWriter.writeLogLn("I start at equiplet number: " + start_position); 
+					MapssFileHandler.writeLogLn("I start at equiplet number: " + start_position); 
 					
 					int current_position = start_position;
 					int next_position;
@@ -99,17 +94,18 @@ public class ProductAgent extends Agent {
 						next_position = Integer.parseInt(args[i].toString());
 						
 						// Fetch 2 path's
-						int first_path[] = Grid.calculatePath(current_position, next_position, 0, Grid.getCurrentNeighbors());
+						int first_path[] = S.getPath(current_position, next_position);
+						int second_path[] = S.getAlternativePath(current_position, next_position);
+						
 						for (int j: first_path){
-							if (j == Grid.getMaxvalue()+1){
+							if (j == S.getMax()+1){
 								destination_reachable = false;
 								break;
 							}
 						}
 						
-						int second_path[] = Grid.calculatePath(current_position, next_position, 1, Grid.getCurrentNeighbors());
 						for (int j: second_path){
-							if (j == Grid.getMaxvalue()+1){
+							if (j == S.getMax()+1){
 								destination_reachable = false;
 								break;
 							}
@@ -147,7 +143,7 @@ public class ProductAgent extends Agent {
 								chosen_path = second_path;
 							}
 							
-							Grid.addProductStepPath(chosen_path);
+							//Grid.addProductStepPath(chosen_path);
 							
 						} else {
 							break;
@@ -156,74 +152,59 @@ public class ProductAgent extends Agent {
 					}	
 					
 					
-					
-					
-					
 					if (destination_reachable == true){
 						//Grid.addProductPath(productPath);
 						
 						Simulations.addFinishedProduct();
-						MapssFileWriter.writeLog("Path I need to complete the product: ");
+						MapssFileHandler.writeLog("Path I need to complete the product: ");
 						for (int o: productPath){
-							MapssFileWriter.writeLog(o+" ");
+							MapssFileHandler.writeLog(o+" ");
 						}
-						MapssFileWriter.writeLogLn("");
-						MapssFileWriter.writeLogLn("Total hops needed for this: " + hops_in_path);
+						MapssFileHandler.writeLogLn("");
+						MapssFileHandler.writeLogLn("Total hops needed for this: " + hops_in_path);
 						double average = hops_in_path/((args.length)-1);
 						
-						MapssFileWriter.writeLogLn("Average number of hops needed for each product step: " + average);
-						MapssFileWriter.writeLogLn("");
+						MapssFileHandler.writeLogLn("Average number of hops needed for each product step: " + average);
+						MapssFileHandler.writeLogLn("");
 						
-						MapssFileWriter.writeLog("Alternative path: ");
+						MapssFileHandler.writeLog("Alternative path: ");
 						for (int o: otherPath){
-							MapssFileWriter.writeLog(o+" ");
+							MapssFileHandler.writeLog(o+" ");
 						}
-						MapssFileWriter.writeLogLn("");
-						MapssFileWriter.writeLogLn("Total hops needed for this: " + hops_in_other_path);
+						MapssFileHandler.writeLogLn("");
+						MapssFileHandler.writeLogLn("Total hops needed for this: " + hops_in_other_path);
 						double other_average = hops_in_other_path/((args.length)-1);
 						
-						MapssFileWriter.writeLogLn("Average number of hops needed for each product step: " + other_average);
+						MapssFileHandler.writeLogLn("Average number of hops needed for each product step: " + other_average);
 						
 						//Use the shortest path.
 						if (average <= other_average){
-							Grid.addPathLenght(average);
+							Simulations.addPathLenght(average);
 						} else {
-							Grid.addPathLenght(other_average);
+							Simulations.addPathLenght(other_average);
 						}
 						
 						
 					} else {
-						MapssFileWriter.writeLog("I couldn't reach everything. This is as far as I got: ");
+						MapssFileHandler.writeLog("I couldn't reach everything. This is as far as I got: ");
 						
 						Simulations.addUnfinishedProduct();
 						for (int o: productPath){
-							MapssFileWriter.writeLog(o+" ");
+							MapssFileHandler.writeLog(o+" ");
 						}
-						MapssFileWriter.writeLogLn("");
+						MapssFileHandler.writeLogLn("");
 					}
 					
-					
-					
-					//Simulations.addFinishedProduct();
-					
+					Simulations.addFinishedProduct();
 					ChartPresenter.updateProgress(1);
 					
-					
-			
-					
-					
-					
-					
 				} else {
-					MapssFileWriter.writeLogLn("Unfortunately I can't find a suitable grid so no calculations for me");
-					if (safe_grid == false){
-						MapssFileWriter.writeLogLn("The grid is either not there or it contains empty values");
-					}
+					MapssFileHandler.writeLogLn("Unfortunately I can't find a suitable grid so no calculations for me");
 					if (right_sized_grid == false){
-						MapssFileWriter.writeLogLn("The current grid is too small for my product steps");
+						MapssFileHandler.writeLogLn("The current grid is too small for my product steps");
 					}
 				}
-				MapssFileWriter.writeLogLn("");
+				MapssFileHandler.writeLogLn("");
 				
 				myAgent.doDelete();
 			 } 
@@ -233,6 +214,6 @@ public class ProductAgent extends Agent {
 	} 
 	
 	protected void breakdown() {
-		MapssFileWriter.writeLogLn("Agent "+getAID().getName()+" is gone now."); 
+		MapssFileHandler.writeLogLn("Agent "+getAID().getName()+" is gone now."); 
 	}
 }

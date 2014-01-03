@@ -19,8 +19,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import net.miginfocom.swing.MigLayout;
-import Backend.MapssFileReader;
-import Backend.MapssFileWriter;
+import Backend.MapssFileHandler;
 import Backend.ProgramData;
 import Backend.Scenario;
 
@@ -113,7 +112,7 @@ public class ScenarioImportExportWindow extends JFrame implements ActionListener
 			FileNameExtensionFilter xmlfilter = new FileNameExtensionFilter("XML Scenario files (*.xml)", "xml", "XML");
             chooser.setFileFilter(xmlfilter);
             chooser.setDialogTitle("Import scenario file");
-			MapssFileReader xmlReader = new MapssFileReader();
+			MapssFileHandler xmlReader = new MapssFileHandler();
 			Scenario readScenario;
 		    int retrival = chooser.showOpenDialog(null);
 		    if (retrival == JFileChooser.APPROVE_OPTION) {
@@ -154,11 +153,11 @@ public class ScenarioImportExportWindow extends JFrame implements ActionListener
 			FileNameExtensionFilter xmlfilter = new FileNameExtensionFilter("MAPSS XML Scenario files (*.xml)", "xml", "XML");
             chooser.setFileFilter(xmlfilter);
             chooser.setDialogTitle("Export scenario file");
-			MapssFileWriter xmlWriter = new MapssFileWriter();
+			MapssFileHandler xmlWriter = new MapssFileHandler();
 		    int retrival = chooser.showSaveDialog(null);
 		    if (retrival == JFileChooser.APPROVE_OPTION) {
 		        try {
-		        	xmlWriter.writeScenarioToXML(ProgramData.getScenarioListModel().get(scenarioList.getSelectedIndex()), chooser.getSelectedFile()+".xml");
+		        	//xmlWriter.writeScenarioToXML(ProgramData.getScenarioListModel().get(scenarioList.getSelectedIndex()), chooser.getSelectedFile()+".xml");
 		            JOptionPane.showMessageDialog(
 		            		null, 
 		            		"Scenario succesfully saved as .xml to: \n" +

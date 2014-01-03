@@ -28,6 +28,8 @@ import Backend.ChartCreator;
 import Backend.Grid;
 import Backend.ProductStepGenerators;
 import Backend.ProgramData;
+import Backend.Scenario;
+import Backend.ScenarioList;
 import Backend.Simulations;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -152,8 +154,10 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
 	public static void updateChartStructures(){
 		structureBox.removeAllItems();
 		
-		for (String name: Grid.getStructureNames()){
-			if (ProductStepGenerators.getBatch(name) != null){
+		for (String name: ScenarioList.getScenarioNames()){
+			Scenario S = ScenarioList.getScenario(name);
+
+			if (S.getProducts().size() > 0){
 				structureBox.addItem(name);
 			}
 			
@@ -243,9 +247,10 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
     		
     		int total_products = 0;
     		for (int i = 0; i < selected_topologies.size(); i++){
-    			ArrayList<String[]> products = ProductStepGenerators.getBatch(selected_topologies.get(i));
+    			Scenario S = ScenarioList.getScenario(selected_topologies.get(i));
+    			ArrayList<int[]> products = S.getProducts();
     			total_products += products.size();
-    			System.out.println(selected_topologies.get(i));
+    			//System.out.println(selected_topologies.get(i));
     		}
     		progressBar.setMaximum(total_products);
     		progressBar.setStringPainted(true);
@@ -253,9 +258,10 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
     		for (int i = 0; i < selected_topologies.size(); i++){
 
     			System.out.println("Attempting: " + selected_topologies.get(i));
+    			Scenario S = ScenarioList.getScenario(selected_topologies.get(i));
     			double value1 = Simulations.productAgentsInRegularGridSimulation(selected_topologies.get(i), selected_topologies.get(i));
-    			int X = Grid.getX();
-    			int Y = Grid.getY();
+    			int X = S.x;
+    			int Y = S.y;
     			String name = selected_topologies.get(i).split(""+X)[0];
     			
     			if (check.isSelected()) {
