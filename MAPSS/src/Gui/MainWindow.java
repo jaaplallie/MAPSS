@@ -72,7 +72,7 @@ public class MainWindow implements WindowListener{
 		builder = new ProgramData().getNewBuilder();
 		tabbedPane.addTab("Structure Setup", null, structureSetupTab, null);
 		
-		SimulationModule simulationModule = new SimulationModule();
+		ProductSetup simulationModule = new ProductSetup();
 		builder.append(simulationModule);
 		
 		JPanel simulationTab = builder.getPanel();

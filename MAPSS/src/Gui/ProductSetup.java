@@ -18,7 +18,7 @@ import Backend.ScenarioList;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
-public class SimulationModule extends JPanel implements ActionListener{
+public class ProductSetup extends JPanel implements ActionListener{
 
 	/**
 	 * 
@@ -40,7 +40,7 @@ public class SimulationModule extends JPanel implements ActionListener{
 	static JComboBox<String> structureBox = new JComboBox<String>();
 	
 	
-	public SimulationModule() {   
+	public ProductSetup() {   
 		
 		productStepComboBox.setEditable(false);
 		productStepComboBox.setVisible(true);

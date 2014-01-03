@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -14,8 +15,9 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 
 import Backend.Grid;
-import Backend.MapssFileWriter;
+import Backend.MapssFileHandler;
 import Backend.ProgramData;
+import Backend.Scenario;
 import Backend.ScenarioList;
 import GraphicalGridBuilder.GraphicalGrid;
 
@@ -40,11 +42,17 @@ public class CreateGridModule extends JPanel implements ActionListener{
 	private JTextField grid_string = new JTextField("1-2,0-3,0-3,1-2");
 	private JButton buildCustomGrid_Btn = new JButton("Build Custom Grid");
 	
+	
+	static JComboBox<String> structureBox = new JComboBox<String>();
+	private JButton delete_Btn = new JButton("Delete selected scenario/structure");
+	
+	
 	public CreateGridModule() {
 		buildScreen();
 	}
 	
 	public void buildScreen(){
+		builder.appendSeparator("Standard");
         builder.append(new JLabel("Size x-axis :"), input_xSize);
 
 		builder.nextLine();
@@ -61,18 +69,32 @@ public class CreateGridModule extends JPanel implements ActionListener{
         builder.append(new JLabel("Input string:"), grid_string);
         builder.append(buildCustomGrid_Btn);
         builder.nextLine();
+     
+		builder.appendSeparator("Delete");
+		
+		builder.append(structureBox);
+		builder.append(delete_Btn);
+		builder.nextLine();
 		
 		builder.appendSeparator("Preview");
 		builder.append(previewPanel);
-		
 		buildGrid_Btn.addActionListener(this);
 		buildCustomGrid_Btn.addActionListener(this);
+		delete_Btn.addActionListener(this);
 		
 		gridSizePanel = builder.getPanel();
 		builder = new ProgramData().getNewBuilder();
 		add(gridSizePanel);
 		setEnabled(gridSizePanel.getComponents(), true);
 		
+	}
+	
+	
+	public static void updateStructureBox(){
+		structureBox.removeAllItems();
+		for (String name: ScenarioList.getScenarioNames()){
+			structureBox.addItem(name);
+		}
 	}
 
 	public void setEnabled(Component[] components, Boolean b){
@@ -86,60 +108,72 @@ public class CreateGridModule extends JPanel implements ActionListener{
 		Integer x_size = -1;
 		Integer y_size = -1;
 		
-		try {
-			x_size = Integer.parseInt(input_xSize.getValue().toString());
-			y_size = Integer.parseInt(input_ySize.getValue().toString());
-		} catch(NumberFormatException nfe) {
-			nfe.printStackTrace();
-		}
-		
-		if(x_size <= 1 || y_size <= 1) {
-			JOptionPane.showMessageDialog(null,
-			"Error: Please enter numbers that are at least 2", "Error Message",
-			JOptionPane.ERROR_MESSAGE);
+		if (source == delete_Btn){
+			Scenario S = ScenarioList.getScenario((String)structureBox.getSelectedItem());
+			ScenarioList.removeScenario(S);
+			updateStructureBox();
 		} else {
-			String name = name_field.getText();
-			if (name != null && name.isEmpty()){
-				name = "No_name"+x_size+"x"+y_size;
-			} 
-			switch (source.getText()) {
-			
-				case "Build Grid":
-					previewPanel.removeAll();
-					GraphicalGrid graphicalGrid = new GraphicalGrid(x_size, y_size);
-					previewPanel.add(graphicalGrid.draw(), BorderLayout.CENTER);
-					previewPanel.setVisible(true);
-					invalidate();
-					validate();
-					repaint();
-					
-					name += "("+x_size+"x"+y_size+")";
-					Grid.createStructure(x_size, y_size, name);
-					ChartPresenter.updateChartStructures();
-					SimulationModule.updateProductStructures();
-					break;
-					
-				case "Build Custom Grid":
-					previewPanel.removeAll();
-					GraphicalGrid graphicalGrid2 = new GraphicalGrid(x_size, y_size);
-					previewPanel.add(graphicalGrid2.draw(), BorderLayout.CENTER);
-					previewPanel.setVisible(true);
-					invalidate();
-					validate();
-					repaint();
-					
-					String relation_list = grid_string.getText();
-					Grid.createCustom(x_size, y_size, name, relation_list);
-
-					ChartPresenter.updateChartStructures();
-					SimulationModule.updateProductStructures();
-					break;
-				
-				default:
-					break;
+			try {
+				x_size = Integer.parseInt(input_xSize.getValue().toString());
+				y_size = Integer.parseInt(input_ySize.getValue().toString());
+			} catch(NumberFormatException nfe) {
+				nfe.printStackTrace();
 			}
 			
-			
+			if(x_size <= 1 || y_size <= 1) {
+				JOptionPane.showMessageDialog(null,
+				"Error: Please enter numbers that are at least 2", "Error Message",
+				JOptionPane.ERROR_MESSAGE);
+			} else {
+				String name = name_field.getText();
+				if (name != null && name.isEmpty()){
+					name = "No_name"+x_size+"x"+y_size;
+				} 
+				switch (source.getText()) {
+				
+					case "Build Grid":
+						previewPanel.removeAll();
+						GraphicalGrid graphicalGrid = new GraphicalGrid(x_size, y_size);
+						previewPanel.add(graphicalGrid.draw(), BorderLayout.CENTER);
+						previewPanel.setVisible(true);
+						invalidate();
+						validate();
+						repaint();
+						
+						name += "("+x_size+"x"+y_size+")";
+						Grid.createStructure(x_size, y_size, name);
+						ChartPresenter.updateChartStructures();
+						ProductSetup.updateProductStructures();
+						updateStructureBox();
+						break;
+						
+					case "Build Custom Grid":
+						previewPanel.removeAll();
+						GraphicalGrid graphicalGrid2 = new GraphicalGrid(x_size, y_size);
+						previewPanel.add(graphicalGrid2.draw(), BorderLayout.CENTER);
+						previewPanel.setVisible(true);
+						invalidate();
+						validate();
+						repaint();
+						
+						String relation_list = grid_string.getText();
+						Grid.createCustom(x_size, y_size, name, relation_list);
+
+						ChartPresenter.updateChartStructures();
+						ProductSetup.updateProductStructures();
+						updateStructureBox();
+						break;
+					
+					
+					default:
+						break;
+				}
+				
+				
+			}
 		}
+		
+		
+		
 	}
 }

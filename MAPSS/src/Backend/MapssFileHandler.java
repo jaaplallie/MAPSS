@@ -1,8 +1,10 @@
 package Backend;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -23,16 +25,19 @@ import org.w3c.dom.Element;
 
 import Agents.EquipletAgent;
 import Agents.ProductAgent;
+import Gui.ChartPresenter;
+import Gui.CreateGridModule;
+import Gui.ProductSetup;
 
-public class MapssFileWriter {
+public class MapssFileHandler {
 	static PrintWriter logWriter;
 	
-	public MapssFileWriter(){
+	public MapssFileHandler(){
 	}
 	
 	public static void logGrid(Scenario S){
 
-		MapssFileWriter.writeLogLn("Grid layout");
+		MapssFileHandler.writeLogLn("Grid layout");
 		int stepnr = 0;
 		for (int y = 0; y < S.y; y++){
 			String output = "";
@@ -162,8 +167,8 @@ public class MapssFileWriter {
 			DataWriter.println("****************************************************");
 			
 			
-			DataWriter.println("Paths between equiplets (if a path ends with an impossible "
-					+ "number then that means that the destination is unreachable:");
+			DataWriter.println("Paths between equiplets (if a path ends with " + S.getMax()
+					+ "then that means that the destination is unreachable:");
 			int count = 0;
 			int equiplet = 0;
 			for (int[] path: S.paths_between_equiplets){
@@ -218,4 +223,115 @@ public class MapssFileWriter {
 		}
 	}
 	
+	
+	public static void deleteScenarioFiles(Scenario S){
+		
+		try {
+			File scenariofile = new File("scenarios/"+S.name +".txt");
+			scenariofile.delete();
+			System.out.println("Scenario file deleted");
+		} catch (Exception e){
+			System.out.println("unable to delete scenario file");
+			e.printStackTrace();
+		}
+		
+		try {
+			File datafile = new File("data/"+S.name +".txt");
+			datafile.delete();
+			System.out.println("Data file deleted");
+		} catch (Exception e){
+			System.out.println("unable to delete data file");
+			e.printStackTrace();
+		}
+		
+		try {
+			File logfile = new File("logs/"+S.name +".txt");
+			logfile.delete();
+			System.out.println("Log file deleted");
+		} catch (Exception e){
+			System.out.println("unable to delete log file");
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
+	public static void loadScenarios(){
+		ArrayList<Integer>[] neighbors = new ArrayList[0];
+		
+		File dir = new File("scenarios");
+		int filecounter = 0; //is used
+		
+		for (File file : dir.listFiles()) {
+		    if (file.getName().endsWith((".txt"))) {
+		    	
+		    	FileReader fr;
+				try {
+					fr = new FileReader("scenarios/" +file.getName());
+			    	BufferedReader br = new BufferedReader(fr); 
+			    	String s; 
+			    	boolean safe = false;
+			    	int neighbor_counter = 0;
+			    	int x = 0;
+			    	int y = 0;
+			    	ArrayList<int[]> product_list = new ArrayList<int[]>();
+			    	
+			    	while((s = br.readLine()) != null) { 
+			    		if (neighbor_counter == 0){
+			    			String [] ss = s.split("x");
+			    			x = Integer.parseInt(ss[0]);
+			    			y = Integer.parseInt(ss[1]);
+			    			 neighbors = new ArrayList[x*y];
+			    		} else if (neighbor_counter <= x*y) {
+			    			s = s.replace("[", "");
+			    			s = s.replace("]", "");
+			    			s = s.replace(" ", "");
+			    			String [] ss = s.split(",");
+			    			
+			    			ArrayList<Integer> known_equiplets = new ArrayList<Integer>();
+			    			
+			    			for (String product_step: ss){
+			    				try {
+			    					known_equiplets.add(Integer.parseInt(product_step));
+			    				} catch (NumberFormatException e){ }
+			    			}
+			    			neighbors[neighbor_counter-1] = known_equiplets;
+			    		} else {
+			    			
+			    			safe = true;
+			    			String[] temp = s.split(" ");
+			    			
+			    			int[] steps = new int[temp.length];
+			    			
+			    			for (int i = 0; i < temp.length; i++) {
+			    				steps[i]= Integer.parseInt(temp[i]);
+			    			}
+			    			
+			    			product_list.add(steps);
+			    			
+			    		}
+			    		neighbor_counter++;
+			    	} 
+					
+			    	String name = file.getName().replace(".txt", "");
+			    	filecounter++;
+			    	
+			    	ScenarioList.createAndAddScenario(name, x, y, neighbors, product_list);
+
+			    	if (safe == true){
+			    		ProductStepGenerators.addProductBatch(name, product_list);
+			    	}
+
+			    	fr.close(); 
+			    	
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+	    	}
+		}
+		CreateGridModule.updateStructureBox();
+		ProductSetup.updateProductStructures();
+		ChartPresenter.updateChartStructures();
+	}
 }

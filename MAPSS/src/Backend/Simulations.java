@@ -24,12 +24,12 @@ public class Simulations {
 		System.out.println("Creating the nessesary files.....");
 		System.out.println("Generating a set of products and giving them product agents.....");
 		
-		MapssFileWriter.createLogFile(log_name);
-		MapssFileWriter.writeLogLn("***********************Configurations*************************************");
-		MapssFileWriter.writeLogLn("Number of products: " + S.products.size());
-		MapssFileWriter.logGrid(S);
-		MapssFileWriter.logNeighbors(S);
-		MapssFileWriter.writeLogLn("**************************************************************************");
+		MapssFileHandler.createLogFile(log_name);
+		MapssFileHandler.writeLogLn("***********************Configurations*************************************");
+		MapssFileHandler.writeLogLn("Number of products: " + S.products.size());
+		MapssFileHandler.logGrid(S);
+		MapssFileHandler.logNeighbors(S);
+		MapssFileHandler.writeLogLn("**************************************************************************");
 		
 		AgentEnvironmentCreator.start();
 		for (int i =0; i < S.products.size(); i++){
@@ -47,12 +47,12 @@ public class Simulations {
 		while ((finished_products + unfinished_products) < S.products.size()){} //Wait until each product agent is finished
 
 		double average = getTotalAverageProductSteps()/S.products.size();
-		MapssFileWriter.writeLogLn("The average path for each product step is: " + average + " long");
+		MapssFileHandler.writeLogLn("The average path for each product step is: " + average + " long");
 
 		clearProducts();
 		AgentEnvironmentCreator.destroyMainContainer();
 		
-		MapssFileWriter.closeLog();
+		MapssFileHandler.closeLog();
 		System.out.println("Simulation " + log_name + " is finished");
 		return average;
 	}
@@ -68,6 +68,7 @@ public class Simulations {
 	public static void clearProducts(){
 		finished_products = 0;
 		unfinished_products = 0;
+		product_lengths = 0;
 	}
 	
 	public static void setGrid(String structure_name){

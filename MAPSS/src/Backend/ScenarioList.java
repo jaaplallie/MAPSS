@@ -3,7 +3,7 @@ package Backend;
 import java.util.ArrayList;
 
 import Gui.ChartPresenter;
-import Gui.SimulationModule;
+import Gui.ProductSetup;
 
 //Mathijs
 
@@ -23,6 +23,17 @@ public class ScenarioList {
 		scenario_list.add(S);
 		S.save();
 		
+	}
+	
+	public static void removeScenario(Scenario S){
+		int index = 0;
+		for (int i = 0; i < scenario_list.size(); i++){
+			if (scenario_list.get(i).name == S.name){
+				index = i;
+			}
+		}
+		scenario_list.remove(index);
+		MapssFileHandler.deleteScenarioFiles(S);
 	}
 	
 	public static Scenario getScenario(String name){

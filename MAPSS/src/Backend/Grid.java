@@ -5,7 +5,7 @@ import java.util.List;
 
 import Agents.EquipletAgent;
 import Gui.ChartPresenter;
-import Gui.SimulationModule;
+import Gui.ProductSetup;
 
 /****************************************************************************************
 

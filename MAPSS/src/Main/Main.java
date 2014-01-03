@@ -3,7 +3,7 @@ package Main;
 import java.awt.EventQueue;
 
 import Backend.AgentEnvironmentCreator;
-import Backend.MapssFileReader;
+import Backend.MapssFileHandler;
 import Backend.ProgramData;
 import Backend.Scenario;
 import Gui.MainWindow;
@@ -17,18 +17,13 @@ public class Main{
 		System.out.println("Multi-Agent Production System Simulator (MAPSS) started.");
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				
-				
-				//Scenario s = new Scenario(null, 3, 3, null, null, null);
-				//System.out.println(s.name);
-
 				try {
 					AgentEnvironmentCreator aec = new AgentEnvironmentCreator();
 					ProgramData pd = new ProgramData();
 					pd.onProgramStart();
 					MainWindow window = new MainWindow();
 					window.frame.setVisible(true);
-					MapssFileReader.loadStructures();
+					MapssFileHandler.loadScenarios();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

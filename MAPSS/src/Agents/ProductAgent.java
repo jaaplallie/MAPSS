@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import Backend.Calculations;
 import Backend.Grid;
-import Backend.MapssFileWriter;
+import Backend.MapssFileHandler;
 import Backend.Scenario;
 import Backend.ScenarioList;
 import Backend.Simulations;
@@ -53,7 +53,7 @@ public class ProductAgent extends Agent {
 		addBehaviour(new WakerBehaviour(this, 0)  { 
 			 protected void handleElapsedTimeout() { 
 				System.out.println(getAID().getLocalName());
-				MapssFileWriter.writeLogLn("Hi. I'm product agent " + getAID().getLocalName() + "."); 
+				MapssFileHandler.writeLogLn("Hi. I'm product agent " + getAID().getLocalName() + "."); 
 				Object[] args = myAgent.getArguments();
 				String output = "";
 				int[] productPath;
@@ -69,7 +69,7 @@ public class ProductAgent extends Agent {
 					 }
 				}
 
-				MapssFileWriter.writeLogLn("These are my product's steps: " + output); 
+				MapssFileHandler.writeLogLn("These are my product's steps: " + output); 
 
 				if (right_sized_grid == true){
 					int start_position = 0;
@@ -79,7 +79,7 @@ public class ProductAgent extends Agent {
 						start_position = Integer.parseInt(args[0].toString());
 					}
 					
-					MapssFileWriter.writeLogLn("I start at equiplet number: " + start_position); 
+					MapssFileHandler.writeLogLn("I start at equiplet number: " + start_position); 
 					
 					int current_position = start_position;
 					int next_position;
@@ -156,26 +156,26 @@ public class ProductAgent extends Agent {
 						//Grid.addProductPath(productPath);
 						
 						Simulations.addFinishedProduct();
-						MapssFileWriter.writeLog("Path I need to complete the product: ");
+						MapssFileHandler.writeLog("Path I need to complete the product: ");
 						for (int o: productPath){
-							MapssFileWriter.writeLog(o+" ");
+							MapssFileHandler.writeLog(o+" ");
 						}
-						MapssFileWriter.writeLogLn("");
-						MapssFileWriter.writeLogLn("Total hops needed for this: " + hops_in_path);
+						MapssFileHandler.writeLogLn("");
+						MapssFileHandler.writeLogLn("Total hops needed for this: " + hops_in_path);
 						double average = hops_in_path/((args.length)-1);
 						
-						MapssFileWriter.writeLogLn("Average number of hops needed for each product step: " + average);
-						MapssFileWriter.writeLogLn("");
+						MapssFileHandler.writeLogLn("Average number of hops needed for each product step: " + average);
+						MapssFileHandler.writeLogLn("");
 						
-						MapssFileWriter.writeLog("Alternative path: ");
+						MapssFileHandler.writeLog("Alternative path: ");
 						for (int o: otherPath){
-							MapssFileWriter.writeLog(o+" ");
+							MapssFileHandler.writeLog(o+" ");
 						}
-						MapssFileWriter.writeLogLn("");
-						MapssFileWriter.writeLogLn("Total hops needed for this: " + hops_in_other_path);
+						MapssFileHandler.writeLogLn("");
+						MapssFileHandler.writeLogLn("Total hops needed for this: " + hops_in_other_path);
 						double other_average = hops_in_other_path/((args.length)-1);
 						
-						MapssFileWriter.writeLogLn("Average number of hops needed for each product step: " + other_average);
+						MapssFileHandler.writeLogLn("Average number of hops needed for each product step: " + other_average);
 						
 						//Use the shortest path.
 						if (average <= other_average){
@@ -186,25 +186,25 @@ public class ProductAgent extends Agent {
 						
 						
 					} else {
-						MapssFileWriter.writeLog("I couldn't reach everything. This is as far as I got: ");
+						MapssFileHandler.writeLog("I couldn't reach everything. This is as far as I got: ");
 						
 						Simulations.addUnfinishedProduct();
 						for (int o: productPath){
-							MapssFileWriter.writeLog(o+" ");
+							MapssFileHandler.writeLog(o+" ");
 						}
-						MapssFileWriter.writeLogLn("");
+						MapssFileHandler.writeLogLn("");
 					}
 					
 					Simulations.addFinishedProduct();
 					ChartPresenter.updateProgress(1);
 					
 				} else {
-					MapssFileWriter.writeLogLn("Unfortunately I can't find a suitable grid so no calculations for me");
+					MapssFileHandler.writeLogLn("Unfortunately I can't find a suitable grid so no calculations for me");
 					if (right_sized_grid == false){
-						MapssFileWriter.writeLogLn("The current grid is too small for my product steps");
+						MapssFileHandler.writeLogLn("The current grid is too small for my product steps");
 					}
 				}
-				MapssFileWriter.writeLogLn("");
+				MapssFileHandler.writeLogLn("");
 				
 				myAgent.doDelete();
 			 } 
@@ -214,6 +214,6 @@ public class ProductAgent extends Agent {
 	} 
 	
 	protected void breakdown() {
-		MapssFileWriter.writeLogLn("Agent "+getAID().getName()+" is gone now."); 
+		MapssFileHandler.writeLogLn("Agent "+getAID().getName()+" is gone now."); 
 	}
 }

@@ -148,8 +148,8 @@ public class Scenario {
 	}
 	
 	public void save(){
-		MapssFileWriter.saveScenario(this);
-		MapssFileWriter.createDataFile(this.name);
+		MapssFileHandler.saveScenario(this);
+		MapssFileHandler.createDataFile(this.name);
 	}
 	
 
