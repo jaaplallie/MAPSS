@@ -121,13 +121,11 @@ public class MapssFileHandler {
 	}
 	
 	
-	public static void createDataFile(String name){
+	public static void createDataFile(Scenario S){
 		try {
-			PrintWriter DataWriter = new PrintWriter("data/" + name + ".txt");
+			PrintWriter DataWriter = new PrintWriter("data/" + S.name + ".txt");
 			
-			
-			Scenario S = ScenarioList.getScenario(name);
-			DataWriter.println("********************* "+name+" *********************");
+			DataWriter.println("********************* "+S.name+" *********************");
 			DataWriter.println("X: "+S.x);
 			DataWriter.println("Y: "+S.y);
 			DataWriter.println("****************************************************");
@@ -167,7 +165,7 @@ public class MapssFileHandler {
 			DataWriter.println("****************************************************");
 			
 			
-			DataWriter.println("Paths between equiplets (if a path ends with " + S.getMax()
+			DataWriter.println("Paths between equiplets (if a path ends with " + S.getMax()+1
 					+ "then that means that the destination is unreachable:");
 			int count = 0;
 			int equiplet = 0;
