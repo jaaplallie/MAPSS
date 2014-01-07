@@ -262,17 +262,18 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
     			double value1 = Simulations.productAgentsInRegularGridSimulation(selected_topologies.get(i), selected_topologies.get(i));
     			int X = S.x;
     			int Y = S.y;
-    			String name = selected_topologies.get(i).split(""+X)[0];
+    			String name = selected_topologies.get(i);
+    			System.out.println(name);
     			
     			if (check.isSelected()) {
-    				data_set.addValue(value1, name, X + "x" + Y);
+    				data_set.addValue(value1, " ", name);
     			} else{
-    				data_set.addValue(value1, X + "x" + Y, name);
+    				data_set.addValue(value1, name, " ");
     			}
 	
     		}
     		
-    		JFreeChart chart = ChartCreator.drawBarChart("MAPSS Simulation Result " + simulation_counter , "x", "y", data_set);
+    		JFreeChart chart = ChartCreator.drawBarChart("MAPSS Simulation Result " + simulation_counter , "scenarios", "average path", data_set);
     		ChartPresenter chartpres = MainWindow.getChart();
     		chartpres.addChart(chart);
     		simulation_counter ++;

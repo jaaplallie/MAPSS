@@ -61,6 +61,8 @@ public class Scenario {
 		this.distances_between_equiplets = Calculations.calculateDistances(x_size, y_size, this);
 		this.paths_between_equiplets = Calculations.calculateAllPaths(this, 0);
 		this.possible_other_paths = Calculations.calculateAllPaths(this, 1);
+		
+
 	}
 	
 	public int[] getEquipletPosition(int equiplet_number){
@@ -130,7 +132,7 @@ public class Scenario {
 			int[] alternative_path = this.possible_other_paths.get(i);
 			
 			if (first_path.length == alternative_path.length){
-				for (int j = 0; j < first_path.length; j++){
+				for (int j = 0; j < first_path.length-1; j++){
 					size++;
 					
 					//check if values are the same
@@ -139,7 +141,13 @@ public class Scenario {
 					}
 				} 
 			} else {
-				difference++;
+				if (first_path.length > alternative_path.length){
+					//Take the smallest path so that you're never out of bounds.
+					difference += alternative_path.length;
+				} else {
+					difference += first_path.length;
+				}
+				
 			}	
 		}
 		
@@ -149,7 +157,7 @@ public class Scenario {
 	
 	public void save(){
 		MapssFileHandler.saveScenario(this);
-		MapssFileHandler.createDataFile(this.name);
+		MapssFileHandler.createDataFile(this);
 	}
 	
 
