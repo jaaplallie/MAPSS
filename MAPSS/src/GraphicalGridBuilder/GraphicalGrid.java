@@ -103,7 +103,7 @@ public class GraphicalGrid extends JFrame{
 							grid[targetY][targetX] = new GraphicalGridTarget(
 								new GraphicalGridObject[]{
 									new GraphicalGridVerticalTransport(),
-									new GraphicalGridTPathTransport(targetY, targetX, grid.length),
+//									new GraphicalGridTPathTransport(targetY, targetX, grid.length),
 									new GraphicalGridNothingObject()			
 								}
 							);
@@ -125,7 +125,7 @@ public class GraphicalGrid extends JFrame{
 							grid[targetY][targetX] = new GraphicalGridTarget(
 								new GraphicalGridObject[]{
 									new GraphicalGridHorizontalTransport(),
-									new GraphicalGridTPathTransport(targetY, targetX, grid.length),
+//									new GraphicalGridTPathTransport(targetY, targetX, grid.length),
 									new GraphicalGridNothingObject()		
 								}
 							);
@@ -168,7 +168,7 @@ public class GraphicalGrid extends JFrame{
 		JPanel gridEditorPanel = new JPanel();
 		
 		final JButton saveGrid_Btn = new JButton("Save Grid");
-		saveGrid_Btn.setEnabled(false);
+		saveGrid_Btn.setEnabled(true);
 		saveGrid_Btn.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -195,7 +195,7 @@ public class GraphicalGrid extends JFrame{
 						@Override
 						public void actionPerformed(ActionEvent arg0) {
 							saveGrid_Btn.setEnabled(true);
-							verify(btn_y, btn_X);
+//							verify(btn_y, btn_X);
 						}
 					}
 				);
@@ -212,174 +212,174 @@ public class GraphicalGrid extends JFrame{
 		return returnPanel;
 	}
 
-	private Boolean verify(int subjectY, int subjectX){
-		Boolean success = false;
-		GraphicalGridTarget subject = null;
-		GraphicalGridTarget northTarget = null;
-		GraphicalGridTarget westTarget = null;
-		GraphicalGridTarget eastTarget = null;
-		GraphicalGridTarget southTarget = null;
-		GraphicalGridTarget northWestTarget = null;
-		GraphicalGridTarget northEastTarget = null;
-		GraphicalGridTarget southWestTarget = null;
-		GraphicalGridTarget southEastTarget = null;
-		
-		if(subjectY == -1 || subjectX == -1){
-			System.out.println("Verify Failed, Subject position does not exist in grid.");
-			return false;
-		}
-		else{
-			subject = grid[subjectY][subjectX];
-			
-			//setting the targets for CornerStoneTargets && BorderTargets (smaller than 8 influence range of targets)
-			if(subjectY == 0){
-				if(subjectX == 0){
-					//north west cornerstone
-					//southTarget, southEastTarget, eastTarget
-					eastTarget = grid[(subjectY)][(subjectX+1)];
-					southTarget = grid[(subjectY+1)][(subjectX)];
-					southEastTarget = grid[(subjectY+1)][(subjectX+1)];
-				}
-				else if(subjectX == (grid[grid.length-1].length-1)){
-					//north east cornerstone
-					//westTarget, southWestTarget, southTarget
-					westTarget = grid[(subjectY)][(subjectX-1)];
-					southTarget = grid[(subjectY+1)][(subjectX)];
-					southWestTarget = grid[(subjectY+1)][(subjectX-1)];				
-				}
-				else{
-					//north border target
-					//westTarget, southWestTarget, southTarget, southEastTarget, eastTarget
-					westTarget = grid[(subjectY)][(subjectX-1)];
-					eastTarget = grid[(subjectY)][(subjectX+1)];
-					southTarget = grid[(subjectY+1)][(subjectX)];
-					southWestTarget = grid[(subjectY+1)][(subjectX-1)];
-					southEastTarget = grid[(subjectY+1)][(subjectX+1)];
-				}
-			}
-			else if(subjectY == grid.length-1){
-				if(subjectX == 0){
-					//south west cornerstone
-					//northTarget, northEastTarget, eastTarget
-					northTarget = grid[(subjectY-1)][(subjectX)];
-					eastTarget = grid[(subjectY)][(subjectX+1)];
-					northEastTarget = grid[(subjectY-1)][(subjectX+1)];
-				}
-				else if(subjectX == grid[grid.length-1].length-1){
-					//south east cornerstone
-					//westTarget, northWestTarget, northTarget
-					northTarget = grid[(subjectY-1)][(subjectX)];
-					westTarget = grid[(subjectY)][(subjectX-1)];
-					northWestTarget = grid[(subjectY-1)][(subjectX-1)];
-				}
-				else{
-					//south border target
-					//westTarget, northWestTarget, northTarget, northEastTarget, eastTarget
-					northTarget = grid[(subjectY-1)][(subjectX)];
-					westTarget = grid[(subjectY)][(subjectX-1)];
-					eastTarget = grid[(subjectY)][(subjectX+1)];
-					northWestTarget = grid[(subjectY-1)][(subjectX-1)];
-					northEastTarget = grid[(subjectY-1)][(subjectX+1)];
-				}
-			}
-			else if(subjectX == 0){
-				//west border
-				//northTarget, northEastTarget, eastTarget, southEastTarget, southTarget
-				northTarget = grid[(subjectY-1)][(subjectX)];
-				eastTarget = grid[(subjectY)][(subjectX+1)];
-				southTarget = grid[(subjectY+1)][(subjectX)];
-				northEastTarget = grid[(subjectY-1)][(subjectX+1)];
-				southEastTarget = grid[(subjectY+1)][(subjectX+1)];
-			}
-			else if(subjectX == grid[grid.length-1].length-1){
-				//east border
-				//northTarget, northWestTarget, westTarget, southWestTarget, southTarget
-				northTarget = grid[(subjectY-1)][(subjectX)];
-				westTarget = grid[(subjectY)][(subjectX-1)];
-				southTarget = grid[(subjectY+1)][(subjectX)];
-				northWestTarget = grid[(subjectY-1)][(subjectX-1)];
-				southWestTarget = grid[(subjectY+1)][(subjectX-1)];
-			}
-			else{
-				//setting the targets for InnerGridTargets (influence range of 8 targets)
-				//all directions targets
-				northTarget = grid[(subjectY-1)][(subjectX)];
-				westTarget = grid[(subjectY)][(subjectX-1)];
-				eastTarget = grid[(subjectY)][(subjectX+1)];
-				southTarget = grid[(subjectY+1)][(subjectX)];
-				northWestTarget = grid[(subjectY-1)][(subjectX-1)];
-				northEastTarget = grid[(subjectY-1)][(subjectX+1)];
-				southWestTarget = grid[(subjectY+1)][(subjectX-1)];
-				southEastTarget = grid[(subjectY+1)][(subjectX+1)];
-			}
-		}
-		if(northTarget != null){
-			Boolean checkResult = northTarget.checkConnected("N", subject);
-			if(!checkResult){
-				northTarget.updateButton();
-				success = false;
-				//verify((subjectY-1), subjectX);
-			}
-		}
-		if(westTarget != null){
-			Boolean checkResult = westTarget.checkConnected("W", subject);
-			if(!checkResult){
-				westTarget.updateButton();
-				success = false;
-				//verify(subjectY, (subjectX-1));
-			}
-		}
-		if(eastTarget != null){
-			Boolean checkResult = eastTarget.checkConnected("E", subject);
-			if(!checkResult){
-				eastTarget.updateButton();
-				success = false;
-				//verify(subjectY, (subjectX+1));
-			}
-		}
-		if(southTarget != null){
-			Boolean checkResult = southTarget.checkConnected("S", subject);
-			if(!checkResult){
-				southTarget.updateButton();
-				success = false;
-				//verify((subjectY+1), subjectX);
-			}
-		}
-		if(northWestTarget != null){
-			Boolean checkResult = northWestTarget.checkConnected("NW", subject);
-			if(!checkResult){
-				northWestTarget.updateButton();
-				success = false;
-				//verify((subjectY-1), (subjectX-1));
-			}
-		}
-		if(northEastTarget != null){
-			Boolean checkResult = northEastTarget.checkConnected("NE", subject);
-			if(!checkResult){
-				northEastTarget.updateButton();
-				success = false;
-				//verify((subjectY-1), (subjectX+1));
-			}
-		}
-		if(southWestTarget != null){
-			Boolean checkResult = southWestTarget.checkConnected("SW", subject);
-			if(!checkResult){
-				southWestTarget.updateButton();
-				success = false;
-				//verify((subjectY+1), (subjectX-1));
-			}
-		}
-		if(southEastTarget != null){
-			Boolean checkResult = southEastTarget.checkConnected("SE", subject);
-			if(!checkResult){
-				southEastTarget.updateButton();
-				success = false;
-				//verify((subjectY+1), (subjectX+1));
-			}
-		}
-		
-		return success;
-	}
+//	private Boolean verify(int subjectY, int subjectX){
+//		Boolean success = false;
+//		GraphicalGridTarget subject = null;
+//		GraphicalGridTarget northTarget = null;
+//		GraphicalGridTarget westTarget = null;
+//		GraphicalGridTarget eastTarget = null;
+//		GraphicalGridTarget southTarget = null;
+//		GraphicalGridTarget northWestTarget = null;
+//		GraphicalGridTarget northEastTarget = null;
+//		GraphicalGridTarget southWestTarget = null;
+//		GraphicalGridTarget southEastTarget = null;
+//		
+//		if(subjectY == -1 || subjectX == -1){
+//			System.out.println("Verify Failed, Subject position does not exist in grid.");
+//			return false;
+//		}
+//		else{
+//			subject = grid[subjectY][subjectX];
+//			
+//			//setting the targets for CornerStoneTargets && BorderTargets (smaller than 8 influence range of targets)
+//			if(subjectY == 0){
+//				if(subjectX == 0){
+//					//north west cornerstone
+//					//southTarget, southEastTarget, eastTarget
+//					eastTarget = grid[(subjectY)][(subjectX+1)];
+//					southTarget = grid[(subjectY+1)][(subjectX)];
+//					southEastTarget = grid[(subjectY+1)][(subjectX+1)];
+//				}
+//				else if(subjectX == (grid[grid.length-1].length-1)){
+//					//north east cornerstone
+//					//westTarget, southWestTarget, southTarget
+//					westTarget = grid[(subjectY)][(subjectX-1)];
+//					southTarget = grid[(subjectY+1)][(subjectX)];
+//					southWestTarget = grid[(subjectY+1)][(subjectX-1)];				
+//				}
+//				else{
+//					//north border target
+//					//westTarget, southWestTarget, southTarget, southEastTarget, eastTarget
+//					westTarget = grid[(subjectY)][(subjectX-1)];
+//					eastTarget = grid[(subjectY)][(subjectX+1)];
+//					southTarget = grid[(subjectY+1)][(subjectX)];
+//					southWestTarget = grid[(subjectY+1)][(subjectX-1)];
+//					southEastTarget = grid[(subjectY+1)][(subjectX+1)];
+//				}
+//			}
+//			else if(subjectY == grid.length-1){
+//				if(subjectX == 0){
+//					//south west cornerstone
+//					//northTarget, northEastTarget, eastTarget
+//					northTarget = grid[(subjectY-1)][(subjectX)];
+//					eastTarget = grid[(subjectY)][(subjectX+1)];
+//					northEastTarget = grid[(subjectY-1)][(subjectX+1)];
+//				}
+//				else if(subjectX == grid[grid.length-1].length-1){
+//					//south east cornerstone
+//					//westTarget, northWestTarget, northTarget
+//					northTarget = grid[(subjectY-1)][(subjectX)];
+//					westTarget = grid[(subjectY)][(subjectX-1)];
+//					northWestTarget = grid[(subjectY-1)][(subjectX-1)];
+//				}
+//				else{
+//					//south border target
+//					//westTarget, northWestTarget, northTarget, northEastTarget, eastTarget
+//					northTarget = grid[(subjectY-1)][(subjectX)];
+//					westTarget = grid[(subjectY)][(subjectX-1)];
+//					eastTarget = grid[(subjectY)][(subjectX+1)];
+//					northWestTarget = grid[(subjectY-1)][(subjectX-1)];
+//					northEastTarget = grid[(subjectY-1)][(subjectX+1)];
+//				}
+//			}
+//			else if(subjectX == 0){
+//				//west border
+//				//northTarget, northEastTarget, eastTarget, southEastTarget, southTarget
+//				northTarget = grid[(subjectY-1)][(subjectX)];
+//				eastTarget = grid[(subjectY)][(subjectX+1)];
+//				southTarget = grid[(subjectY+1)][(subjectX)];
+//				northEastTarget = grid[(subjectY-1)][(subjectX+1)];
+//				southEastTarget = grid[(subjectY+1)][(subjectX+1)];
+//			}
+//			else if(subjectX == grid[grid.length-1].length-1){
+//				//east border
+//				//northTarget, northWestTarget, westTarget, southWestTarget, southTarget
+//				northTarget = grid[(subjectY-1)][(subjectX)];
+//				westTarget = grid[(subjectY)][(subjectX-1)];
+//				southTarget = grid[(subjectY+1)][(subjectX)];
+//				northWestTarget = grid[(subjectY-1)][(subjectX-1)];
+//				southWestTarget = grid[(subjectY+1)][(subjectX-1)];
+//			}
+//			else{
+//				//setting the targets for InnerGridTargets (influence range of 8 targets)
+//				//all directions targets
+//				northTarget = grid[(subjectY-1)][(subjectX)];
+//				westTarget = grid[(subjectY)][(subjectX-1)];
+//				eastTarget = grid[(subjectY)][(subjectX+1)];
+//				southTarget = grid[(subjectY+1)][(subjectX)];
+//				northWestTarget = grid[(subjectY-1)][(subjectX-1)];
+//				northEastTarget = grid[(subjectY-1)][(subjectX+1)];
+//				southWestTarget = grid[(subjectY+1)][(subjectX-1)];
+//				southEastTarget = grid[(subjectY+1)][(subjectX+1)];
+//			}
+//		}
+//		if(northTarget != null){
+//			Boolean checkResult = northTarget.checkConnected("N", subject);
+//			if(!checkResult){
+//				northTarget.updateButton();
+//				success = false;
+//				//verify((subjectY-1), subjectX);
+//			}
+//		}
+//		if(westTarget != null){
+//			Boolean checkResult = westTarget.checkConnected("W", subject);
+//			if(!checkResult){
+//				westTarget.updateButton();
+//				success = false;
+//				//verify(subjectY, (subjectX-1));
+//			}
+//		}
+//		if(eastTarget != null){
+//			Boolean checkResult = eastTarget.checkConnected("E", subject);
+//			if(!checkResult){
+//				eastTarget.updateButton();
+//				success = false;
+//				//verify(subjectY, (subjectX+1));
+//			}
+//		}
+//		if(southTarget != null){
+//			Boolean checkResult = southTarget.checkConnected("S", subject);
+//			if(!checkResult){
+//				southTarget.updateButton();
+//				success = false;
+//				//verify((subjectY+1), subjectX);
+//			}
+//		}
+//		if(northWestTarget != null){
+//			Boolean checkResult = northWestTarget.checkConnected("NW", subject);
+//			if(!checkResult){
+//				northWestTarget.updateButton();
+//				success = false;
+//				//verify((subjectY-1), (subjectX-1));
+//			}
+//		}
+//		if(northEastTarget != null){
+//			Boolean checkResult = northEastTarget.checkConnected("NE", subject);
+//			if(!checkResult){
+//				northEastTarget.updateButton();
+//				success = false;
+//				//verify((subjectY-1), (subjectX+1));
+//			}
+//		}
+//		if(southWestTarget != null){
+//			Boolean checkResult = southWestTarget.checkConnected("SW", subject);
+//			if(!checkResult){
+//				southWestTarget.updateButton();
+//				success = false;
+//				//verify((subjectY+1), (subjectX-1));
+//			}
+//		}
+//		if(southEastTarget != null){
+//			Boolean checkResult = southEastTarget.checkConnected("SE", subject);
+//			if(!checkResult){
+//				southEastTarget.updateButton();
+//				success = false;
+//				//verify((subjectY+1), (subjectX+1));
+//			}
+//		}
+//		
+//		return success;
+//	}
 	
 	public String getCustomGridString(){
 		String customGridString = "";

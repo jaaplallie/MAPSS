@@ -1,8 +1,6 @@
 package GraphicalGridBuilder;
 
 public class GraphicalGridTPathTransport extends GraphicalGridObject {
-
-	GraphicalGridEquiplet eq1, eq2, eq3;
 	
 	Character arm;
 	
@@ -41,108 +39,82 @@ public class GraphicalGridTPathTransport extends GraphicalGridObject {
 		this.NWDC = false;
 	}
 
-	
-
-	public GraphicalGridEquiplet getEq1() {
-		return eq1;
-	}
-
-	public void setEq1(GraphicalGridEquiplet eq1) {
-		this.eq1 = eq1;
-	}
-
-	public GraphicalGridEquiplet getEq2() {
-		return eq2;
-	}
-
-	public void setEq2(GraphicalGridEquiplet eq2) {
-		this.eq2 = eq2;
-	}
-
-	public GraphicalGridEquiplet getEq3() {
-		return eq3;
-	}
-
-	public void setEq3(GraphicalGridEquiplet eq3) {
-		this.eq3 = eq3;
-	}
-
 	public Character getArm() {
 		return arm;
 	}
 	
-	@Override
-	public boolean checkConnected(String callFromDirection, GraphicalGridObject changedSubject) {
-		Boolean returnVal = false;
-		
-		if(callFromDirection.equals("NE") || callFromDirection.equals("SW")){
-			if(
-					(changedSubject instanceof GraphicalGridCrossedTransport && (changedSubject.getTextualIcon().equals("+")))||
-					(changedSubject instanceof GraphicalGridHorizontalTransport)||
-					(changedSubject instanceof GraphicalGridVerticalTransport)||
-					(changedSubject instanceof GraphicalGridTPathTransport)||
-					(changedSubject instanceof GraphicalGridEquiplet)
-				
-			){
-				returnVal = true;
-				if(callFromDirection.equals("N")){
-					NDC = false;
-				}
-				else if(callFromDirection.equals("E")){
-					EDC = false;
-				}
-				else if(callFromDirection.equals("S")){
-					SDC = false;
-				}
-				else if(callFromDirection.equals("W")){
-					WDC = false;
-				}
-				else if(callFromDirection.equals("NW")){
-					NWDC = false;
-				}
-				else if(callFromDirection.equals("SW")){
-					SWDC = false;
-				}
-				else if(callFromDirection.equals("NE")){
-					NEDC = false;
-				}
-				else if(callFromDirection.equals("SE")){
-					SEDC = false;
-				}
-			}
-			else{
-				returnVal = false;
-				if(callFromDirection.equals("N")){
-					NDC = true;
-				}
-				else if(callFromDirection.equals("E")){
-					EDC = true;
-				}
-				else if(callFromDirection.equals("S")){
-					SDC = true;
-				}
-				else if(callFromDirection.equals("W")){
-					WDC = true;
-				}
-				else if(callFromDirection.equals("NW")){
-					NWDC = true;
-				}
-				else if(callFromDirection.equals("SW")){
-					SWDC = true;
-				}
-				else if(callFromDirection.equals("NE")){
-					NEDC = true;
-				}
-				else if(callFromDirection.equals("SE")){
-					SEDC = true;
-				}
-			}
-		}
-		return returnVal;
-	}
-	
-	@Override
-	protected void verifyIcon() {
-		
-	}
+//	@Override
+//	public boolean checkConnected(String callFromDirection, GraphicalGridObject changedSubject) {
+//		Boolean returnVal = false;
+//		
+//		if(callFromDirection.equals("NE") || callFromDirection.equals("SW")){
+//			if(
+//					(changedSubject instanceof GraphicalGridCrossedTransport && (changedSubject.getTextualIcon().equals("+")))||
+//					(changedSubject instanceof GraphicalGridHorizontalTransport)||
+//					(changedSubject instanceof GraphicalGridVerticalTransport)||
+//					(changedSubject instanceof GraphicalGridTPathTransport)||
+//					(changedSubject instanceof GraphicalGridEquiplet)
+//				
+//			){
+//				returnVal = true;
+//				if(callFromDirection.equals("N")){
+//					NDC = false;
+//				}
+//				else if(callFromDirection.equals("E")){
+//					EDC = false;
+//				}
+//				else if(callFromDirection.equals("S")){
+//					SDC = false;
+//				}
+//				else if(callFromDirection.equals("W")){
+//					WDC = false;
+//				}
+//				else if(callFromDirection.equals("NW")){
+//					NWDC = false;
+//				}
+//				else if(callFromDirection.equals("SW")){
+//					SWDC = false;
+//				}
+//				else if(callFromDirection.equals("NE")){
+//					NEDC = false;
+//				}
+//				else if(callFromDirection.equals("SE")){
+//					SEDC = false;
+//				}
+//			}
+//			else{
+//				returnVal = false;
+//				if(callFromDirection.equals("N")){
+//					NDC = true;
+//				}
+//				else if(callFromDirection.equals("E")){
+//					EDC = true;
+//				}
+//				else if(callFromDirection.equals("S")){
+//					SDC = true;
+//				}
+//				else if(callFromDirection.equals("W")){
+//					WDC = true;
+//				}
+//				else if(callFromDirection.equals("NW")){
+//					NWDC = true;
+//				}
+//				else if(callFromDirection.equals("SW")){
+//					SWDC = true;
+//				}
+//				else if(callFromDirection.equals("NE")){
+//					NEDC = true;
+//				}
+//				else if(callFromDirection.equals("SE")){
+//					SEDC = true;
+//				}
+//			}
+//		}
+//		return returnVal;
+//	}
+//	
+//	@Override
+//	protected void verifyIcon() {
+//		
+//	}
 }
