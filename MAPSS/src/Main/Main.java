@@ -24,6 +24,7 @@ public class Main{
 					MainWindow window = new MainWindow();
 					window.frame.setVisible(true);
 					MapssFileHandler.loadScenarios();
+					MainWindow.resetOutput();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}

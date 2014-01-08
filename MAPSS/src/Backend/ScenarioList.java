@@ -3,6 +3,7 @@ package Backend;
 import java.util.ArrayList;
 
 import Gui.ChartPresenter;
+import Gui.MainWindow;
 import Gui.ProductSetup;
 
 //Mathijs
@@ -20,6 +21,7 @@ public class ScenarioList {
 			ArrayList<int[]> products)
 	{
 		Scenario S = new Scenario(scenarioName, x_size, y_size, neighbors, products);
+		MainWindow.stringToOutput(S.name + " added");
 		scenario_list.add(S);
 		S.save();
 		

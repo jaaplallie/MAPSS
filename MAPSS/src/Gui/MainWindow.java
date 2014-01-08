@@ -2,6 +2,9 @@ package Gui;
 
 import jade.wrapper.StaleProxyException;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -12,11 +15,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
 
 import org.jfree.chart.JFreeChart;
@@ -29,19 +36,28 @@ import Backend.ProgramData;
 import com.jgoodies.forms.builder.DefaultFormBuilder;
 
 
-public class MainWindow implements WindowListener{
+public class MainWindow extends JPanel implements WindowListener, ActionListener{
 	static ChartPresenter chartpres;
 	public JFrame frame;
 	private DefaultFormBuilder builder = new ProgramData().getNewBuilder();
-	public ScenarioImportExportWindow scenarioImportExportWindow;
+	//public ScenarioImportExportWindow scenarioImportExportWindow;
+	JSplitPane splitPane = new JSplitPane();
+
+	private static String output = "**************************Output**************************";
+	private static JPanel textPanel = new JPanel();
+	private static JLabel text = new JLabel(output);
+	private JButton clear = new JButton("clear");
+	
 	
 	public MainWindow() {
-		scenarioImportExportWindow = new ScenarioImportExportWindow();
+		//scenarioImportExportWindow = new ScenarioImportExportWindow();
 		initialize();
 	}
 
 	private void initialize() {
+
 		frame = new JFrame();
+
 		ArrayList<BufferedImage> iconList = new ArrayList<BufferedImage>();
 		try {
 			iconList.add(ImageIO.read(new File("img/MapssIcon16x16.png")));
@@ -52,20 +68,31 @@ public class MainWindow implements WindowListener{
 			e2.printStackTrace();
 		}
 		frame.setIconImages(iconList);
-		frame.setBounds(100, 100, 1031, 565);
+		frame.setBounds(100, 100, 1400, 565);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.addWindowListener(this);
 		frame.setTitle("MAPSS - Multi Agent Production System Simulator - " + ProgramData.getSoftwareVersion());
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		frame.getContentPane().add(tabbedPane);
-        
-//		CreateGraphicalGridModule createGraphicalGridModule = new CreateGraphicalGridModule();
-//		builder.append(createGraphicalGridModule);
+		tabbedPane.setSize(1150, 565);
+        //textPanel.setMinimumSize(new Dimension(200, 500));
+		
+		textPanel.add(text);
+		textPanel.setBackground(Color.lightGray);
+		
+		JSplitPane right = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+				textPanel, clear);
+		//clear.setMaximumSize(new Dimension(200, 100));
+		clear.addActionListener(this);
+		
+		right.setResizeWeight(0.9);
+		
+		frame.add(tabbedPane, BorderLayout.CENTER);
+		frame.add(right, BorderLayout.EAST);
+		
 		
 		CreateGridModule createGridModule = new CreateGridModule();
 		builder.append(createGridModule);
-		
 		builder.nextLine();
 		
 		JPanel structureSetupTab = builder.getPanel();
@@ -78,90 +105,50 @@ public class MainWindow implements WindowListener{
 		JPanel simulationTab = builder.getPanel();
 		builder = new ProgramData().getNewBuilder();
 		tabbedPane.addTab("Product Setup", null, simulationTab, null);
-		
-		DefaultCategoryDataset data2 = new DefaultCategoryDataset();		
-		data2.addValue(9.0, "p1", "Category 1");
-		data2.addValue(6.0, "p1", "Category 2");
-		data2.addValue(2.0, "p1", "Category 3");
-		data2.addValue(9.0, "p2", "Category 1");
-		data2.addValue(6.0, "p2", "Category 2");
-		data2.addValue(2.0, "p2", "Category 3");
-		data2.addValue(9.0, "p3", "Category 1");
-		data2.addValue(6.0, "p3", "Category 2");
-		data2.addValue(2.0, "p3", "Category 3");
-		data2.addValue(9.0, "p4", "Category 1");
-		data2.addValue(6.0, "p4", "Category 2");
-		data2.addValue(2.0, "p4", "Category 3");
-		JFreeChart ch = ChartCreator.drawBarChart("Barchart Test", "x", "y", data2);
 
 		chartpres = new ChartPresenter();
-		chartpres.addChart(ch);
 		builder.append(chartpres);
 		builder.nextLine();
 		JPanel lastResultsTab = builder.getPanel();
 		builder = new ProgramData().getNewBuilder();
 		tabbedPane.addTab("Simulation and Results", null, lastResultsTab, null);
 		
-		JMenuBar menuBar = new JMenuBar();
-		menuBar.setSize(100, 15);
-		frame.setJMenuBar(menuBar);
+		ReadData readdata = new ReadData();
+		builder.append(readdata);
+		builder.nextLine();
+		JPanel dataTab = builder.getPanel();
 		
-		JMenu mnFile = new JMenu("File");
-		menuBar.add(mnFile);
 		
-		JMenuItem mntmNewScenario = new JMenuItem("New Scenario");
-		mnFile.add(mntmNewScenario);
+
+		builder = new ProgramData().getNewBuilder();
+		tabbedPane.addTab("(Undocumented & still in progress) Check Data", null, dataTab, null);
 		
-		JMenuItem mntmImportScenario = new JMenuItem("Import/Export Scenario");
-		mnFile.add(mntmImportScenario);
-		mntmImportScenario.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				scenarioImportExportWindow.setVisible(true);
-			}
-		});
-		
-		JMenu mnEdit = new JMenu("Edit");
-		menuBar.add(mnEdit);
-		
-		JMenuItem mntmAgents = new JMenuItem("Agents");
-		mnEdit.add(mntmAgents);
-		
-		JMenuItem mntmProducts = new JMenuItem("Products");
-		mnEdit.add(mntmProducts);
-		
-		JMenu mnHelp = new JMenu("Help");
-		menuBar.add(mnHelp);
-		
-		JMenuItem mntmJadeGui = new JMenuItem("Jade Monitor");
-		mnHelp.add(mntmJadeGui);
-		mntmJadeGui.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				try {
-					AgentEnvironmentCreator.addRemoteMonitoringAgent();
-				} catch (StaleProxyException e1) {
-					e1.printStackTrace();
-				}
-//				String[] bootArgs = { 
-//						"-gui",
-//						String.format("-mtp \"jade.mtp.http.MessageTransportProtocol(http://{0}:{1}/acc)\"", Profile.LOCAL_HOST, Profile.LOCAL_PORT),
-//						"agentInstance:jade.core.Agent()"
-//				};
-//				
-//				@SuppressWarnings("unused")
-//				Boot boot = new Boot();
-//				Boot.main(bootArgs);
-//				AgentEnvironmentCreator.getRuntime().startUp(AgentEnvironmentCreator.getProfile());
-			}});
-		
-		JMenuItem mntmAbout = new JMenuItem("About");
-		mnHelp.add(mntmAbout);
+
 	}
+	
+	
+	public static void stringToOutput(String s){
+		output += "<br>"+s;
+		text.setText("<html>"+output+"</html>");
+		textPanel.repaint();
+	}
+	
+	public static void resetOutput(){
+		output = "**************************Output**************************";
+		text.setText(output);
+		textPanel.repaint();
+	}
+	
 	
 	public static ChartPresenter getChart(){
 		return chartpres;
 	}
+	
+	public void actionPerformed(ActionEvent e) {
+		resetOutput();
+		
+	}
+	
 	
 	@Override
 	public void windowActivated(WindowEvent e) {
@@ -186,4 +173,6 @@ public class MainWindow implements WindowListener{
 	@Override
 	public void windowOpened(WindowEvent e) {
 	}
+
+
 }

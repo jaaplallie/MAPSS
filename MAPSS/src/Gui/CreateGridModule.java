@@ -1,6 +1,7 @@
 package Gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,7 +12,9 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
+import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 
 import Backend.Grid;
@@ -29,19 +32,22 @@ public class CreateGridModule extends JPanel implements ActionListener{
 	 */
 	private static final long serialVersionUID = 8789955424265486379L;
 	//
+	
+	JSplitPane splitPane = new JSplitPane();
+	
 	DefaultFormBuilder builder = new ProgramData().getNewBuilder();
 	private JSpinner input_xSize = new JSpinner();
 	private JSpinner input_ySize = new JSpinner();
 	private JTextField name_field = new JTextField();
-	private JButton buildGrid_Btn = new JButton("Build Grid");
+	private JButton buildGrid_Btn = new JButton("Build structure");
 	private JPanel previewPanel = new JPanel();
 	private JPanel gridSizePanel = new JPanel();
 	
-	static ArrayList[] neighbors;
+	private JPanel textPanel = new JPanel();
+	private JLabel text = new JLabel("******************Output******************");
 	
 	private JTextField grid_string = new JTextField("1-2,0-3,0-3,1-2");
-	private JButton buildCustomGrid_Btn = new JButton("Build Custom Grid");
-	
+	private JButton buildCustomGrid_Btn = new JButton("Build custom structure");
 	
 	static JComboBox<String> structureBox = new JComboBox<String>();
 	private JButton delete_Btn = new JButton("Delete selected scenario/structure");
@@ -52,6 +58,9 @@ public class CreateGridModule extends JPanel implements ActionListener{
 	}
 	
 	public void buildScreen(){
+
+		//add(splitPane);
+		
 		builder.appendSeparator("Standard");
         builder.append(new JLabel("Size x-axis :"), input_xSize);
 
@@ -64,15 +73,14 @@ public class CreateGridModule extends JPanel implements ActionListener{
 		builder.append(buildGrid_Btn);
 
 		builder.nextLine();
-		builder.appendSeparator("Additional values");
+		builder.appendSeparator("Additions");
 		
         builder.append(new JLabel("Input string:"), grid_string);
         builder.append(buildCustomGrid_Btn);
         builder.nextLine();
      
-		builder.appendSeparator("Delete");
 		
-		builder.append(structureBox);
+		builder.append("Delete: ", structureBox);
 		builder.append(delete_Btn);
 		builder.nextLine();
 		
@@ -108,10 +116,14 @@ public class CreateGridModule extends JPanel implements ActionListener{
 		Integer x_size = -1;
 		Integer y_size = -1;
 		
+		MainWindow.resetOutput();
+		
 		if (source == delete_Btn){
 			Scenario S = ScenarioList.getScenario((String)structureBox.getSelectedItem());
+			MainWindow.stringToOutput(S.name + " deleted");
 			ScenarioList.removeScenario(S);
 			updateStructureBox();
+			
 		} else {
 			try {
 				x_size = Integer.parseInt(input_xSize.getValue().toString());
@@ -129,9 +141,10 @@ public class CreateGridModule extends JPanel implements ActionListener{
 				if (name != null && name.isEmpty()){
 					name = "No_name"+x_size+"x"+y_size;
 				} 
-				switch (source.getText()) {
 				
-					case "Build Grid":
+				switch (source.getText()) {
+					
+					case "Build structure":
 						previewPanel.removeAll();
 						GraphicalGrid graphicalGrid = new GraphicalGrid(x_size, y_size);
 						previewPanel.add(graphicalGrid.draw(), BorderLayout.CENTER);
@@ -147,7 +160,7 @@ public class CreateGridModule extends JPanel implements ActionListener{
 						updateStructureBox();
 						break;
 						
-					case "Build Custom Grid":
+					case "Build custom structure":
 						previewPanel.removeAll();
 						GraphicalGrid graphicalGrid2 = new GraphicalGrid(x_size, y_size);
 						previewPanel.add(graphicalGrid2.draw(), BorderLayout.CENTER);

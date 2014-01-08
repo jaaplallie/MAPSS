@@ -1,5 +1,6 @@
 package Gui;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,7 +18,9 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
+import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 
 import org.jfree.chart.ChartPanel;
@@ -38,15 +41,19 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
 	private static final long serialVersionUID = 6423561811886542809L;
 	
 	JSplitPane splitPane = new JSplitPane();
+	
 	JPanel saveAsContainer = new JPanel();
 	JComboBox<String> chartComboBox = new JComboBox<String>();
 	JComboBox<String> saveAsComboBox = new JComboBox<String>();
-	JCheckBox check = new JCheckBox("Different color for each (similar) structure");
+
 	Map<Integer, String> chartNamingDictionary = new HashMap<Integer, String>();
 	Map<Integer, JFreeChart> chartObjectDictionary = new HashMap<Integer, JFreeChart>();
 	ChartPanel chartContainer = new ChartPanel(null);
 	DefaultFormBuilder builder = new ProgramData().getNewBuilder();
 	private Task task;
+	
+	ArrayList<ArrayList<String>> total = new ArrayList<ArrayList<String>>();
+	
 	
 	private static JProgressBar progressBar;
 	
@@ -56,21 +63,28 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
 	
 	static JComboBox<String> structureBox = new JComboBox<String>();
 	
+	String pool1_name = "Squares";
+	String pool2_name = "Rectangles";
+	JButton pool1_btn = new JButton("Add structure to "+pool1_name);
+	JButton pool2_btn = new JButton("Add structure to "+pool2_name);
+
+	private JTextField pool1_field = new JTextField(pool1_name);
+	private JTextField pool2_field = new JTextField(pool2_name);
 	
-	JButton add_btn = new JButton("Add structure to simulation");
-	JButton add_all_btn = new JButton("Add all structures");
+	JButton change_names = new JButton("change names");
 	JButton simulation_btn = new JButton("Run simulation");
 	
 	protected static ArrayList<String> selected_topologies = new ArrayList<String>();
-	
+	protected static ArrayList<String> pool1 = new ArrayList<String>();
+	protected static ArrayList<String> pool2 = new ArrayList<String>();
 	
 	public ChartPresenter(){
+
 		add(splitPane);
 		
 		structureBox.setEditable(false);
 		structureBox.setVisible(true);
-		structureBox.addItem("Test");
-	
+
 		chartComboBox.setEditable(false);
 		chartComboBox.setVisible(true);
 		saveAsComboBox.addItem("PNG");
@@ -78,36 +92,41 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
 		saveAsComboBox.setEditable(false);
 		saveAsComboBox.setVisible(true);
 		simulation_btn.setVisible(true);
-		add_btn.setVisible(true);
 		
         builder.append("Chart:", chartComboBox);
         builder.nextLine();
-        builder.appendSeparator();
         builder.append("Save as:", saveAsComboBox);
 
         builder.nextLine();
-        builder.appendSeparator();
         builder.append("Structures:", structureBox);
         builder.nextLine();
-        builder.append("", add_btn);
+        builder.append("Compare pools", pool1_btn);
         builder.nextLine();
-        builder.append("", add_all_btn);
+        builder.append("", pool2_btn);
+
         builder.nextLine();
+        
+        builder.append("Names",pool1_field);
+        builder.nextLine();
+        
+        builder.append("",pool2_field);
+        builder.nextLine();
+        
+        builder.append("",change_names);
+        builder.nextLine();
+        
         builder.appendSeparator();
-        builder.nextLine();
-        builder.append("", check);
         builder.nextLine();
         builder.append("", simulation_btn);
-        
         builder.nextLine();
-        builder.appendSeparator();
-        
         progressBar = new JProgressBar(0, 100);
         progressBar.setValue(0);
         progressBar.setStringPainted(true);
         
         builder.append("", progressBar);
 
+
+        
         splitPane.setLeftComponent(chartContainer);
         splitPane.setRightComponent(builder.getPanel());
         
@@ -115,8 +134,9 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
         saveAsComboBox.addActionListener(this);
         structureBox.addActionListener(this);
         simulation_btn.addActionListener(this);
-        add_btn.addActionListener(this);
-        add_all_btn.addActionListener(this);
+        pool1_btn.addActionListener(this);
+        pool2_btn.addActionListener(this);
+        change_names.addActionListener(this);
 	}
 	
 	public void setEnabled(Component[] components, Boolean b){
@@ -136,20 +156,15 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
 	
 	public void reload(){
 		chartComboBox.removeAllItems();
-		for(Entry<Integer, String> entry : chartNamingDictionary.entrySet()){
-			chartComboBox.addItem(entry.getValue());
+		
+		for(int i = chartNamingDictionary.size(); i > 0; i--){
+			chartComboBox.addItem(chartNamingDictionary.get(i));
 		}
+		
 		validate();
 		System.out.println("ChartPresenter reloaded.");
 	}
 	
-	public void empty(){
-		chartNamingDictionary.clear();
-		chartObjectDictionary.clear();
-		chartComboBox.removeAllItems();
-		validate();
-		System.out.println("ChartPresenter emptied.");
-	}
 	
 	public static void updateChartStructures(){
 		structureBox.removeAllItems();
@@ -208,22 +223,33 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
         	else{
         		
         	}
-        }
-        else if(e.getSource().equals(add_all_btn)){
-
-        	for (int i = 0 ; i < structureBox.getItemCount(); i++){
-        		String selected = (String) structureBox.getItemAt(i);
-            	selected_topologies.add(selected);
-        	}
-        	System.out.println("All scenario's added");
-        }
-        else if(e.getSource().equals(add_btn)){
+        } 
+        else if (e.getSource().equals(pool1_btn)){
         	String selected = (String) structureBox.getSelectedItem();
-        	selected_topologies.add(selected);
+        	pool1.add(selected);
         	
-        	System.out.println(selected+" added");
+        	System.out.println(selected+" added to "+pool1_name);
+        	MainWindow.stringToOutput(selected+" added to "+pool1_name);
+        }
+        else if (e.getSource().equals(pool2_btn)){
+        	String selected = (String) structureBox.getSelectedItem();
+        	pool2.add(selected);
+        	
+        	System.out.println(selected+" added to "+pool2_name);
+        	MainWindow.stringToOutput(selected+" added to "+pool2_name);
+        }
+        else if(e.getSource().equals(change_names)){
+        	pool1_name = pool1_field.getText();
+        	pool2_name = pool2_field.getText();
+        	pool1_btn.setText("Add structure to "+pool1_name);
+        	pool2_btn.setText("Add structure to "+pool2_name);
+
         }
         else if(e.getSource().equals(simulation_btn)){
+        	simulation_btn.setEnabled(false);
+        	pool1_btn.setEnabled(false);
+        	pool2_btn.setEnabled(false);
+        	change_names.setEnabled(false);
         	
         	task = new Task();
             task.addPropertyChangeListener(this);
@@ -231,7 +257,8 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
             
             //
         	
-        }
+        } 
+        
         
         
 	}
@@ -243,41 +270,67 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
         @Override
         public Void doInBackground() {
         	
+        	
+        	
         	DefaultCategoryDataset data_set = new DefaultCategoryDataset();	
     		
     		int total_products = 0;
-    		for (int i = 0; i < selected_topologies.size(); i++){
-    			Scenario S = ScenarioList.getScenario(selected_topologies.get(i));
-    			ArrayList<int[]> products = S.getProducts();
-    			total_products += products.size();
-    			//System.out.println(selected_topologies.get(i));
+    		
+    		total.add(pool1);
+    		total.add(pool2);
+    		
+    		for (ArrayList<String> selected_pool: total){
+    			for (int i = 0; i < selected_pool.size(); i++){
+        			Scenario S = ScenarioList.getScenario(selected_pool.get(i));
+        			ArrayList<int[]> products = S.getProducts();
+        			total_products += products.size();
+        			//System.out.println(selected_topologies.get(i));
+        		}
     		}
+    		
     		progressBar.setMaximum(total_products);
     		progressBar.setStringPainted(true);
     		
-    		for (int i = 0; i < selected_topologies.size(); i++){
+    		int count = 0;
+    		for (ArrayList<String> selected_pool: total){
+    			for (int i = 0; i < selected_pool.size(); i++){
 
-    			System.out.println("Attempting: " + selected_topologies.get(i));
-    			Scenario S = ScenarioList.getScenario(selected_topologies.get(i));
-    			double value1 = Simulations.productAgentsInRegularGridSimulation(selected_topologies.get(i), selected_topologies.get(i));
-    			int X = S.x;
-    			int Y = S.y;
-    			String name = selected_topologies.get(i);
-    			System.out.println(name);
-    			
-    			if (check.isSelected()) {
-    				data_set.addValue(value1, " ", name);
-    			} else{
-    				data_set.addValue(value1, name, " ");
-    			}
-	
+        			System.out.println("Attempting: " + selected_pool.get(i));
+        			Scenario S = ScenarioList.getScenario(selected_pool.get(i));
+        			double value1 = Simulations.productAgentsInRegularGridSimulation(selected_pool.get(i));
+        			int X = S.x;
+        			int Y = S.y;
+        			String name = selected_pool.get(i);
+        			System.out.println(name);
+        			
+        			String pool_name;
+        			if (count == 0){
+        				pool_name = pool1_name;
+        			} else {
+        				pool_name = pool2_name;
+        			}
+        			
+        			data_set.addValue(value1, name, pool_name);
+        			
+        			
+
+        		}
+    			count++;
     		}
+    		
     		
     		JFreeChart chart = ChartCreator.drawBarChart("MAPSS Simulation Result " + simulation_counter , "scenarios", "average path", data_set);
     		ChartPresenter chartpres = MainWindow.getChart();
     		chartpres.addChart(chart);
     		simulation_counter ++;
         	
+    		total.clear();
+    		pool1.clear();
+    		pool2.clear();
+    		simulation_btn.setEnabled(true);
+        	pool1_btn.setEnabled(true);
+        	pool2_btn.setEnabled(true);
+        	change_names.setEnabled(true);
             return null;
         }
 
