@@ -9,6 +9,15 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
+import GraphicalGridBuilder.gridTypes.BackSlash_Transport;
+import GraphicalGridBuilder.gridTypes.Crossed_Transport;
+import GraphicalGridBuilder.gridTypes.Equiplet_Obj;
+import GraphicalGridBuilder.gridTypes.ForwardSlash_Transport;
+import GraphicalGridBuilder.gridTypes.Horizontal_Transport;
+import GraphicalGridBuilder.gridTypes.Nothing_Obj;
+import GraphicalGridBuilder.gridTypes.Super_Obj;
+import GraphicalGridBuilder.gridTypes.TPath_Transport;
+import GraphicalGridBuilder.gridTypes.Vertical_Transport;
 
 public class GraphicalGrid extends JFrame{
 
@@ -17,7 +26,7 @@ public class GraphicalGrid extends JFrame{
 	 */
 	private static final long serialVersionUID = -618628616694879189L;
 	String name = "";
-	GraphicalGridTarget[][] grid;
+	ObjField_Container[][] grid;
 	JPanel interfacePanel = new JPanel();
 	
 	public GraphicalGrid(){
@@ -26,7 +35,7 @@ public class GraphicalGrid extends JFrame{
 	public GraphicalGrid(int x, int y){
 		int xP = (x*2)-1;
 		int yP = (y*2)-1;
-		grid = new GraphicalGridTarget[yP][xP];
+		grid = new ObjField_Container[yP][xP];
 		
 		Boolean xEven = true;
 		Boolean yEven = true;
@@ -56,7 +65,7 @@ public class GraphicalGrid extends JFrame{
 								((targetY == (grid.length-1)) && (targetX == 0)) || 
 								((targetY == (grid.length-1)) && (targetX == (grid[targetY].length-1))) 
 						){
-							grid[targetY][targetX] = new GraphicalGridTarget(new GraphicalGridObject[]{new GraphicalGridEquiplet()});
+							grid[targetY][targetX] = new ObjField_Container(new Super_Obj[]{new Equiplet_Obj()});
 						}
 						else if(
 								((targetY == 0) && (targetX != 0)) || 
@@ -65,34 +74,34 @@ public class GraphicalGrid extends JFrame{
 								((targetY == (grid.length-1)) && (targetX != 0))
 						){
 							if((targetY == 0 || targetY == (grid.length-1))){
-								grid[targetY][targetX] = new GraphicalGridTarget(
-									new GraphicalGridObject[]{
-										new GraphicalGridEquiplet(),
-										new GraphicalGridHorizontalTransport(),
-										new GraphicalGridTPathTransport(targetY, targetX, grid.length),
-										new GraphicalGridNothingObject()
+								grid[targetY][targetX] = new ObjField_Container(
+									new Super_Obj[]{
+										new Equiplet_Obj(),
+										new Horizontal_Transport(),
+										new TPath_Transport(targetY, targetX, grid.length),
+										new Nothing_Obj()
 									}
 								);
 							}
 							else{
-								grid[targetY][targetX] = new GraphicalGridTarget(
-									new GraphicalGridObject[]{
-										new GraphicalGridEquiplet(),
-										new GraphicalGridVerticalTransport(),
-										new GraphicalGridTPathTransport(targetY, targetX, grid.length),
-										new GraphicalGridNothingObject()
+								grid[targetY][targetX] = new ObjField_Container(
+									new Super_Obj[]{
+										new Equiplet_Obj(),
+										new Vertical_Transport(),
+										new TPath_Transport(targetY, targetX, grid.length),
+										new Nothing_Obj()
 									}
 								);
 							}
 						}
 						else{
-							grid[targetY][targetX] = new GraphicalGridTarget(
-								new GraphicalGridObject[]{
-									new GraphicalGridEquiplet(),
-									new GraphicalGridCrossedTransport(),
-									new GraphicalGridHorizontalTransport(),
-									new GraphicalGridVerticalTransport(),
-									new GraphicalGridNothingObject()		
+							grid[targetY][targetX] = new ObjField_Container(
+								new Super_Obj[]{
+									new Equiplet_Obj(),
+									new Crossed_Transport(),
+									new Horizontal_Transport(),
+									new Vertical_Transport(),
+									new Nothing_Obj()		
 								}
 							);
 						}
@@ -100,19 +109,19 @@ public class GraphicalGrid extends JFrame{
 					else{
 						//xeven = true & yeven = false
 						if((targetX == 0) || (targetX == (grid[targetY].length-1))){
-							grid[targetY][targetX] = new GraphicalGridTarget(
-								new GraphicalGridObject[]{
-									new GraphicalGridVerticalTransport(),
+							grid[targetY][targetX] = new ObjField_Container(
+								new Super_Obj[]{
+									new Vertical_Transport(),
 //									new GraphicalGridTPathTransport(targetY, targetX, grid.length),
-									new GraphicalGridNothingObject()			
+									new Nothing_Obj()			
 								}
 							);
 						}
 						else{
-							grid[targetY][targetX] = new GraphicalGridTarget(
-								new GraphicalGridObject[]{
-									new GraphicalGridVerticalTransport(),
-									new GraphicalGridNothingObject()		
+							grid[targetY][targetX] = new ObjField_Container(
+								new Super_Obj[]{
+									new Vertical_Transport(),
+									new Nothing_Obj()		
 								}
 							);
 						}
@@ -122,21 +131,21 @@ public class GraphicalGrid extends JFrame{
 					if(yEven){
 						//xeven = false & yeven = true
 						if((targetY == 0) || (targetY == (grid.length-1))){
-							grid[targetY][targetX] = new GraphicalGridTarget(
-								new GraphicalGridObject[]{
-									new GraphicalGridHorizontalTransport(),
+							grid[targetY][targetX] = new ObjField_Container(
+								new Super_Obj[]{
+									new Horizontal_Transport(),
 //									new GraphicalGridTPathTransport(targetY, targetX, grid.length),
-									new GraphicalGridNothingObject()		
+									new Nothing_Obj()		
 								}
 							);
 						}
 						else{
-							grid[targetY][targetX] = new GraphicalGridTarget(
-								new GraphicalGridObject[]{
-									new GraphicalGridHorizontalTransport(),
-									new GraphicalGridVerticalTransport(),
-									new GraphicalGridCrossedTransport(),
-									new GraphicalGridNothingObject()
+							grid[targetY][targetX] = new ObjField_Container(
+								new Super_Obj[]{
+									new Horizontal_Transport(),
+									new Vertical_Transport(),
+									new Crossed_Transport(),
+									new Nothing_Obj()
 								}
 							);
 							
@@ -144,12 +153,12 @@ public class GraphicalGrid extends JFrame{
 					}
 					else{
 						//xeven = false & yeven = false
-						grid[targetY][targetX] = new GraphicalGridTarget(
-							new GraphicalGridObject[]{
-								new GraphicalGridCrossedTransport(),
-								new GraphicalGridForwardSlashTransport(),
-								new GraphicalGridBackSlashTransport(),
-								new GraphicalGridNothingObject()
+						grid[targetY][targetX] = new ObjField_Container(
+							new Super_Obj[]{
+								new Crossed_Transport(),
+								new ForwardSlash_Transport(),
+								new BackSlash_Transport(),
+								new Nothing_Obj()
 							}
 						);
 					}
@@ -188,8 +197,8 @@ public class GraphicalGrid extends JFrame{
 				System.out.println("x: " + targetX);
 				System.out.println("y: " + targetY);
 				
-				final int btn_y = targetY;
-				final int btn_X = targetX;
+//				final int btn_y = targetY;
+//				final int btn_X = targetX;
 				grid[targetY][targetX].getButton().addActionListener(
 					new ActionListener(){
 						@Override
@@ -383,14 +392,14 @@ public class GraphicalGrid extends JFrame{
 	
 	public String getCustomGridString(){
 		String customGridString = "";
-		ArrayList<GraphicalGridEquiplet> equiplets = new ArrayList<GraphicalGridEquiplet>();
+		ArrayList<Equiplet_Obj> equiplets = new ArrayList<Equiplet_Obj>();
 		ArrayList<String> connections = new ArrayList<String>();
 		
 		for(int targetY = 0; targetY < grid.length; targetY++){
 			for(int targetX = 0; targetX < grid[targetY].length; targetX++){
-				GraphicalGridObject currentObj = grid[targetY][targetX].getInputObject();
-				if (currentObj instanceof GraphicalGridEquiplet) {
-					equiplets.add((GraphicalGridEquiplet)currentObj);
+				Super_Obj currentObj = grid[targetY][targetX].getInputObject();
+				if (currentObj instanceof Equiplet_Obj) {
+					equiplets.add((Equiplet_Obj)currentObj);
 					connections.add("");
 				} 
 			}
@@ -400,62 +409,62 @@ public class GraphicalGrid extends JFrame{
 		
 		for(int targetY = 0; targetY < grid.length; targetY++){
 			for(int targetX = 0; targetX < grid[targetY].length; targetX++){
-				GraphicalGridObject currentObj = grid[targetY][targetX].getInputObject();
-				if (currentObj instanceof GraphicalGridEquiplet) {
+				Super_Obj currentObj = grid[targetY][targetX].getInputObject();
+				if (currentObj instanceof Equiplet_Obj) {
 					System.out.println("TARGETX=[" + targetX + "] TARGETY=[" + targetY + "]");
 					System.out.println("Equiplet detected!");
 					//isEquiplet do nothing yet
 					//connectionsGrid[targetY][targetX] = equipletLocation
 				} 
-				else if (currentObj instanceof GraphicalGridHorizontalTransport) {
+				else if (currentObj instanceof Horizontal_Transport) {
 					System.out.println("TARGETX=[" + targetX + "] TARGETY=[" + targetY + "]");
-					int indexeq1 = equiplets.indexOf((GraphicalGridEquiplet)grid[(targetY)][(targetX-1)].getInputObject());
-					int indexeq2 = equiplets.indexOf((GraphicalGridEquiplet)grid[(targetY)][(targetX+1)].getInputObject());
+					int indexeq1 = equiplets.indexOf((Equiplet_Obj)grid[(targetY)][(targetX-1)].getInputObject());
+					int indexeq2 = equiplets.indexOf((Equiplet_Obj)grid[(targetY)][(targetX+1)].getInputObject());
 					System.out.println("Creating Horizontal Connection between " + indexeq1 + " and " + indexeq2);
 					connections.set(indexeq1, connections.get(indexeq1) + "" + indexeq2+"-");
 					connections.set(indexeq2, connections.get(indexeq2) + "" + indexeq1+"-");
 				}
-				else if (currentObj instanceof GraphicalGridVerticalTransport) {
+				else if (currentObj instanceof Vertical_Transport) {
 					System.out.println("TARGETX=[" + targetX + "] TARGETY=[" + targetY + "]");
-					int indexeq1 = equiplets.indexOf((GraphicalGridEquiplet)grid[(targetY-1)][(targetX)].getInputObject());
-					int indexeq2 = equiplets.indexOf((GraphicalGridEquiplet)grid[(targetY+1)][(targetX)].getInputObject());
+					int indexeq1 = equiplets.indexOf((Equiplet_Obj)grid[(targetY-1)][(targetX)].getInputObject());
+					int indexeq2 = equiplets.indexOf((Equiplet_Obj)grid[(targetY+1)][(targetX)].getInputObject());
 					System.out.println("Creating Horizontal Connection between " + indexeq1 + " and " + indexeq2);
 					connections.set(indexeq1, connections.get(indexeq1) + "" + indexeq2+"-");
 					connections.set(indexeq2, connections.get(indexeq2) + "" + indexeq1+"-");
 				}
-				else if (currentObj instanceof GraphicalGridBackSlashTransport) {
+				else if (currentObj instanceof BackSlash_Transport) {
 					System.out.println("TARGETX=[" + targetX + "] TARGETY=[" + targetY + "]");
-					int indexeq1 = equiplets.indexOf((GraphicalGridEquiplet)grid[(targetY-1)][(targetX+1)].getInputObject());
-					int indexeq2 = equiplets.indexOf((GraphicalGridEquiplet)grid[(targetY+1)][(targetX-1)].getInputObject());
+					int indexeq1 = equiplets.indexOf((Equiplet_Obj)grid[(targetY-1)][(targetX+1)].getInputObject());
+					int indexeq2 = equiplets.indexOf((Equiplet_Obj)grid[(targetY+1)][(targetX-1)].getInputObject());
 					System.out.println("Creating Horizontal Connection between " + indexeq1 + " and " + indexeq2);
 					connections.set(indexeq1, connections.get(indexeq1) + "" + indexeq2+"-");
 					connections.set(indexeq2, connections.get(indexeq2) + "" + indexeq1+"-");
 				}
-				else if (currentObj instanceof GraphicalGridForwardSlashTransport) {
+				else if (currentObj instanceof ForwardSlash_Transport) {
 					System.out.println("TARGETX=[" + targetX + "] TARGETY=[" + targetY + "]");
-					int indexeq1 = equiplets.indexOf((GraphicalGridEquiplet)grid[(targetY-1)][(targetX-1)].getInputObject());
-					int indexeq2 = equiplets.indexOf((GraphicalGridEquiplet)grid[(targetY+1)][(targetX+1)].getInputObject());
+					int indexeq1 = equiplets.indexOf((Equiplet_Obj)grid[(targetY-1)][(targetX-1)].getInputObject());
+					int indexeq2 = equiplets.indexOf((Equiplet_Obj)grid[(targetY+1)][(targetX+1)].getInputObject());
 					System.out.println("Creating Horizontal Connection between " + indexeq1 + " and " + indexeq2);
 					connections.set(indexeq1, connections.get(indexeq1) + "" + indexeq2+"-");
 					connections.set(indexeq2, connections.get(indexeq2) + "" + indexeq1+"-");
 				}
-				else if (currentObj instanceof GraphicalGridCrossedTransport) {
+				else if (currentObj instanceof Crossed_Transport) {
 					System.out.println("TARGETX=[" + targetX + "] TARGETY=[" + targetY + "]");
-					int indexeq1 = equiplets.indexOf((GraphicalGridEquiplet)grid[(targetY-1)][(targetX-1)].getInputObject());
-					int indexeq2 = equiplets.indexOf((GraphicalGridEquiplet)grid[(targetY+1)][(targetX+1)].getInputObject());
-					int indexeq3 = equiplets.indexOf((GraphicalGridEquiplet)grid[(targetY-1)][(targetX+1)].getInputObject());
-					int indexeq4 = equiplets.indexOf((GraphicalGridEquiplet)grid[(targetY+1)][(targetX-1)].getInputObject());
+					int indexeq1 = equiplets.indexOf((Equiplet_Obj)grid[(targetY-1)][(targetX-1)].getInputObject());
+					int indexeq2 = equiplets.indexOf((Equiplet_Obj)grid[(targetY+1)][(targetX+1)].getInputObject());
+					int indexeq3 = equiplets.indexOf((Equiplet_Obj)grid[(targetY-1)][(targetX+1)].getInputObject());
+					int indexeq4 = equiplets.indexOf((Equiplet_Obj)grid[(targetY+1)][(targetX-1)].getInputObject());
 					System.out.println("Creating Horizontal Connection between [" + indexeq1 + " and " + indexeq2 + "] and [" + indexeq3 + " and " + indexeq4 + "]");
 					connections.set(indexeq1, connections.get(indexeq1) + "" + indexeq2+"-");
 					connections.set(indexeq2, connections.get(indexeq2) + "" + indexeq1+"-");
 					connections.set(indexeq3, connections.get(indexeq3) + "" + indexeq4+"-");
 					connections.set(indexeq4, connections.get(indexeq4) + "" + indexeq3+"-");
 				}
-				else if (currentObj instanceof GraphicalGridTPathTransport) {
+				else if (currentObj instanceof TPath_Transport) {
 					System.out.println("TARGETX=[" + targetX + "] TARGETY=[" + targetY + "]");
 					System.out.println("TPath detected!");
 				}
-				else if (currentObj instanceof GraphicalGridNothingObject) {
+				else if (currentObj instanceof Nothing_Obj) {
 					System.out.println("TARGETX=[" + targetX + "] TARGETY=[" + targetY + "]");
 					System.out.println("Nothing Object detected!");
 					//isNothing = do Nothing
@@ -482,7 +491,7 @@ public class GraphicalGrid extends JFrame{
 		for(int targetY = 0; targetY < grid.length; targetY++){
 			lineBuilder = new StringBuilder();
 			for(int targetX = 0; targetX < grid[targetY].length; targetX++){
-				GraphicalGridObject currentObj = grid[targetY][targetX].getInputObject();
+				Super_Obj currentObj = grid[targetY][targetX].getInputObject();
 				lineBuilder.append(currentObj.getTextualInputRepresentation());
 			}
 			textualGrid[targetY] = lineBuilder.toString();
@@ -490,32 +499,32 @@ public class GraphicalGrid extends JFrame{
 		return textualGrid;
 	}
 	
-	public void inputSavableFormat(String input){
-		String[] inputLines = input.split(System.getProperty("line.separator"));
-		
-		for(String s : inputLines){
-			String[] lineObjects = s.split(",");
-		}
-	}
-	
-	public StringBuilder toSavableFormat(){
-		StringBuilder sb = new StringBuilder();
-		
-		for(int targetY = 0; targetY < grid.length; targetY++){
-			sb.append("[");
-			for(int targetX = 0; targetX < grid[targetY].length; targetX++){
-				GraphicalGridObject currentObj = grid[targetY][targetX].getInputObject();
-				sb.append(currentObj.getTextualInputRepresentation());
-				if(targetX != grid[targetY].length){
-					sb.append(",");
-				}
-			}
-			sb.append("]");
-			sb.append(System.getProperty("line.separator"));
-		}
-		
-		return sb;
-	}
+//	public void inputSavableFormat(String input){
+//		String[] inputLines = input.split(System.getProperty("line.separator"));
+//		
+//		for(String s : inputLines){
+//			String[] lineObjects = s.split(",");
+//		}
+//	}
+//	
+//	public StringBuilder toSavableFormat(){
+//		StringBuilder sb = new StringBuilder();
+//		
+//		for(int targetY = 0; targetY < grid.length; targetY++){
+//			sb.append("[");
+//			for(int targetX = 0; targetX < grid[targetY].length; targetX++){
+//				Super_Obj currentObj = grid[targetY][targetX].getInputObject();
+//				sb.append(currentObj.getTextualInputRepresentation());
+//				if(targetX != grid[targetY].length){
+//					sb.append(",");
+//				}
+//			}
+//			sb.append("]");
+//			sb.append(System.getProperty("line.separator"));
+//		}
+//		
+//		return sb;
+//	}
 
 	@Override
 	public String toString() {

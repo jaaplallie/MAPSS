@@ -3,9 +3,6 @@ package Backend;
 import java.util.ArrayList;
 import java.util.List;
 
-import Agents.EquipletAgent;
-import Agents.ProductAgent;
-
 /****************************************************************************************
 
 	This class is used as a datafile. It stores the data needed for the 
@@ -31,6 +28,7 @@ public class Scenario {
 	protected ArrayList<int[]> paths_between_equiplets;
 	protected ArrayList<int[]> possible_other_paths;
 	
+	@SuppressWarnings("unchecked")
 	public Scenario(
 			String scenarioName,
 			int x_size,

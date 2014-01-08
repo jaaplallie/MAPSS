@@ -1,0 +1,120 @@
+package GraphicalGridBuilder.gridTypes;
+
+public class TPath_Transport extends Super_Obj {
+	
+	Character arm;
+	
+	public TPath_Transport() {
+	
+	}
+	
+	public TPath_Transport(int y, int x, int y_max){
+		if(y == 0){
+			arm = 'b';
+			this.setTextualIcon("V");
+			this.setImageIcon("img/grid_icons/tbottom.png");
+		}
+		else if(x == 0){
+			arm = 'r';
+			this.setTextualIcon("|-");
+			this.setImageIcon("img/grid_icons/tright.png");
+		}
+		else if(y == (y_max-1)){
+			arm = 't';
+			this.setTextualIcon("^");
+			this.setImageIcon("img/grid_icons/ttop.png");
+		}
+		else{
+			arm = 'l';
+			this.setTextualIcon("-|");
+			this.setImageIcon("img/grid_icons/tleft.png");
+		}
+		this.NDC = false;
+		this.NEDC = false;
+		this.EDC = false;
+		this.SEDC = false;
+		this.SDC = false;
+		this.SWDC = false;
+		this.WDC = false;
+		this.NWDC = false;
+	}
+
+	public Character getArm() {
+		return arm;
+	}
+	
+//	@Override
+//	public boolean checkConnected(String callFromDirection, GraphicalGridObject changedSubject) {
+//		Boolean returnVal = false;
+//		
+//		if(callFromDirection.equals("NE") || callFromDirection.equals("SW")){
+//			if(
+//					(changedSubject instanceof GraphicalGridCrossedTransport && (changedSubject.getTextualIcon().equals("+")))||
+//					(changedSubject instanceof GraphicalGridHorizontalTransport)||
+//					(changedSubject instanceof GraphicalGridVerticalTransport)||
+//					(changedSubject instanceof GraphicalGridTPathTransport)||
+//					(changedSubject instanceof GraphicalGridEquiplet)
+//				
+//			){
+//				returnVal = true;
+//				if(callFromDirection.equals("N")){
+//					NDC = false;
+//				}
+//				else if(callFromDirection.equals("E")){
+//					EDC = false;
+//				}
+//				else if(callFromDirection.equals("S")){
+//					SDC = false;
+//				}
+//				else if(callFromDirection.equals("W")){
+//					WDC = false;
+//				}
+//				else if(callFromDirection.equals("NW")){
+//					NWDC = false;
+//				}
+//				else if(callFromDirection.equals("SW")){
+//					SWDC = false;
+//				}
+//				else if(callFromDirection.equals("NE")){
+//					NEDC = false;
+//				}
+//				else if(callFromDirection.equals("SE")){
+//					SEDC = false;
+//				}
+//			}
+//			else{
+//				returnVal = false;
+//				if(callFromDirection.equals("N")){
+//					NDC = true;
+//				}
+//				else if(callFromDirection.equals("E")){
+//					EDC = true;
+//				}
+//				else if(callFromDirection.equals("S")){
+//					SDC = true;
+//				}
+//				else if(callFromDirection.equals("W")){
+//					WDC = true;
+//				}
+//				else if(callFromDirection.equals("NW")){
+//					NWDC = true;
+//				}
+//				else if(callFromDirection.equals("SW")){
+//					SWDC = true;
+//				}
+//				else if(callFromDirection.equals("NE")){
+//					NEDC = true;
+//				}
+//				else if(callFromDirection.equals("SE")){
+//					SEDC = true;
+//				}
+//			}
+//		}
+//		return returnVal;
+//	}
+//	
+//	@Override
+//	protected void verifyIcon() {
+//		
+//	}
+}

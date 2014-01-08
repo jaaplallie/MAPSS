@@ -3,10 +3,7 @@ package Agents;
 import jade.core.Agent;
 import jade.core.behaviours.WakerBehaviour;
 
-//comment test
-
 public class EquipletAgent extends Agent { 
-	
 	/**
 	 * 
 	 */

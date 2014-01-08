@@ -15,7 +15,6 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 
 import Backend.Grid;
-import Backend.MapssFileHandler;
 import Backend.ProgramData;
 import Backend.Scenario;
 import Backend.ScenarioList;

@@ -1,9 +1,6 @@
 package Backend;
 
 import jade.wrapper.StaleProxyException;
-
-import java.util.ArrayList;
-
 import Agents.ProductAgent;
 
 public class Simulations {	

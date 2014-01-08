@@ -5,7 +5,6 @@ import java.awt.EventQueue;
 import Backend.AgentEnvironmentCreator;
 import Backend.MapssFileHandler;
 import Backend.ProgramData;
-import Backend.Scenario;
 import Gui.MainWindow;
 
 
@@ -18,6 +17,7 @@ public class Main{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					@SuppressWarnings("unused")
 					AgentEnvironmentCreator aec = new AgentEnvironmentCreator();
 					ProgramData pd = new ProgramData();
 					pd.onProgramStart();

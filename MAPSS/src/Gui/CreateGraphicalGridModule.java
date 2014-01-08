@@ -19,7 +19,10 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 
+import Backend.Grid;
 import Backend.ProgramData;
+import Backend.Scenario;
+import Backend.ScenarioList;
 import GraphicalGridBuilder.GraphicalGrid;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -33,14 +36,16 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 	JPanel editorPanel_NewCard,editorPanel_EditCard;
 	CardLayout cards;
 	JPanel graphicalGridPanel = new JPanel();
-	JComboBox<String> graphicalGridComboBox = new JComboBox<String>();
+	static JComboBox<String> graphicalGridComboBox = new JComboBox<String>();
 	private JButton newGraphicalGrid_btn, editGraphicalGrid_btn, removeGraphicalGrid_btn, saveGrid_btn, refreshDropDown_btn;
 	private JTextField input_gridName_New, input_gridName_Edit;
 	private JSpinner input_xSize_New, input_ySize_New, input_xSize_Edit, input_ySize_Edit;
 	private JButton change_gridName_btn, change_xSize_btn, change_ySize_btn;
 	private JButton buildGraphicalGridNew_Btn, buildGraphicalGridEdit_Btn;
-	
 	private GraphicalGrid currentGraphicalGridInEditor_New, currentGraphicalGridInEditor_Edit;
+	
+	private JTextField grid_string = new JTextField("1-2,0-3,0-3,1-2");
+	private JButton buildCustomGrid_Btn = new JButton("Build Custom Grid");
 	
 	
 	/**
@@ -49,7 +54,7 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 	public CreateGraphicalGridModule() {
 		builder = new ProgramData().getNewBuilder();
 		setLayout(new BorderLayout(0, 0));
-		this.updateGraphicalGridComboBox();
+		this.updateStructureBox();
 		
 		newGraphicalGrid_btn = new JButton("New");
 		ImageIcon addIcon = new ImageIcon("img/icons/add.png");
@@ -98,6 +103,7 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 		optionsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		
 		createEditorPanel();
+		
 		add(optionsPanel, BorderLayout.NORTH);
 		add(editorPanel, BorderLayout.CENTER);
 		add(graphicalGridPanel, BorderLayout.SOUTH);
@@ -124,6 +130,14 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 		buildGraphicalGridNew_Btn = new JButton("Build GraphicalGrid");
 		buildGraphicalGridNew_Btn.addActionListener(this);
 		builder.append(buildGraphicalGridNew_Btn);
+		builder.nextLine();
+		
+		builder.appendSeparator("Custom grid format");
+		builder.append(new JLabel("Input string:"), grid_string);
+		buildCustomGrid_Btn.addActionListener(this);
+        builder.append(buildCustomGrid_Btn);
+        builder.nextLine();
+        
 		editorPanel.add(builder.getPanel(), "n");
 		builder = new ProgramData().getNewBuilder();
 		
@@ -163,6 +177,7 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 		buildGraphicalGridEdit_Btn = new JButton("Build GraphicalGrid");
 		buildGraphicalGridEdit_Btn.addActionListener(this);
 		builder.append(buildGraphicalGridEdit_Btn);
+        
 		editorPanel.add(builder.getPanel(), "e");
 		builder = new ProgramData().getNewBuilder();
 		
@@ -209,9 +224,11 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 			cards.show(editorPanel, "e");
 		}
 		else if(source == removeGraphicalGrid_btn){
-			ProgramData.tmpGraphicalGridModel.remove(graphicalGridComboBox.getSelectedIndex());
-			ProgramData.savedGraphicalGridModel.remove(graphicalGridComboBox.getSelectedIndex());
-			updateGraphicalGridComboBox();
+			Scenario S = ScenarioList.getScenario((String)graphicalGridComboBox.getSelectedItem());
+			ScenarioList.removeScenario(S);
+//			ProgramData.tmpGraphicalGridModel.remove(graphicalGridComboBox.getSelectedIndex());
+//			ProgramData.savedGraphicalGridModel.remove(graphicalGridComboBox.getSelectedIndex());
+			updateStructureBox();
 		}
 		else if(source == saveGrid_btn){
 			if(editorPanel_NewCard.isVisible()){
@@ -222,7 +239,7 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 			}
 		}
 		else if(source == refreshDropDown_btn){
-			updateGraphicalGridComboBox();
+			updateStructureBox();
 		}
 		else {
 			if(source == change_gridName_btn || source == change_xSize_btn || source == change_ySize_btn){
@@ -279,13 +296,43 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 					}
 					
 				}else{
-					GraphicalGrid graphicalGrid = new GraphicalGrid(x_size, y_size);
-					graphicalGridPanel.removeAll();
-					graphicalGridPanel.add(graphicalGrid.draw());
-					graphicalGridPanel.setVisible(true);
-					invalidate();
-					validate();
-					repaint();
+					String name = input_gridName_New.getText();
+					if (name != null && name.isEmpty()){
+						name = "No_name"+x_size+"x"+y_size;
+					}
+					
+					if(source == buildCustomGrid_Btn){
+						GraphicalGrid graphicalGrid2 = new GraphicalGrid(x_size, y_size);
+						graphicalGridPanel.removeAll();
+						graphicalGridPanel.add(graphicalGrid2.draw(), BorderLayout.CENTER);
+						graphicalGridPanel.setVisible(true);
+						invalidate();
+						validate();
+						repaint();
+						
+						String relation_list = grid_string.getText();
+						Grid.createCustom(x_size, y_size, name, relation_list);
+
+						ChartPresenter.updateChartStructures();
+						ProductSetup.updateProductStructures();
+						updateStructureBox();
+					}
+					else{
+						GraphicalGrid graphicalGrid = new GraphicalGrid(x_size, y_size);
+						graphicalGridPanel.removeAll();
+						graphicalGridPanel.add(graphicalGrid.draw());
+						graphicalGridPanel.setVisible(true);
+						invalidate();
+						validate();
+						repaint();
+												
+						name += "("+x_size+"x"+y_size+")";
+						Grid.createStructure(x_size, y_size, name);
+						ChartPresenter.updateChartStructures();
+						ProductSetup.updateProductStructures();
+						updateStructureBox();
+					}
+					
 					//Grid.create(x_size, y_size);
 				}
 			}
@@ -298,15 +345,13 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 			
 		}
 	}
-
 	
-	private void updateGraphicalGridComboBox(){	
-		for(int index = 0; index < ProgramData.savedGraphicalGridModel.size(); index++){
-			graphicalGridComboBox.insertItemAt(ProgramData.savedGraphicalGridModel.get(index).toString(), index);
+	public static void updateStructureBox(){
+		graphicalGridComboBox.removeAllItems();
+		for (String name: ScenarioList.getScenarioNames()){
+			graphicalGridComboBox.addItem(name);
 		}
 	}
-	
-	
 	
 	public void setEnabled(Component[] components, Boolean b){
 		for(Component c : components){

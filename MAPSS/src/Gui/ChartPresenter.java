@@ -25,8 +25,6 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
 
 import Backend.ChartCreator;
-import Backend.Grid;
-import Backend.ProductStepGenerators;
 import Backend.ProgramData;
 import Backend.Scenario;
 import Backend.ScenarioList;

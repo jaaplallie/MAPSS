@@ -11,7 +11,6 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 
 import Backend.AgentEnvironmentCreator;
-import Backend.Grid;
 import Backend.ProductStepGenerators;
 import Backend.ProgramData;
 import Backend.ScenarioList;

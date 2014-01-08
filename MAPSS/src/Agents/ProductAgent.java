@@ -2,10 +2,6 @@ package Agents;
 
 import jade.core.Agent;
 import jade.core.behaviours.WakerBehaviour;
-
-import java.util.ArrayList;
-
-import Backend.Calculations;
 import Backend.Grid;
 import Backend.MapssFileHandler;
 import Backend.Scenario;
@@ -14,6 +10,10 @@ import Backend.Simulations;
 import Gui.ChartPresenter;
 
 public class ProductAgent extends Agent { 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4396688048039621513L;
 	Grid gc;
 	String code;
 	Object[] args;

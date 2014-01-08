@@ -2,9 +2,6 @@ package Backend;
 
 import java.util.ArrayList;
 
-import Gui.ChartPresenter;
-import Gui.ProductSetup;
-
 //Mathijs
 
 public class ScenarioList {

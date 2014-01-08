@@ -1,0 +1,11 @@
+package GraphicalGridBuilder;
+
+import GraphicalGridBuilder.Super_Obj;
+
+public class Nothing_Obj extends Super_Obj {
+
+	public Nothing_Obj(){
+		textualIcon = " ";
+		this.setImageIcon("img/grid_icons/nothing.png");
+	}
+}
