@@ -22,6 +22,7 @@ import javax.swing.JTextField;
 import Backend.Grid;
 import Backend.ProgramData;
 import Backend.Scenario;
+import Backend.ScenarioList;
 import GraphicalGridBuilder.GraphicalGrid;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;

@@ -71,7 +71,7 @@ public class Grid {
 		name += "(Custom)";
 		
 		ArrayList<int[]> products = new ArrayList<int[]>();
-		ScenarioList.createAndAddScenario(name, width, length, neighbors, products);
+		ProgramData.createAndAddScenario(name, width, length, neighbors, products);
 	}
 	
 	
@@ -118,7 +118,7 @@ public class Grid {
 		
 
 		ArrayList<int[]> products = new ArrayList<int[]>();
-		ScenarioList.createAndAddScenario(name, width, length, neighbors, products);
+		ProgramData.createAndAddScenario(name, width, length, neighbors, products);
 		
 	}
 	

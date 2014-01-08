@@ -54,7 +54,7 @@ public class ProductStepGenerators {
 	
 	public static void generateProductBatch(int product_count, int max_product_steps, String type, String structure_name){
 		
-		Scenario S = ProgramData.getScenario(structure_name);
+		Scenario S = ScenarioList.getScenario(structure_name);
 		ArrayList<Integer> forbidden_list = generateForbiddenList(S);
 		ArrayList<int[]> products = new ArrayList<int[]>();
 		

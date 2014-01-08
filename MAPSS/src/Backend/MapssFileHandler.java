@@ -365,7 +365,7 @@ public class MapssFileHandler {
 			    	String name = file.getName().replace(".txt", "");
 			    	filecounter++;
 			    	
-			    	ScenarioList.createAndAddScenario(name, x, y, neighbors, product_list);
+			    	ProgramData.createAndAddScenario(name, x, y, neighbors, product_list);
 
 			    	if (safe == true){
 			    		ProductStepGenerators.addProductBatch(name, product_list);

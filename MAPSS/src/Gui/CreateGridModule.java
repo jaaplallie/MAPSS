@@ -1,18 +1,15 @@
 package Gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
@@ -20,7 +17,6 @@ import javax.swing.JTextField;
 import Backend.Grid;
 import Backend.ProgramData;
 import Backend.Scenario;
-import Backend.ScenarioList;
 import GraphicalGridBuilder.GraphicalGrid;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -99,7 +95,7 @@ public class CreateGridModule extends JPanel implements ActionListener{
 	
 	public static void updateStructureBox(){
 		structureBox.removeAllItems();
-		for (String name: ScenarioList.getScenarioNames()){
+		for (String name: ProgramData.getScenarioNames()){
 			structureBox.addItem(name);
 		}
 	}
@@ -118,9 +114,9 @@ public class CreateGridModule extends JPanel implements ActionListener{
 		MainWindow.resetOutput();
 		
 		if (source == delete_Btn){
-			Scenario S = ScenarioList.getScenario((String)structureBox.getSelectedItem());
+			Scenario S = ProgramData.getScenario((String)structureBox.getSelectedItem());
 			MainWindow.stringToOutput(S.name + " deleted");
-			ScenarioList.removeScenario(S);
+			ProgramData.removeScenario(S);
 			updateStructureBox();
 			
 		} else {

@@ -4,8 +4,8 @@ import jade.core.Agent;
 import jade.core.behaviours.WakerBehaviour;
 import Backend.Grid;
 import Backend.MapssFileHandler;
-import Backend.ProgramData;
 import Backend.Scenario;
+import Backend.ScenarioList;
 import Backend.Simulations;
 import Gui.ChartPresenter;
 
@@ -59,7 +59,7 @@ public class ProductAgent extends Agent {
 				int[] productPath;
 				int[] otherPath;
 				
-				Scenario S = ProgramData.getScenario(Simulations.getCurrentName());
+				Scenario S = ScenarioList.getScenario(Simulations.getCurrentName());
 				 
 				boolean right_sized_grid = true;
 				for (Object o : args) {

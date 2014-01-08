@@ -17,7 +17,7 @@ public class Simulations {
 	public static double productAgentsInRegularGridSimulation(String name){
 		
 		setGrid(name);
-		Scenario S = ProgramData.getScenario(name);
+		Scenario S = ScenarioList.getScenario(name);
 		
 		System.out.println("Creating the nessesary files.....");
 		System.out.println("Generating a set of products and giving them product agents.....");

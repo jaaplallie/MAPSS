@@ -1,6 +1,5 @@
 package Gui;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,12 +12,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.SwingWorker;
@@ -30,7 +27,6 @@ import org.jfree.data.category.DefaultCategoryDataset;
 import Backend.ChartCreator;
 import Backend.ProgramData;
 import Backend.Scenario;
-import Backend.ScenarioList;
 import Backend.Simulations;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -167,8 +163,8 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
 	public static void updateChartStructures(){
 		structureBox.removeAllItems();
 		
-		for (String name: ScenarioList.getScenarioNames()){
-			Scenario S = ScenarioList.getScenario(name);
+		for (String name: ProgramData.getScenarioNames()){
+			Scenario S = ProgramData.getScenario(name);
 
 			if (S.getProducts().size() > 0){
 				structureBox.addItem(name);
@@ -279,7 +275,7 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
     		
     		for (ArrayList<String> selected_pool: total){
     			for (int i = 0; i < selected_pool.size(); i++){
-        			Scenario S = ScenarioList.getScenario(selected_pool.get(i));
+        			Scenario S = ProgramData.getScenario(selected_pool.get(i));
         			ArrayList<int[]> products = S.getProducts();
         			total_products += products.size();
         			//System.out.println(selected_topologies.get(i));
@@ -294,7 +290,7 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
     			for (int i = 0; i < selected_pool.size(); i++){
 
         			System.out.println("Attempting: " + selected_pool.get(i));
-        			Scenario S = ScenarioList.getScenario(selected_pool.get(i));
+        			Scenario S = ProgramData.getScenario(selected_pool.get(i));
         			double value1 = Simulations.productAgentsInRegularGridSimulation(selected_pool.get(i));
         			int X = S.x;
         			int Y = S.y;

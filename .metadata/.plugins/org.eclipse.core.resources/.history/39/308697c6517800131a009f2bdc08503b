@@ -22,6 +22,7 @@ import javax.swing.JTextField;
 import Backend.Grid;
 import Backend.ProgramData;
 import Backend.Scenario;
+import Backend.ScenarioList;
 import GraphicalGridBuilder.GraphicalGrid;
 
 import com.jgoodies.forms.builder.DefaultFormBuilder;
@@ -223,8 +224,8 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 			cards.show(editorPanel, "e");
 		}
 		else if(source == removeGraphicalGrid_btn){
-			Scenario S = ProgramData.getScenario((String)graphicalGridComboBox.getSelectedItem());
-			ProgramData.removeScenario(S);
+			Scenario S = ScenarioList.getScenario((String)graphicalGridComboBox.getSelectedItem());
+			ScenarioList.removeScenario(S);
 //			ProgramData.tmpGraphicalGridModel.remove(graphicalGridComboBox.getSelectedIndex());
 //			ProgramData.savedGraphicalGridModel.remove(graphicalGridComboBox.getSelectedIndex());
 			updateStructureBox();
@@ -347,7 +348,7 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 	
 	public static void updateStructureBox(){
 		graphicalGridComboBox.removeAllItems();
-		for (String name: ProgramData.getScenarioNames()){
+		for (String name: ScenarioList.getScenarioNames()){
 			graphicalGridComboBox.addItem(name);
 		}
 	}
