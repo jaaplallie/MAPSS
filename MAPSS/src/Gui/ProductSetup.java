@@ -24,7 +24,6 @@ public class ProductSetup extends JPanel implements ActionListener{
 	 */
 	private static final long serialVersionUID = 7220211678403298456L;
 	private DefaultFormBuilder builder = new ProgramData().getNewBuilder();
-	private JButton startScenario_btn = new JButton("Start Scenario in JADE");
 	
 	private JSpinner products_snr = new JSpinner();
 	private JSpinner product_steps_snr = new JSpinner();
@@ -50,7 +49,7 @@ public class ProductSetup extends JPanel implements ActionListener{
 		structureBox.setEditable(false);
 		structureBox.setVisible(true);
 		
-		
+        builder.appendSeparator("Product step generator(s)");
         builder.append(new JLabel("Number of products :"), products_snr);
 
 		builder.nextLine();
@@ -60,14 +59,11 @@ public class ProductSetup extends JPanel implements ActionListener{
         builder.nextLine();
         builder.append("Structures:", structureBox);
         builder.nextLine();
-        builder.appendSeparator();
-		builder.append(generate_products_btn);
+
+		builder.append("", generate_products_btn);
 		generate_products_btn.addActionListener(this);
 		builder.nextLine();
 	
-		builder.appendSeparator();
-        builder.append(startScenario_btn);
-        startScenario_btn.addActionListener(this);
         productStepComboBox.addActionListener(this);
         add(builder.getPanel());
 	}
@@ -80,19 +76,7 @@ public class ProductSetup extends JPanel implements ActionListener{
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		if(e.getSource().equals(startScenario_btn)){
-			if(ProgramData.getCurrentlyLoadedScenario() == null){
-				JOptionPane.showMessageDialog(
-	            		null, 
-	            		"No Scenario Loaded! Could not start simulation", 
-	            		"Error!", 
-	            		JOptionPane.ERROR_MESSAGE
-	    		);
-			}
-			else{
-				AgentEnvironmentCreator.startScenario();
-			}
-		} else if(e.getSource().equals(generate_products_btn)){
+		if(e.getSource().equals(generate_products_btn)){
 			
 			Integer number_of_products = -1;
 			Integer max_product_steps = -1;

@@ -130,7 +130,7 @@ public class Scenario {
 			int[] alternative_path = this.possible_other_paths.get(i);
 			
 			if (first_path.length == alternative_path.length){
-				for (int j = 0; j < first_path.length-1; j++){
+				for (int j = 0; j < first_path.length; j++){
 					size++;
 					
 					//check if values are the same
@@ -138,7 +138,7 @@ public class Scenario {
 						difference++;
 					}
 				} 
-			} else {
+			} /*else {
 				if (first_path.length > alternative_path.length){
 					//Take the smallest path so that you're never out of bounds.
 					difference += alternative_path.length;
@@ -146,7 +146,8 @@ public class Scenario {
 					difference += first_path.length;
 				}
 				
-			}	
+				
+			}	*/
 		}
 		
 		double result = ((difference/size)*100);

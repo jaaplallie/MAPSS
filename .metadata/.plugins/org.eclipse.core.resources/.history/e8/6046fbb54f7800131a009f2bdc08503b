@@ -1,10 +1,14 @@
 package Backend;
 
 import java.util.ArrayList;
+
+<<<<<<< HEAD
+=======
 import Gui.ChartPresenter;
 import Gui.MainWindow;
 import Gui.ProductSetup;
 
+>>>>>>> origin/master
 //Mathijs
 
 public class ScenarioList {

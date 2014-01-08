@@ -10,7 +10,9 @@ import java.util.ArrayList;
 
 import Gui.ChartPresenter;
 import Gui.CreateGridModule;
+import Gui.MainWindow;
 import Gui.ProductSetup;
+import Gui.ReadData;
 
 public class MapssFileHandler {
 	static PrintWriter logWriter;
@@ -170,23 +172,28 @@ public class MapssFileHandler {
 				} 
 				DataWriter.println("");
 			}
+			
+			
 			DataWriter.println("****************************************************");
 			DataWriter.println("Possible other paths");
 			count = 0;
 			equiplet = 0;
+			
+			
+			
 			for (int[] path: S.possible_other_paths){
 				if (count == 0){
 					DataWriter.println("****************************************************");
 					DataWriter.println("Equiplet: "+equiplet);
 					equiplet++;
 				} 
-				DataWriter.print(equiplet-1+" --> "+count+": ");
-				count++;
-				
+				DataWriter.println(equiplet-1+" --> "+count+".");
+				DataWriter.print("Path: ");
 				for (int derp: path){
 					DataWriter.print(derp+ " ");
 				}
-
+				
+				count++;
 				if (count >= S.x*S.y){
 					count = 0;
 				} 
@@ -235,6 +242,67 @@ public class MapssFileHandler {
 		}
 		
 	}
+	
+	public static void scenarioFileToScreen(Scenario S){
+		FileReader fr;
+		try {
+			fr = new FileReader("scenarios/" + S.name +".txt");
+	    	BufferedReader br = new BufferedReader(fr); 
+	    	String s; 
+	    	while((s = br.readLine()) != null) { 
+	    		System.out.println(s);
+	    		MainWindow.stringToOutput(s);
+	    	}
+	    	fr.close();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+	}
+	
+	public static void logFileToScreen(Scenario S){
+		
+		FileReader fr;
+		try {
+			fr = new FileReader("logs/" + S.name +".txt");
+	    	BufferedReader br = new BufferedReader(fr); 
+	    	String s; 
+	    	while((s = br.readLine()) != null) { 
+	    		MainWindow.stringToOutput(s);
+	    	}
+	    	fr.close();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
+	}
+	
+	public static void dataFileToScreen(Scenario S){
+		
+		FileReader fr;
+		try {
+			fr = new FileReader("data/" + S.name +".txt");
+	    	BufferedReader br = new BufferedReader(fr); 
+	    	String s; 
+	    	while((s = br.readLine()) != null) { 
+	    		MainWindow.stringToOutput(s);
+	    	}
+	    	fr.close();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
 	
 	
 	public static void loadScenarios(){
@@ -302,8 +370,10 @@ public class MapssFileHandler {
 			    	if (safe == true){
 			    		ProductStepGenerators.addProductBatch(name, product_list);
 			    	}
+			    	
 
 			    	fr.close(); 
+			    	
 			    	
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -314,5 +384,6 @@ public class MapssFileHandler {
 		CreateGridModule.updateStructureBox();
 		ProductSetup.updateProductStructures();
 		ChartPresenter.updateChartStructures();
+		ReadData.updateProductStructures();
 	}
 }

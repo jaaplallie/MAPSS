@@ -3,6 +3,7 @@ package Backend;
 import java.util.ArrayList;
 
 import Gui.ChartPresenter;
+import Gui.MainWindow;
 
 /***************************************************************************
  * This class is inspired by "gridscenario.c" wich is part of "ToolkitLvM". 
@@ -79,7 +80,7 @@ public class ProductStepGenerators {
 		S.addProducts(products);
 		
 		System.out.println(type + " products created for " + structure_name);
-		
+		MainWindow.stringToOutput(type + " products created for " + structure_name);
 		//MapssFileReader.loadStructures();
 		ChartPresenter.updateChartStructures();
 	}

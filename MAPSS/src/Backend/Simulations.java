@@ -2,6 +2,7 @@ package Backend;
 
 import jade.wrapper.StaleProxyException;
 import Agents.ProductAgent;
+import Gui.MainWindow;
 
 public class Simulations {	
 	public static int finished_products;
@@ -13,15 +14,19 @@ public class Simulations {
 
 	
 	
-	public static double productAgentsInRegularGridSimulation(String structure_name, String log_name){
+	public static double productAgentsInRegularGridSimulation(String name){
 		
-		setGrid(structure_name);
-		Scenario S = ScenarioList.getScenario(structure_name);
+		setGrid(name);
+		Scenario S = ScenarioList.getScenario(name);
 		
 		System.out.println("Creating the nessesary files.....");
 		System.out.println("Generating a set of products and giving them product agents.....");
 		
-		MapssFileHandler.createLogFile(log_name);
+		MainWindow.stringToOutput("Now running " +S.name);
+		
+		MainWindow.stringToOutput("That has: " + S.products.size() + " products");
+		
+		MapssFileHandler.createLogFile(name);
 		MapssFileHandler.writeLogLn("***********************Configurations*************************************");
 		MapssFileHandler.writeLogLn("Number of products: " + S.products.size());
 		MapssFileHandler.logGrid(S);
@@ -50,7 +55,8 @@ public class Simulations {
 		AgentEnvironmentCreator.destroyMainContainer();
 		
 		MapssFileHandler.closeLog();
-		System.out.println("Simulation " + log_name + " is finished");
+		System.out.println("Simulation " + name + " is finished");
+		MainWindow.stringToOutput("Simulation " + name + " is finished");
 		return average;
 	}
 	
