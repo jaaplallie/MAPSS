@@ -139,7 +139,13 @@ public class CreateGridModule extends JPanel implements ActionListener{
 				
 				switch (source.getText()) {
 					
-					case "Build structure":
+					case "Build structure":;
+						Grid.createStructure(x_size, y_size, name);
+						ChartPresenter.updateChartStructures();
+						ProductSetup.updateProductStructures();
+						updateStructureBox();
+						
+						
 						previewPanel.removeAll();
 						GraphicalGrid graphicalGrid = new GraphicalGrid(x_size, y_size);
 						previewPanel.add(graphicalGrid.draw(), BorderLayout.CENTER);
@@ -148,14 +154,17 @@ public class CreateGridModule extends JPanel implements ActionListener{
 						validate();
 						repaint();
 						
-						name += "("+x_size+"x"+y_size+")";
-						Grid.createStructure(x_size, y_size, name);
-						ChartPresenter.updateChartStructures();
-						ProductSetup.updateProductStructures();
-						updateStructureBox();
+
 						break;
 						
 					case "Build custom structure":
+						String relation_list = grid_string.getText();
+						Grid.createCustom(x_size, y_size, name, relation_list);
+						
+						ChartPresenter.updateChartStructures();
+						ProductSetup.updateProductStructures();
+						updateStructureBox();
+						
 						previewPanel.removeAll();
 						GraphicalGrid graphicalGrid2 = new GraphicalGrid(x_size, y_size);
 						previewPanel.add(graphicalGrid2.draw(), BorderLayout.CENTER);
@@ -164,12 +173,9 @@ public class CreateGridModule extends JPanel implements ActionListener{
 						validate();
 						repaint();
 						
-						String relation_list = grid_string.getText();
-						Grid.createCustom(x_size, y_size, name, relation_list);
+						
 
-						ChartPresenter.updateChartStructures();
-						ProductSetup.updateProductStructures();
-						updateStructureBox();
+						
 						break;
 					
 					

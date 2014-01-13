@@ -150,8 +150,8 @@ public class MapssFileHandler {
 			DataWriter.println("****************************************************");
 			
 			
-			DataWriter.println("Paths between equiplets (if a path ends with " + S.getMax()+1
-					+ "then that means that the destination is unreachable:");
+			DataWriter.println("Paths between equiplets (if a path ends with " + (S.getMax()+1)
+					+ " then that means that the destination is unreachable:");
 			int count = 0;
 			int equiplet = 0;
 			for (int[] path: S.paths_between_equiplets){
