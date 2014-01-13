@@ -27,7 +27,6 @@
 <fullyQualifiedTypeName name="javax.swing.JFrame"/>
 <fullyQualifiedTypeName name="java.awt.BorderLayout"/>
 <fullyQualifiedTypeName name="java.awt.Component"/>
-<fullyQualifiedTypeName name="Backend.ProgramData"/>
 <fullyQualifiedTypeName name="org.jfree.data.category.DefaultCategoryDataset"/>
 <fullyQualifiedTypeName name="jade.wrapper.StaleProxyException"/>
 <fullyQualifiedTypeName name="Backend.MapssFileWriter"/>
@@ -60,4 +59,5 @@
 <fullyQualifiedTypeName name="java.awt.Graphics"/>
 <fullyQualifiedTypeName name="GraphicalGridBuilder.GraphicalGridObject"/>
 <fullyQualifiedTypeName name="javax.swing.JButton"/>
+<fullyQualifiedTypeName name="Backend.ProgramData"/>
 </qualifiedTypeNameHistroy>

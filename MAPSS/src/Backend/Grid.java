@@ -3,6 +3,7 @@ package Backend;
 import java.util.ArrayList;
 
 import Agents.EquipletAgent;
+import Gui.MainWindow;
 
 /****************************************************************************************
 
@@ -72,6 +73,7 @@ public class Grid {
 		
 		ArrayList<int[]> products = new ArrayList<int[]>();
 		ProgramData.createAndAddScenario(name, width, length, neighbors, products);
+		MainWindow.stringToOutput("(Custom) Structure '" + name + "' created.");
 	}
 	
 	
@@ -119,7 +121,7 @@ public class Grid {
 
 		ArrayList<int[]> products = new ArrayList<int[]>();
 		ProgramData.createAndAddScenario(name, width, length, neighbors, products);
-		
+		MainWindow.stringToOutput("Structure '" + name + "' created.");
 	}
 	
 
