@@ -100,4 +100,9 @@ public class ProgramData {
 		}
 		return s;
 	}
+	
+	public static Scenario getLatestScenario(){
+		
+		return scenario_list.get(scenario_list.size()-1);
+	}
 }

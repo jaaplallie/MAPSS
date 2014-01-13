@@ -9,6 +9,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import net.miginfocom.swing.MigLayout;
+import Backend.Grid;
+import Backend.ProgramData;
+import Backend.Scenario;
 import GraphicalGridBuilder.gridTypes.BackSlash_Transport;
 import GraphicalGridBuilder.gridTypes.Crossed_Transport;
 import GraphicalGridBuilder.gridTypes.Equiplet_Obj;
@@ -18,6 +21,9 @@ import GraphicalGridBuilder.gridTypes.Nothing_Obj;
 import GraphicalGridBuilder.gridTypes.Super_Obj;
 import GraphicalGridBuilder.gridTypes.TPath_Transport;
 import GraphicalGridBuilder.gridTypes.Vertical_Transport;
+import Gui.ChartPresenter;
+import Gui.CreateGridModule;
+import Gui.ProductSetup;
 
 public class GraphicalGrid extends JFrame{
 
@@ -181,7 +187,14 @@ public class GraphicalGrid extends JFrame{
 		saveGrid_Btn.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(getCustomGridString());
+				String relation_list = getCustomGridString();
+				Scenario S = ProgramData.getLatestScenario();
+				Grid.createCustom(S.x, S.y, S.name, relation_list);
+				ProgramData.removeScenario(S);
+
+				ChartPresenter.updateChartStructures();
+				ProductSetup.updateProductStructures();
+				CreateGridModule.updateStructureBox();
 				saveGrid_Btn.setEnabled(false);
 			}
 		});
