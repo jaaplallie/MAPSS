@@ -13,16 +13,16 @@
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="false" key="wholeword"/>
-		<item value="" key="selection"/>
+		<item value="build" key="selection"/>
 		<list key="findhistory">
+			<item value="build"/>
+			<item value="save"/>
 			<item value=" deleted"/>
 			<item value="deleted"/>
 			<item value="additional values"/>
 			<item value="createscenario"/>
 			<item value="create"/>
 			<item value="custom"/>
-			<item value="Agent"/>
-			<item value="agent"/>
 		</list>
 		<list key="replacehistory">
 			<item value="Equiplet"/>

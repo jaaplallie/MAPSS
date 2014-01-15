@@ -1,0 +1,89 @@
+package GraphicalGridBuilder;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+
+import GraphicalGridBuilder.gridTypes.SuperType_Obj;
+
+public class ObjField_Container{
+
+	JButton returnButton;
+	SuperType_Obj[] typePossibilities = new SuperType_Obj[0];
+	int currentlyDisplayedTypePossibility = 0;
+	
+	public ObjField_Container(SuperType_Obj[] possibilities){
+		typePossibilities = possibilities;
+		returnButton = new JButton("");
+		returnButton.setIcon(typePossibilities[currentlyDisplayedTypePossibility].getImageIcon());
+		returnButton.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				if(currentlyDisplayedTypePossibility == (typePossibilities.length-1)){
+					currentlyDisplayedTypePossibility = 0;
+				}
+				else{
+					currentlyDisplayedTypePossibility++;
+				}
+				returnButton.setIcon(typePossibilities[currentlyDisplayedTypePossibility].getImageIcon());
+			}	
+		});
+//		if(targetPossibilities.length == 1){
+//			returnButton.setEnabled(false);
+//		}
+	}
+	
+	public JButton getButton(){
+		return returnButton;
+	}
+	
+	public SuperType_Obj getInputObject(){
+		return typePossibilities[currentlyDisplayedTypePossibility];
+	}
+	
+	public void setToEmptySelection(){
+		currentlyDisplayedTypePossibility =  typePossibilities.length-1;
+		updateButton();
+	}
+	
+	public void setToDefaultSelection(){
+		currentlyDisplayedTypePossibility =  0;
+		updateButton();
+	}
+	
+	public String getPossibilitiesString(){
+		String returnVal = "";
+		
+		for(int i = 0; i < typePossibilities.length; i++){
+			returnVal += typePossibilities[i].getTextualIcon();
+			if(typePossibilities.length > 1 && i != typePossibilities.length){
+				returnVal += ",";
+			}
+		}
+		
+		return returnVal;
+	}
+	
+//	public boolean checkConnected(String direction, GraphicalGridTarget changedSubject) {
+//		Boolean returnVal = false;
+//		String subjectCallsFromDirection = "";
+//		switch(direction){
+//			case "N": subjectCallsFromDirection = "S"; break;
+//			case "W": subjectCallsFromDirection = "E"; break;
+//			case "E": subjectCallsFromDirection = "W"; break;
+//			case "S": subjectCallsFromDirection = "N"; break;
+//			case "NW": subjectCallsFromDirection = "SE"; break;
+//			case "NE": subjectCallsFromDirection = "SW"; break;
+//			case "SW": subjectCallsFromDirection = "NE"; break;
+//			case "SE": subjectCallsFromDirection = "NW"; break;
+//		}
+//		returnVal = targetPossibilities[currentlyDisplayedPossibility].checkConnected(subjectCallsFromDirection, changedSubject.getInputObject());
+//		return returnVal;
+//	}
+	
+	protected void updateButton(){
+//		targetPossibilities[currentlyDisplayedPossibility].verifyIcon();
+		returnButton.setIcon(typePossibilities[currentlyDisplayedTypePossibility].getImageIcon());
+	}
+}

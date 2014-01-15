@@ -1,0 +1,112 @@
+package GraphicalGridBuilder.gridTypes;
+
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+
+import javax.swing.ImageIcon;
+
+public abstract class Super_Obj {
+	
+	String textualIcon = " ";
+	ImageIcon imageIcon = new ImageIcon();
+	String textualInputRepresentation = "";
+	String transportFlow = "Not Implemented or Overridden.";
+	
+	
+	public Super_Obj(){
+	}
+
+	public String getTextualIcon() {
+		return textualIcon;
+	}
+
+	public void setTextualIcon(String textualIcon) {
+		this.textualIcon = textualIcon;
+	}
+	
+	public ImageIcon getImageIcon() {
+		return imageIcon;
+	}
+
+	public void setImageIcon(String imageIcon) {
+		this.imageIcon = new ImageIcon(imageIcon);
+	}
+	
+	public void setImageIcon(ImageIcon imageIcon) {
+		this.imageIcon = imageIcon;
+	}
+	
+	protected void setTextualInputRepresentation(String tir){
+		textualInputRepresentation = tir;
+	}
+	
+	public String getTextualInputRepresentation(){
+		return textualInputRepresentation;
+	}
+	
+	public String getTransportFlow(){
+		return transportFlow;
+	}	
+	
+	public ImageIcon rotateIcon(ImageIcon icon, int rotation) {
+		double angle = 0;
+		
+		if(rotation == 1){
+			angle = 90;
+		}
+		if(rotation == 2){
+			angle = 180;
+		}
+		else if(rotation == 3){
+			angle = 270;
+		}
+		else{
+			return icon;
+		}
+		ImageIcon returnIcon = new ImageIcon();
+		Image image = icon.getImage();
+		//BufferedImage bi = new BufferedImage(image.getWidth(icon.getImageObserver()), image.getHeight(icon.getImageObserver()), BufferedImage.TYPE_INT_RGB);
+		BufferedImage bi = new BufferedImage(25, 25, BufferedImage.TYPE_INT_ARGB);
+		Graphics bg = bi.getGraphics();
+		bg.drawImage(image, 0, 0, null);
+		bg.dispose();
+		
+	    AffineTransform at = new AffineTransform();
+	    at.rotate(Math.toRadians(angle), bi.getWidth() / 2.0, bi.getHeight() / 2.0);
+	    at.preConcatenate(findTranslation(at, bi, angle));
+
+	    BufferedImageOp op = new AffineTransformOp(at, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+	    //op.filter(bi, null);
+	    returnIcon.setImage((Image) op.filter(bi, null));
+	    return returnIcon;
+	}
+
+	private AffineTransform findTranslation(AffineTransform at, BufferedImage bi, double angle) {
+	    Point2D p2din = null, p2dout = null;
+
+	    if (angle > 0 && angle <= 90) {
+	        p2din = new Point2D.Double(0, 0);
+	    } else if (angle < 0 && angle >= -90) {
+	        p2din = new Point2D.Double(bi.getWidth(), 0);
+	    }
+	    p2dout = at.transform(p2din, null);
+	    double ytrans = p2dout.getY();
+
+	    if (angle > 0 && angle <= 90) {
+	        p2din = new Point2D.Double(0, bi.getHeight());
+	    } else if (angle < 0 && angle >= -90) {
+	        p2din = new Point2D.Double(0, 0);
+	    }
+	    p2dout = at.transform(p2din, null);
+	    double xtrans = p2dout.getX();
+
+	    AffineTransform tat = new AffineTransform();
+	    tat.translate(-xtrans, -ytrans);
+	    return tat;
+	}
+}

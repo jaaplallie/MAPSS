@@ -92,10 +92,10 @@ public class MainWindow extends JPanel implements WindowListener, ActionListener
 		frame.add(tabbedPane, BorderLayout.CENTER);
 		frame.add(right, BorderLayout.EAST);
 		
-//		CreateGraphicalGridModule createGraphicalGridModule = new CreateGraphicalGridModule();
-//		builder.append(createGraphicalGridModule);
-		CreateGridModule createGridModule = new CreateGridModule();
-		builder.append(createGridModule);
+		CreateGraphicalGridModule createGraphicalGridModule = new CreateGraphicalGridModule();
+		builder.append(createGraphicalGridModule);
+//		CreateGridModule createGridModule = new CreateGridModule();
+//		builder.append(createGridModule);
 		builder.nextLine();
 		
 		JPanel structureSetupTab = builder.getPanel();

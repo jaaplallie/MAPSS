@@ -1,0 +1,28 @@
+package GraphicalGridBuilder.gridTypes;
+
+import javax.swing.ImageIcon;
+
+
+
+public class BackSlash_Transport extends Super_Obj {
+	
+	public BackSlash_Transport(String inputTransportFlow){
+		textualIcon = "/";
+		setImageIcon(inputTransportFlow);
+		this.transportFlow = inputTransportFlow;
+	}
+
+	@Override
+	public void setImageIcon(String inputTransportFlow) {
+		ImageIcon icon = new ImageIcon("img/grid_icons/backslash.png");
+		
+		if(inputTransportFlow.equals("")){
+			
+		}
+		else{
+			super.setImageIcon("img/grid_icons/backslash.png");
+		}
+		
+		super.setImageIcon(icon);
+	}
+}

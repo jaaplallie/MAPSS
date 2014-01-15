@@ -1,0 +1,29 @@
+package GraphicalGridBuilder.gridTypes;
+
+import javax.swing.ImageIcon;
+
+public class Vertical_Transport extends Super_Obj {
+	
+	public Vertical_Transport(String inputTransportFlow){
+		textualIcon = "|";
+		this.setImageIcon("img/grid_icons/vertical.png");		
+		this.transportFlow = inputTransportFlow;
+		
+	}
+	
+	public void init(String inputTransportFlow) {
+		ImageIcon icon = this.setImageIcon("img/grid_icons/slashFlow.png");
+		
+		if(inputTransportFlow.equals("t-b")){
+			icon = rotateIcon(icon, 3);
+		}
+		else if(inputTransportFlow.equals("b-t")){
+			icon = rotateIcon(icon, 1);
+		}
+		else{
+			icon = super.rotateIcon(this.setImageIcon("img/grid_icons/slash.png"), 1);
+		}
+		
+		this.setImageIcon(icon);
+	}
+}

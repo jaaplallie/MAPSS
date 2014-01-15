@@ -1,0 +1,23 @@
+package GraphicalGridBuilder.gridTypes;
+
+import javax.swing.ImageIcon;
+
+public class ForwardSlash_Transport extends Super_Obj {
+	
+	public ForwardSlash_Transport(String inputTransportFlow){
+		textualIcon = "\\";
+		this.setImageIcon("img/grid_icons/forwardslash.png");	
+		this.transportFlow = inputTransportFlow;
+		init();
+	}
+	
+	public void init() {
+		ImageIcon icon = this.setImageIcon("img/grid_icons/forwardslash.png");
+		
+		if(this.transportFlow.length() >= 1){
+			this.setImageIcon("img/grid_icons/forwardslash" + this.transportFlow + ".png");
+		}
+		
+		this.setImageIcon(icon);
+	}
+}

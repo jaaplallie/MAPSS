@@ -1,0 +1,12 @@
+package GraphicalGridBuilder.gridTypes;
+
+
+
+public class BackSlash_Transport extends Super_Obj {
+	
+	public BackSlash_Transport(String inputTransportFlow){
+		textualIcon = "/";
+		this.setImageIcon("img/grid_icons/backslash.png");		
+		this.transportFlow = inputTransportFlow;
+	}
+}

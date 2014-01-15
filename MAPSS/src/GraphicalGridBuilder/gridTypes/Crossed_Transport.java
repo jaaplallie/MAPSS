@@ -3,20 +3,14 @@ package GraphicalGridBuilder.gridTypes;
 
 public class Crossed_Transport extends Super_Obj {
 	
-	public Crossed_Transport(){
+	public Crossed_Transport(String inputTransportFlow){
 		textualIcon = "X";
-		this.setImageIcon("img/grid_icons/crossedslash.png");
-		this.NDC = false;
-		this.NEDC = false;
-		this.EDC = false;
-		this.SEDC = false;
-		this.SDC = false;
-		this.SWDC = false;
-		this.WDC = false;
-		this.NWDC = false;
+		this.setImageIcon("img/grid_icons/crossedslash.png");		
+		this.transportFlow = inputTransportFlow;
+		init();
 	}
 	
-	public Crossed_Transport(String s){
+	public Crossed_Transport(String s, String inputTransportFlow){
 		if(s.equals("+")){
 			textualIcon = "+";
 			this.setImageIcon("img/grid_icons/crossedplus.png");
@@ -24,140 +18,17 @@ public class Crossed_Transport extends Super_Obj {
 		else{
 			textualIcon = "X";
 			this.setImageIcon("img/grid_icons/crossedslash.png");
-		}
-		this.NDC = false;
-		this.NEDC = false;
-		this.EDC = false;
-		this.SEDC = false;
-		this.SDC = false;
-		this.SWDC = false;
-		this.WDC = false;
-		this.NWDC = false;
+		}		
+		this.transportFlow = inputTransportFlow;
+		init();
 	}
 	
-//	@Override
-//	public boolean checkConnected(String callFromDirection, GraphicalGridObject changedSubject) {
-//		Boolean returnVal = false;
-//		if(
-//			(callFromDirection.equals("NE") || callFromDirection.equals("SW")) && (
-//				(changedSubject instanceof GraphicalGridCrossedTransport && (changedSubject.getTextualIcon().equals("X") || changedSubject.getTextualIcon().equals("x")))||
-//				(changedSubject instanceof GraphicalGridBackSlashTransport)||
-//				(changedSubject instanceof GraphicalGridEquiplet)
-//			)	
-//		){
-//			returnVal = true;
-//			if(callFromDirection.equals("NE")){
-//				NEDC = false;
-//			}
-//			else if(callFromDirection.equals("SW")){
-//				SWDC = false;
-//			}
-//		}
-//		else if(
-//				(callFromDirection.equals("NW") || callFromDirection.equals("SE")) && (
-//					(changedSubject instanceof GraphicalGridCrossedTransport && (changedSubject.getTextualIcon().equals("X") || changedSubject.getTextualIcon().equals("x")))||
-//					(changedSubject instanceof GraphicalGridForwardSlashTransport)||
-//					(changedSubject instanceof GraphicalGridEquiplet)
-//				)
-//			){
-//			returnVal = true;
-//			if(callFromDirection.equals("NW")){
-//				NWDC = false;
-//			}
-//			else if(callFromDirection.equals("SE")){
-//				SEDC = false;
-//			}
-//		}
-//		else{
-//			returnVal = false;
-//			if(callFromDirection.equals("N")){
-//				NDC = true;
-//			}
-//			else if(callFromDirection.equals("E")){
-//				EDC = true;
-//			}
-//			else if(callFromDirection.equals("S")){
-//				SDC = true;
-//			}
-//			else if(callFromDirection.equals("W")){
-//				WDC = true;
-//			}
-//			else if(callFromDirection.equals("NW")){
-//				NWDC = true;
-//			}
-//			else if(callFromDirection.equals("SW")){
-//				SWDC = true;
-//			}
-//			else if(callFromDirection.equals("NE")){
-//				NEDC = true;
-//			}
-//			else if(callFromDirection.equals("SE")){
-//				SEDC = true;
-//			}
-//		}		
-//		return returnVal;
-//	}
-	
-//	@Override
-//	protected void verifyIcon() {
-//		ImageIcon tmpImageIcon = this.getImageIcon();
-//		textualIcon = "X";
-//		if(textualIcon.equals("+")){
-//			//not implemented yet
-//		}
-//		else{
-//			if(NWDC && !NEDC && !SWDC && !SEDC){
-//				tmpImageIcon = new ImageIcon("img/grid_icons/crossedslashNWNC.png");
-//			}
-//			else if(!NWDC && NEDC && !SWDC && !SEDC){
-//				tmpImageIcon = this.rotateIcon(new ImageIcon("img/grid_icons/crossedslashNWNC.png"), 90);
-//			}
-//			else if(!NWDC && !NEDC && SWDC && !SEDC){
-//				tmpImageIcon = this.rotateIcon(new ImageIcon("img/grid_icons/forwardslashNWNC.png"), -90);
-//			}
-//			else if(!NWDC && !NEDC && !SWDC && SEDC){
-//				tmpImageIcon = this.rotateIcon(new ImageIcon("img/grid_icons/forwardslashNWNC.png"), 90);
-//				tmpImageIcon = this.rotateIcon(tmpImageIcon, 90);
-//			}//--
-//			else if(NWDC && NEDC && !SWDC && !SEDC){
-//				tmpImageIcon = this.rotateIcon(new ImageIcon("img/grid_icons/crossedslashNWSWNC.png"), 90);
-//			}
-//			else if(!NWDC && NEDC && SWDC && !SEDC){
-//				tmpImageIcon = new ImageIcon("img/grid_icons/crossedslashNESWNC.png");
-//			}
-//			else if(!NWDC && !NEDC && SWDC && SEDC){
-//				tmpImageIcon = this.rotateIcon(new ImageIcon("img/grid_icons/crossedslashNWSWNC.png"), -90);
-//			}
-//			else if(NWDC && !NEDC && !SWDC && SEDC){
-//				tmpImageIcon = this.rotateIcon(new ImageIcon("img/grid_icons/crossedslashNESWNC.png"), 90);
-//			}
-//			else if(NWDC && !NEDC && SWDC && !SEDC){
-//				tmpImageIcon = new ImageIcon("img/grid_icons/crossedslashNWSWNC.png");
-//			}
-//			else if(!NWDC && NEDC && !SWDC && SEDC){
-//				tmpImageIcon = this.rotateIcon(new ImageIcon("img/grid_icons/crossedslashNWSWNC.png"), 90);
-//				tmpImageIcon = this.rotateIcon(tmpImageIcon, 90);
-//			}//--
-//			else if(NWDC && NEDC && SWDC && !SEDC){
-//				tmpImageIcon = this.rotateIcon(new ImageIcon("img/grid_icons/crossedslash3NC.png"), -90);
-//			}
-//			else if(!NWDC && NEDC && SWDC && SEDC){
-//				tmpImageIcon = this.rotateIcon(new ImageIcon("img/grid_icons/crossedslash3NC.png"), 90);;
-//			}
-//			else if(NWDC && !NEDC && SWDC && SEDC){
-//				tmpImageIcon = this.rotateIcon(new ImageIcon("img/grid_icons/crossedslash3NC.png"), 90);
-//				tmpImageIcon = this.rotateIcon(tmpImageIcon, 90);
-//			}
-//			else if(NWDC && NEDC && !SWDC && SEDC){
-//				tmpImageIcon = new ImageIcon("img/grid_icons/crossedslash3NC.png");
-//			}
-//			else if(NWDC && NEDC && SWDC && SEDC){
-//				tmpImageIcon = new ImageIcon("img/grid_icons/crossedslashNC.png");
-//			}
-//			else{
-//				tmpImageIcon = new ImageIcon("img/grid_icons/crossedslash.png");
-//			}
-//		}
-//		this.setImageIcon(tmpImageIcon);
-//	}
+	public void init() {
+		this.setImageIcon("img/grid_icons/crossedslash.png");
+		
+		if(!this.transportFlow.equals("")){
+			System.out.println("img/grid_icons/crossedslash" + this.transportFlow + ".png");
+			this.setImageIcon("img/grid_icons/crossedslash" + this.transportFlow + ".png");
+		}
+	}
 }

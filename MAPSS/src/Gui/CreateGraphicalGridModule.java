@@ -16,6 +16,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
 
@@ -44,8 +45,7 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 	private GraphicalGrid currentGraphicalGridInEditor_New, currentGraphicalGridInEditor_Edit;
 	
 	private JTextField grid_string = new JTextField("1-2,0-3,0-3,1-2");
-	private JButton buildCustomGrid_Btn = new JButton("Build Custom Grid");
-	
+	private JButton buildCustomGrid_Btn = new JButton("Build Custom Structure");
 	
 	/**
 	 * Create the panel.
@@ -126,17 +126,17 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 		builder.append(new JLabel("Size y-axis :"), input_ySize_New);
 		builder.nextLine();
 		builder.append(Box.createRigidArea(new Dimension(10,0)));
-		buildGraphicalGridNew_Btn = new JButton("Build GraphicalGrid");
+		buildGraphicalGridNew_Btn = new JButton("Build Structure");
 		buildGraphicalGridNew_Btn.addActionListener(this);
 		builder.append(buildGraphicalGridNew_Btn);
 		builder.nextLine();
 		
-		builder.appendSeparator("Custom grid format");
+		builder.appendSeparator("Custom grid structure format");
+		
 		builder.append(new JLabel("Input string:"), grid_string);
 		buildCustomGrid_Btn.addActionListener(this);
         builder.append(buildCustomGrid_Btn);
         builder.nextLine();
-        
 		editorPanel.add(builder.getPanel(), "n");
 		builder = new ProgramData().getNewBuilder();
 		
@@ -173,7 +173,7 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 		builder.append(new JLabel("Size y-axis :"), input_ySize_Edit, change_ySize_btn);
 		builder.nextLine();
 		builder.append(Box.createRigidArea(new Dimension(10,0)));
-		buildGraphicalGridEdit_Btn = new JButton("Build GraphicalGrid");
+		buildGraphicalGridEdit_Btn = new JButton("ReBuild Structure");
 		buildGraphicalGridEdit_Btn.addActionListener(this);
 		builder.append(buildGraphicalGridEdit_Btn);
         

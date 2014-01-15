@@ -1,0 +1,29 @@
+package GraphicalGridBuilder.gridTypes;
+
+import javax.swing.ImageIcon;
+
+public class Horizontal_Transport extends SuperType_Obj {
+	
+	public Horizontal_Transport(String inputTransportFlow){
+		textualIcon = "-";
+		this.setImageIcon("img/grid_icons/horizontal.png");
+		this.transportFlow = inputTransportFlow;
+	}
+	
+	@Override
+	public void setImageIcon(String inputTransportFlow) {
+		ImageIcon icon = new ImageIcon("img/grid_icons/backslashFlow.png");
+		
+		if(inputTransportFlow.equals("t-b")){
+			icon = super.rotateIcon(icon, 1);
+		}
+		else if(inputTransportFlow.equals("b-t")){
+			icon = super.rotateIcon(icon, 1);
+		}
+		else{
+			icon = new ImageIcon("img/grid_icons/backslash.png");
+		}
+		
+		super.setImageIcon(icon);
+	}
+}

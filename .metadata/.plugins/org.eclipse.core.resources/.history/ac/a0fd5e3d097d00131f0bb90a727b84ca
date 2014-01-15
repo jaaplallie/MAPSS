@@ -1,0 +1,20 @@
+package GraphicalGridBuilder.gridTypes;
+
+
+public class Horizontal_Transport extends Super_Obj {
+	
+	public Horizontal_Transport(String inputTransportFlow){
+		textualIcon = "-";
+		this.setImageIcon("img/grid_icons/horizontal.png");
+		this.NDC = false;
+		this.NEDC = false;
+		this.EDC = false;
+		this.SEDC = false;
+		this.SDC = false;
+		this.SWDC = false;
+		this.WDC = false;
+		this.NWDC = false;
+		
+		this.transportFlow = inputTransportFlow;
+	}
+}

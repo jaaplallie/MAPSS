@@ -1,0 +1,181 @@
+package Gui;
+
+import jade.wrapper.StaleProxyException;
+
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
+
+import org.jfree.chart.JFreeChart;
+import org.jfree.data.category.DefaultCategoryDataset;
+
+import Backend.AgentEnvironmentCreator;
+import Backend.ChartCreator;
+import Backend.ProgramData;
+
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+
+
+public class MainWindow extends JPanel implements WindowListener, ActionListener{
+	static ChartPresenter chartpres;
+	public JFrame frame;
+	private DefaultFormBuilder builder = new ProgramData().getNewBuilder();
+	//public ScenarioImportExportWindow scenarioImportExportWindow;
+	JSplitPane splitPane = new JSplitPane();
+
+	private static String output = "**************************Output**************************";
+	private static JPanel textPanel = new JPanel();
+	private static JLabel text = new JLabel(output);
+	private JButton clear = new JButton("clear");
+	
+	
+	public MainWindow() {
+		//scenarioImportExportWindow = new ScenarioImportExportWindow();
+		initialize();
+	}
+
+	private void initialize() {
+
+		frame = new JFrame();
+
+		ArrayList<BufferedImage> iconList = new ArrayList<BufferedImage>();
+		try {
+			iconList.add(ImageIO.read(new File("img/MapssIcon16x16.png")));
+			iconList.add(ImageIO.read(new File("img/MapssIcon32x32.png")));
+			iconList.add(ImageIO.read(new File("img/MapssIcon64x64.png")));
+			iconList.add(ImageIO.read(new File("img/MapssIcon128x128.png")));
+		} catch (IOException e2) {
+			e2.printStackTrace();
+		}
+		frame.setIconImages(iconList);
+		frame.setBounds(100, 100, 1400, 565);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.addWindowListener(this);
+		frame.setTitle("MAPSS - Multi Agent Production System Simulator - " + ProgramData.getSoftwareVersion());
+		
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		frame.getContentPane().add(tabbedPane);
+        
+		tabbedPane.setSize(1150, 565);
+        //textPanel.setMinimumSize(new Dimension(200, 500));
+		
+		textPanel.add(text);
+		textPanel.setBackground(Color.lightGray);
+		
+		JSplitPane right = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+				textPanel, clear);
+		//clear.setMaximumSize(new Dimension(200, 100));
+		clear.addActionListener(this);
+		
+		right.setResizeWeight(0.9);
+		
+		frame.add(tabbedPane, BorderLayout.CENTER);
+		frame.add(right, BorderLayout.EAST);
+		
+//		CreateGraphicalGridModule createGraphicalGridModule = new CreateGraphicalGridModule();
+//		builder.append(createGraphicalGridModule);
+		CreateGridModule createGridModule = new CreateGridModule();
+		builder.append(createGridModule);
+		builder.nextLine();
+		
+		JPanel structureSetupTab = builder.getPanel();
+		builder = new ProgramData().getNewBuilder();
+		tabbedPane.addTab("Structure Setup", null, structureSetupTab, null);
+		
+		ProductSetup simulationModule = new ProductSetup();
+		builder.append(simulationModule);
+		
+		JPanel simulationTab = builder.getPanel();
+		builder = new ProgramData().getNewBuilder();
+		tabbedPane.addTab("Product Setup", null, simulationTab, null);
+
+		chartpres = new ChartPresenter();
+		builder.append(chartpres);
+		builder.nextLine();
+		JPanel lastResultsTab = builder.getPanel();
+		builder = new ProgramData().getNewBuilder();
+		tabbedPane.addTab("Simulation and Results", null, lastResultsTab, null);
+		
+		ReadData readdata = new ReadData();
+		builder.append(readdata);
+		builder.nextLine();
+		JPanel dataTab = builder.getPanel();
+		
+		
+
+		builder = new ProgramData().getNewBuilder();
+		tabbedPane.addTab("(Undocumented & still in progress) Check Data", null, dataTab, null);
+		
+
+	}
+	
+	
+	public static void stringToOutput(String s){
+		output += "<br>"+s;
+		text.setText("<html>"+output+"</html>");
+		textPanel.repaint();
+	}
+	
+	public static void resetOutput(){
+		output = "**************************Output**************************";
+		text.setText(output);
+		textPanel.repaint();
+	}
+	
+	
+	public static ChartPresenter getChart(){
+		return chartpres;
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+		resetOutput();
+		
+	}
+	
+	
+	@Override
+	public void windowActivated(WindowEvent e) {
+	}
+	@Override
+	public void windowClosed(WindowEvent e) {
+		System.out.println("Main Window Closed.");
+	}
+	@Override
+	public void windowClosing(WindowEvent e) {
+		System.out.println("Main Window Closing...");
+	}
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+	}
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+	}
+	@Override
+	public void windowIconified(WindowEvent e) {
+	}
+	@Override
+	public void windowOpened(WindowEvent e) {
+	}
+
+
+}

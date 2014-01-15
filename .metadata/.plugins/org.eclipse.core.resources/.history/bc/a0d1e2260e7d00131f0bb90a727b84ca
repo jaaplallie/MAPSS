@@ -1,0 +1,38 @@
+package GraphicalGridBuilder.gridTypes;
+
+import javax.swing.ImageIcon;
+
+public class Crossed_Transport extends Super_Obj {
+	
+	public Crossed_Transport(String inputTransportFlow){
+		textualIcon = "X";
+		this.setImageIcon("img/grid_icons/crossedslash.png");		
+		this.transportFlow = inputTransportFlow;
+	}
+	
+	public Crossed_Transport(String s, String inputTransportFlow){
+		if(s.equals("+")){
+			textualIcon = "+";
+			this.setImageIcon("img/grid_icons/crossedplus.png");
+		}
+		else{
+			textualIcon = "X";
+			this.setImageIcon("img/grid_icons/crossedslash.png");
+		}		
+		this.transportFlow = inputTransportFlow;
+	}
+	
+	@Override
+	public void setImageIcon(String inputTransportFlow) {
+		ImageIcon icon = new ImageIcon("img/grid_icons/backslash.png");
+		
+		if(inputTransportFlow.equals("")){
+			
+		}
+		else{
+			super.setImageIcon("img/grid_icons/backslash.png");
+		}
+		
+		super.setImageIcon(icon);
+	}
+}
