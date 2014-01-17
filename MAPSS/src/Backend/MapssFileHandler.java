@@ -353,7 +353,11 @@ public class MapssFileHandler {
 			    			int[] steps = new int[temp.length];
 			    			
 			    			for (int i = 0; i < temp.length; i++) {
+			    				try {
 			    				steps[i]= Integer.parseInt(temp[i]);
+			    				}
+			    				catch(NumberFormatException e){
+			    				}
 			    			}
 			    			
 			    			product_list.add(steps);
@@ -382,8 +386,8 @@ public class MapssFileHandler {
 	    	}
 		}
 		CreateGridModule.updateStructureBox();
-		ProductSetup.updateProductStructures();
-		ChartPresenter.updateChartStructures();
-		ReadData.updateProductStructures();
+		ProductSetup.updateStructureBox();
+		ChartPresenter.updateStructureBox();
+		ReadData.updateStructureBox();
 	}
 }

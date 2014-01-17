@@ -95,7 +95,7 @@ public class ReadData extends JPanel implements ActionListener {
 	}
 	
 	
-	public static void updateProductStructures(){
+	public static void updateStructureBox(){
 		structureBox.removeAllItems();
 		for (String name: ProgramData.getScenarioNames()){
 			structureBox.addItem(name);

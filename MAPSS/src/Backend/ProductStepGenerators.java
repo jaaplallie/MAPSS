@@ -82,7 +82,7 @@ public class ProductStepGenerators {
 		System.out.println(type + " products created for " + structure_name);
 		MainWindow.stringToOutput(type + " products created for " + structure_name);
 		//MapssFileReader.loadStructures();
-		ChartPresenter.updateChartStructures();
+		ChartPresenter.updateStructureBox();
 	}
 	
 	public static int[] generateRandomSteps(int nps, int gridsteps, ArrayList<Integer> forbidden_list){

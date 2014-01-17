@@ -21,6 +21,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 
 import Backend.Grid;
+import Backend.MapssFileHandler;
 import Backend.ProgramData;
 import Backend.Scenario;
 import GraphicalGridBuilder.GraphicalGrid;
@@ -36,7 +37,7 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 	JPanel editorPanel_NewCard,editorPanel_EditCard;
 	CardLayout cards;
 	JPanel graphicalGridPanel = new JPanel();
-	static JComboBox<String> graphicalGridComboBox = new JComboBox<String>();
+	static JComboBox<String> graphicalGridComboBox = new JComboBox<String>(ProgramData.getScenarioNames());
 	private JButton newGraphicalGrid_btn, editGraphicalGrid_btn, removeGraphicalGrid_btn, saveGrid_btn, refreshDropDown_btn;
 	private JTextField input_gridName_New, input_gridName_Edit;
 	private JSpinner input_xSize_New, input_ySize_New, input_xSize_Edit, input_ySize_Edit;
@@ -53,7 +54,6 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 	public CreateGraphicalGridModule() {
 		builder = new ProgramData().getNewBuilder();
 		setLayout(new BorderLayout(0, 0));
-		this.updateStructureBox();
 		
 		newGraphicalGrid_btn = new JButton("New");
 		ImageIcon addIcon = new ImageIcon("img/icons/add.png");
@@ -93,6 +93,7 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 		optionsPanel.add(Box.createRigidArea(new Dimension(10,0)));
 		optionsPanel.add(saveGrid_btn);
 		optionsPanel.add(Box.createRigidArea(new Dimension(10,0)));
+		updateStructureBox();
 		optionsPanel.add(graphicalGridComboBox);
 		optionsPanel.add(Box.createRigidArea(new Dimension(10,0)));
 		optionsPanel.add(refreshDropDown_btn);
@@ -108,7 +109,7 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 		add(graphicalGridPanel, BorderLayout.SOUTH);
 	}
 	
-	public JPanel createEditorPanel(){
+	private JPanel createEditorPanel(){
 		builder = new ProgramData().getNewBuilder();
 		
 		cards = new CardLayout();
@@ -183,7 +184,7 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 		return editorPanel;
 	}
 	
-	public void switchComponentEnabledStateOnButtonClick(JButton clickedButton, Component c){
+	private void switchComponentEnabledStateOnButtonClick(JButton clickedButton, Component c){
 		if(c.isEnabled()){
 			c.setEnabled(false);
 			clickedButton.setIcon(new ImageIcon("img/icons/pencil.png"));		}
@@ -225,8 +226,9 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 		else if(source == removeGraphicalGrid_btn){
 			Scenario S = ProgramData.getScenario((String)graphicalGridComboBox.getSelectedItem());
 			ProgramData.removeScenario(S);
-//			ProgramData.tmpGraphicalGridModel.remove(graphicalGridComboBox.getSelectedIndex());
-//			ProgramData.savedGraphicalGridModel.remove(graphicalGridComboBox.getSelectedIndex());
+			ChartPresenter.updateStructureBox();
+			ProductSetup.updateStructureBox();
+			ReadData.updateStructureBox();
 			updateStructureBox();
 		}
 		else if(source == saveGrid_btn){
@@ -238,6 +240,9 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 			}
 		}
 		else if(source == refreshDropDown_btn){
+			ChartPresenter.updateStructureBox();
+			ProductSetup.updateStructureBox();
+			ReadData.updateStructureBox();
 			updateStructureBox();
 		}
 		else {
@@ -312,8 +317,9 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 						String relation_list = grid_string.getText();
 						Grid.createCustom(x_size, y_size, name, relation_list);
 
-						ChartPresenter.updateChartStructures();
-						ProductSetup.updateProductStructures();
+						ChartPresenter.updateStructureBox();
+						ProductSetup.updateStructureBox();
+						ReadData.updateStructureBox();
 						updateStructureBox();
 					}
 					else{
@@ -327,8 +333,9 @@ public class CreateGraphicalGridModule extends JPanel implements ActionListener 
 												
 						name += "("+x_size+"x"+y_size+")";
 						Grid.createStructure(x_size, y_size, name);
-						ChartPresenter.updateChartStructures();
-						ProductSetup.updateProductStructures();
+						ChartPresenter.updateStructureBox();
+						ProductSetup.updateStructureBox();
+						ReadData.updateStructureBox();
 						updateStructureBox();
 					}
 					

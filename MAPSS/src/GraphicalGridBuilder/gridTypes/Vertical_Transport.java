@@ -1,7 +1,7 @@
 package GraphicalGridBuilder.gridTypes;
 
 
-public class Vertical_Transport extends Super_Obj {
+public class Vertical_Transport extends SuperType_Obj {
 	
 	public Vertical_Transport(String inputTransportFlow){
 		textualIcon = "|";

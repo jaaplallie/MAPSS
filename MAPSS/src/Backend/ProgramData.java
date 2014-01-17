@@ -28,6 +28,7 @@ public class ProgramData {
 
 	public void onProgramStart(){ //only call on program start (main.java)
 		System.out.println("Initialised ProgramData.");
+		MapssFileHandler.loadScenarios();
 	}
 
 	public static DefaultListModel<Scenario> getScenarioListModel() {

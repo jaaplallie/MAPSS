@@ -1,0 +1,193 @@
+package Gui;
+
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.JSplitPane;
+import javax.swing.JTextField;
+
+import Backend.Grid;
+import Backend.ProgramData;
+import Backend.Scenario;
+import GraphicalGridBuilder.GraphicalGrid;
+
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+
+public class CreateGridModule extends JPanel implements ActionListener{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8789955424265486379L;
+	//
+	
+	JSplitPane splitPane = new JSplitPane();
+	
+	DefaultFormBuilder builder = new ProgramData().getNewBuilder();
+	private JSpinner input_xSize = new JSpinner();
+	private JSpinner input_ySize = new JSpinner();
+	private JTextField name_field = new JTextField();
+	private JButton buildGrid_Btn = new JButton("Build structure");
+	private JPanel previewPanel = new JPanel();
+	private JPanel gridSizePanel = new JPanel();
+	
+	private JPanel textPanel = new JPanel();
+	private JLabel text = new JLabel("******************Output******************");
+	
+	private JTextField grid_string = new JTextField("1-2,0-3,0-3,1-2");
+	private JButton buildCustomGrid_Btn = new JButton("Build custom structure");
+	
+	static JComboBox<String> structureBox = new JComboBox<String>();
+	private JButton delete_Btn = new JButton("Delete selected scenario/structure");
+	
+	
+	public CreateGridModule() {
+		buildScreen();
+	}
+	
+	public void buildScreen(){
+
+		//add(splitPane);
+		
+		builder.appendSeparator("Standard");
+        builder.append(new JLabel("Size x-axis :"), input_xSize);
+
+		builder.nextLine();
+		builder.append(new JLabel("Size y-axis :"), input_ySize);
+		
+		builder.nextLine();
+		builder.append(new JLabel("Name :"), name_field);
+		
+		builder.append(buildGrid_Btn);
+
+		builder.nextLine();
+		builder.appendSeparator("Additions");
+		
+        builder.append(new JLabel("Input string:"), grid_string);
+        builder.append(buildCustomGrid_Btn);
+        builder.nextLine();
+     
+		
+		builder.append("Delete: ", structureBox);
+		builder.append(delete_Btn);
+		builder.nextLine();
+		
+		builder.appendSeparator("Preview");
+		builder.append(previewPanel);
+		buildGrid_Btn.addActionListener(this);
+		buildCustomGrid_Btn.addActionListener(this);
+		delete_Btn.addActionListener(this);
+		
+		gridSizePanel = builder.getPanel();
+		builder = new ProgramData().getNewBuilder();
+		add(gridSizePanel);
+		setEnabled(gridSizePanel.getComponents(), true);
+		
+	}
+	
+	
+	public static void updateStructureBox(){
+		structureBox.removeAllItems();
+		for (String name: ProgramData.getScenarioNames()){
+			structureBox.addItem(name);
+		}
+	}
+
+	public void setEnabled(Component[] components, Boolean b){
+		for(Component c : components){
+			c.setEnabled(b);
+		}
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		JButton source = (JButton)e.getSource();
+		Integer x_size = -1;
+		Integer y_size = -1;
+		
+		MainWindow.resetOutput();
+		
+		if (source == delete_Btn){
+			Scenario S = ProgramData.getScenario((String)structureBox.getSelectedItem());
+			MainWindow.stringToOutput(S.name + " deleted");
+			ProgramData.removeScenario(S);
+			updateStructureBox();
+			
+		} else {
+			try {
+				x_size = Integer.parseInt(input_xSize.getValue().toString());
+				y_size = Integer.parseInt(input_ySize.getValue().toString());
+			} catch(NumberFormatException nfe) {
+				nfe.printStackTrace();
+			}
+			
+			if(x_size <= 1 || y_size <= 1) {
+				JOptionPane.showMessageDialog(null,
+				"Error: Please enter numbers that are at least 2", "Error Message",
+				JOptionPane.ERROR_MESSAGE);
+			} else {
+				String name = name_field.getText();
+				if (name != null && name.isEmpty()){
+					name = "No_name"+x_size+"x"+y_size;
+				} 
+				
+				switch (source.getText()) {
+					
+					case "Build structure":;
+						Grid.createStructure(x_size, y_size, name);
+						ChartPresenter.updateChartStructures();
+						ProductSetup.updateProductStructures();
+						updateStructureBox();
+						
+						
+						previewPanel.removeAll();
+						GraphicalGrid graphicalGrid = new GraphicalGrid(x_size, y_size);
+						previewPanel.add(graphicalGrid.draw(), BorderLayout.CENTER);
+						previewPanel.setVisible(true);
+						invalidate();
+						validate();
+						repaint();
+						
+
+						break;
+						
+					case "Build custom structure":
+						String relation_list = grid_string.getText();
+						Grid.createCustom(x_size, y_size, name, relation_list);
+						
+						ChartPresenter.updateChartStructures();
+						ProductSetup.updateProductStructures();
+						updateStructureBox();
+						
+						previewPanel.removeAll();
+						GraphicalGrid graphicalGrid2 = new GraphicalGrid(x_size, y_size);
+						previewPanel.add(graphicalGrid2.draw(), BorderLayout.CENTER);
+						previewPanel.setVisible(true);
+						invalidate();
+						validate();
+						repaint();
+						
+						
+
+						
+						break;
+					
+					
+					default:
+						break;
+				}
+				
+				
+			}
+		}
+		
+		
+		
+	}
+}

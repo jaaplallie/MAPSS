@@ -25,6 +25,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import org.jfree.chart.JFreeChart;
 import org.jfree.data.category.DefaultCategoryDataset;
@@ -73,7 +75,21 @@ public class MainWindow extends JPanel implements WindowListener, ActionListener
 		frame.addWindowListener(this);
 		frame.setTitle("MAPSS - Multi Agent Production System Simulator - " + ProgramData.getSoftwareVersion());
 		
+		ChangeListener changeListener = new ChangeListener() {
+		      public void stateChanged(ChangeEvent changeEvent) {
+		        JTabbedPane sourceTabbedPane = (JTabbedPane) changeEvent.getSource();
+		        int index = sourceTabbedPane.getSelectedIndex();
+		        System.out.println("Tab changed to: " + sourceTabbedPane.getTitleAt(index));
+		        CreateGraphicalGridModule.updateStructureBox();
+		        ProductSetup.updateStructureBox();
+		        ChartPresenter.updateStructureBox();
+		        ReadData.updateStructureBox();
+		      }
+		    };
+		    
+		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.addChangeListener(changeListener);
 		frame.getContentPane().add(tabbedPane);
         
 		tabbedPane.setSize(1150, 565);
@@ -97,17 +113,15 @@ public class MainWindow extends JPanel implements WindowListener, ActionListener
 //		CreateGridModule createGridModule = new CreateGridModule();
 //		builder.append(createGridModule);
 		builder.nextLine();
-		
 		JPanel structureSetupTab = builder.getPanel();
 		builder = new ProgramData().getNewBuilder();
 		tabbedPane.addTab("Structure Setup", null, structureSetupTab, null);
 		
-		ProductSetup simulationModule = new ProductSetup();
-		builder.append(simulationModule);
-		
-		JPanel simulationTab = builder.getPanel();
+		ProductSetup productSetupModule = new ProductSetup();
+		builder.append(productSetupModule);
+		JPanel productSetupTab = builder.getPanel();
 		builder = new ProgramData().getNewBuilder();
-		tabbedPane.addTab("Product Setup", null, simulationTab, null);
+		tabbedPane.addTab("Product Setup", null, productSetupTab, null);
 
 		chartpres = new ChartPresenter();
 		builder.append(chartpres);

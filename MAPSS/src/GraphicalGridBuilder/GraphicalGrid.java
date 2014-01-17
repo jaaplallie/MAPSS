@@ -20,7 +20,7 @@ import GraphicalGridBuilder.gridTypes.Equiplet_Obj;
 import GraphicalGridBuilder.gridTypes.ForwardSlash_Transport;
 import GraphicalGridBuilder.gridTypes.Horizontal_Transport;
 import GraphicalGridBuilder.gridTypes.Nothing_Obj;
-import GraphicalGridBuilder.gridTypes.Super_Obj;
+import GraphicalGridBuilder.gridTypes.SuperType_Obj;
 import GraphicalGridBuilder.gridTypes.TPath_Transport;
 import GraphicalGridBuilder.gridTypes.Vertical_Transport;
 import Gui.ChartPresenter;
@@ -77,7 +77,7 @@ public class GraphicalGrid extends JFrame{
 								((targetY == (grid.length-1)) && (targetX == 0)) || 
 								((targetY == (grid.length-1)) && (targetX == (grid[targetY].length-1))) 
 						){
-							grid[targetY][targetX] = new ObjField_Container(new Super_Obj[]{new Equiplet_Obj(),new Nothing_Obj(true)});
+							grid[targetY][targetX] = new ObjField_Container(new SuperType_Obj[]{new Equiplet_Obj(),new Nothing_Obj(true)});
 						}
 						else if(
 								((targetY == 0) && (targetX != 0)) || 
@@ -87,7 +87,7 @@ public class GraphicalGrid extends JFrame{
 						){
 							if((targetY == 0 || targetY == (grid.length-1))){
 								grid[targetY][targetX] = new ObjField_Container(
-									new Super_Obj[]{
+									new SuperType_Obj[]{
 										new Equiplet_Obj(),
 										new Horizontal_Transport(""),
 										new Horizontal_Transport("l-r"),
@@ -99,7 +99,7 @@ public class GraphicalGrid extends JFrame{
 							}
 							else{
 								grid[targetY][targetX] = new ObjField_Container(
-									new Super_Obj[]{
+									new SuperType_Obj[]{
 										new Equiplet_Obj(),
 										new Vertical_Transport(""),
 										new Vertical_Transport("t-b"),
@@ -112,7 +112,7 @@ public class GraphicalGrid extends JFrame{
 						}
 						else{
 							grid[targetY][targetX] = new ObjField_Container(
-								new Super_Obj[]{
+								new SuperType_Obj[]{
 									new Equiplet_Obj(),
 									new Crossed_Transport(""),
 									new Crossed_Transport("b-t b-t"),
@@ -138,7 +138,7 @@ public class GraphicalGrid extends JFrame{
 						//xeven = true & yeven = false
 						if((targetX == 0) || (targetX == (grid[targetY].length-1))){
 							grid[targetY][targetX] = new ObjField_Container(
-								new Super_Obj[]{
+								new SuperType_Obj[]{
 									new Vertical_Transport(""),
 									new Vertical_Transport("t-b"),
 									new Vertical_Transport("b-t"),
@@ -149,7 +149,7 @@ public class GraphicalGrid extends JFrame{
 						}
 						else{
 							grid[targetY][targetX] = new ObjField_Container(
-								new Super_Obj[]{
+								new SuperType_Obj[]{
 									new Vertical_Transport(""),
 									new Vertical_Transport("t-b"),
 									new Vertical_Transport("b-t"),
@@ -164,7 +164,7 @@ public class GraphicalGrid extends JFrame{
 						//xeven = false & yeven = true
 						if((targetY == 0) || (targetY == (grid.length-1))){
 							grid[targetY][targetX] = new ObjField_Container(
-								new Super_Obj[]{
+								new SuperType_Obj[]{
 									new Horizontal_Transport(""),
 									new Horizontal_Transport("l-r"),
 									new Horizontal_Transport("r-l"),
@@ -175,7 +175,7 @@ public class GraphicalGrid extends JFrame{
 						}
 						else{
 							grid[targetY][targetX] = new ObjField_Container(
-								new Super_Obj[]{
+								new SuperType_Obj[]{
 									new Horizontal_Transport(""),
 									new Horizontal_Transport("l-r"),
 									new Horizontal_Transport("r-l"),
@@ -200,7 +200,7 @@ public class GraphicalGrid extends JFrame{
 					else{
 						//xeven = false & yeven = false
 						grid[targetY][targetX] = new ObjField_Container(
-							new Super_Obj[]{
+							new SuperType_Obj[]{
 								new Crossed_Transport(""),
 								new Crossed_Transport("b-t b-t"),
 								new Crossed_Transport("b-t t-b b-t"),
@@ -270,8 +270,8 @@ public class GraphicalGrid extends JFrame{
 				Grid.createCustom(S.x, S.y, S.name, relation_list);
 				ProgramData.removeScenario(S);
 
-				ChartPresenter.updateChartStructures();
-				ProductSetup.updateProductStructures();
+				ChartPresenter.updateStructureBox();
+				ProductSetup.updateStructureBox();
 				CreateGridModule.updateStructureBox();
 				saveGrid_Btn.setEnabled(false);
 			}
@@ -333,7 +333,7 @@ public class GraphicalGrid extends JFrame{
 		
 		for(int targetY = 0; targetY < grid.length; targetY++){
 			for(int targetX = 0; targetX < grid[targetY].length; targetX++){
-				Super_Obj currentObj = grid[targetY][targetX].getInputObject();
+				SuperType_Obj currentObj = grid[targetY][targetX].getInputObject();
 				if (currentObj instanceof Nothing_Obj) {
 					if(((Nothing_Obj) currentObj).canBeEquiplet()){
 						equiplets.add((Equiplet_Obj)currentObj);
@@ -355,7 +355,7 @@ public class GraphicalGrid extends JFrame{
 		
 		for(int targetY = 0; targetY < grid.length; targetY++){
 			for(int targetX = 0; targetX < grid[targetY].length; targetX++){
-				Super_Obj currentObj = grid[targetY][targetX].getInputObject();
+				SuperType_Obj currentObj = grid[targetY][targetX].getInputObject();
 				if (currentObj instanceof Nothing_Obj) {
 					System.out.println("TARGETX=[" + targetX + "] TARGETY=[" + targetY + "]");
 					System.out.println("Nothing Object detected!");
@@ -547,7 +547,7 @@ public class GraphicalGrid extends JFrame{
 		for(int targetY = 0; targetY < grid.length; targetY++){
 			lineBuilder = new StringBuilder();
 			for(int targetX = 0; targetX < grid[targetY].length; targetX++){
-				Super_Obj currentObj = grid[targetY][targetX].getInputObject();
+				SuperType_Obj currentObj = grid[targetY][targetX].getInputObject();
 				lineBuilder.append(currentObj.getTextualInputRepresentation());
 			}
 			textualGrid[targetY] = lineBuilder.toString();
