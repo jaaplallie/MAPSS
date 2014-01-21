@@ -1,0 +1,361 @@
+package Gui;
+
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.JSpinner;
+import javax.swing.JTextField;
+
+import Backend.Grid;
+import Backend.MapssFileHandler;
+import Backend.ProgramData;
+import Backend.Scenario;
+import GraphicalGridBuilder.GraphicalGrid;
+
+import com.jgoodies.forms.builder.DefaultFormBuilder;
+
+public class CreateGraphicalGridModule extends JPanel implements ActionListener {
+
+	private static final long serialVersionUID = 1325339968009748727L;
+	DefaultFormBuilder builder;
+	JPanel optionsPanel = new JPanel();
+	JPanel editorPanel = new JPanel();
+	JPanel editorPanel_NewCard,editorPanel_EditCard;
+	CardLayout cards;
+	JPanel graphicalGridPanel = new JPanel();
+	static JComboBox<String> graphicalGridComboBox = new JComboBox<String>(ProgramData.getScenarioNames());
+	private JButton newGraphicalGrid_btn, editGraphicalGrid_btn, removeGraphicalGrid_btn, saveGrid_btn, refreshDropDown_btn;
+	private JTextField input_gridName_New, input_gridName_Edit;
+	private JSpinner input_xSize_New, input_ySize_New, input_xSize_Edit, input_ySize_Edit;
+	private JButton change_gridName_btn, change_xSize_btn, change_ySize_btn;
+	private JButton buildGraphicalGridNew_Btn, buildGraphicalGridEdit_Btn;
+	private GraphicalGrid currentGraphicalGridInEditor_New, currentGraphicalGridInEditor_Edit;
+	
+	private JTextField grid_string = new JTextField("1-2,0-3,0-3,1-2");
+	private JButton buildCustomGrid_Btn = new JButton("Build Custom Structure");
+	
+	/**
+	 * Create the panel.
+	 */
+	public CreateGraphicalGridModule() {
+		builder = new ProgramData().getNewBuilder();
+		setLayout(new BorderLayout(0, 0));
+		
+		newGraphicalGrid_btn = new JButton("New");
+		ImageIcon addIcon = new ImageIcon("img/icons/add.png");
+		newGraphicalGrid_btn.setIcon(addIcon);
+		newGraphicalGrid_btn.setBorder(BorderFactory.createEmptyBorder());
+		newGraphicalGrid_btn.setContentAreaFilled(false);
+		newGraphicalGrid_btn.addActionListener(this);
+		editGraphicalGrid_btn = new JButton("Edit");
+		ImageIcon editIcon = new ImageIcon("img/icons/pencil.png");
+		editGraphicalGrid_btn.setIcon(editIcon);
+		editGraphicalGrid_btn.setBorder(BorderFactory.createEmptyBorder());
+		editGraphicalGrid_btn.setContentAreaFilled(false);
+		editGraphicalGrid_btn.addActionListener(this);
+		removeGraphicalGrid_btn = new JButton("Remove");
+		ImageIcon removeIcon = new ImageIcon("img/icons/delete.png");
+		removeGraphicalGrid_btn.setIcon(removeIcon);
+		removeGraphicalGrid_btn.setBorder(BorderFactory.createEmptyBorder());
+		removeGraphicalGrid_btn.setContentAreaFilled(false);
+		removeGraphicalGrid_btn.addActionListener(this);
+		saveGrid_btn = new JButton();
+		ImageIcon saveIcon = new ImageIcon("img/icons/disk.png");
+		saveGrid_btn.setIcon(saveIcon);
+		saveGrid_btn.setBorder(BorderFactory.createEmptyBorder());
+		saveGrid_btn.setContentAreaFilled(false);
+		saveGrid_btn.addActionListener(this);
+		refreshDropDown_btn = new JButton();
+		ImageIcon refreshIcon = new ImageIcon("img/icons/arrow_refresh.png");
+		refreshDropDown_btn.setIcon(refreshIcon);
+		refreshDropDown_btn.setBorder(BorderFactory.createEmptyBorder());
+		refreshDropDown_btn.setContentAreaFilled(false);
+		refreshDropDown_btn.addActionListener(this);
+		optionsPanel.add(newGraphicalGrid_btn);
+		optionsPanel.add(Box.createRigidArea(new Dimension(10,0)));
+		optionsPanel.add(editGraphicalGrid_btn);
+		optionsPanel.add(Box.createRigidArea(new Dimension(10,0)));
+		optionsPanel.add(removeGraphicalGrid_btn);
+		optionsPanel.add(Box.createRigidArea(new Dimension(10,0)));
+		optionsPanel.add(saveGrid_btn);
+		optionsPanel.add(Box.createRigidArea(new Dimension(10,0)));
+		updateStructureBox();
+		optionsPanel.add(graphicalGridComboBox);
+		optionsPanel.add(Box.createRigidArea(new Dimension(10,0)));
+		optionsPanel.add(refreshDropDown_btn);
+		optionsPanel.add(Box.createRigidArea(new Dimension(10,0)));
+		builder = new ProgramData().getNewBuilder();
+		optionsPanel.setLayout(new BoxLayout(optionsPanel, BoxLayout.X_AXIS));
+		optionsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+		
+		createEditorPanel();
+		
+		add(optionsPanel, BorderLayout.NORTH);
+		add(editorPanel, BorderLayout.CENTER);
+		add(graphicalGridPanel, BorderLayout.SOUTH);
+	}
+	
+	private JPanel createEditorPanel(){
+		builder = new ProgramData().getNewBuilder();
+		
+		cards = new CardLayout();
+		editorPanel.setLayout(cards);
+		
+		//NEW CARD
+		editorPanel_NewCard = new JPanel();
+		input_gridName_New = new JTextField();
+		input_xSize_New = new JSpinner();
+		input_ySize_New = new JSpinner();
+		builder.append(new JLabel("Grid Name :"), input_gridName_New);
+		builder.nextLine();
+		builder.append(new JLabel("Size x-axis :"), input_xSize_New);
+		builder.nextLine();
+		builder.append(new JLabel("Size y-axis :"), input_ySize_New);
+		builder.nextLine();
+		builder.append(Box.createRigidArea(new Dimension(10,0)));
+		buildGraphicalGridNew_Btn = new JButton("Build Structure");
+		buildGraphicalGridNew_Btn.addActionListener(this);
+		builder.append(buildGraphicalGridNew_Btn);
+		builder.nextLine();
+		
+		builder.appendSeparator("Custom grid structure format");
+		
+		builder.append(new JLabel("Input string:"), grid_string);
+		buildCustomGrid_Btn.addActionListener(this);
+        builder.append(buildCustomGrid_Btn);
+        builder.nextLine();
+		editorPanel.add(builder.getPanel(), "n");
+		builder = new ProgramData().getNewBuilder();
+		
+		//EDIT CARD
+		editorPanel_EditCard = new JPanel();
+		
+		input_gridName_Edit = new JTextField();
+		input_gridName_Edit.setEnabled(false);
+		input_xSize_Edit = new JSpinner();
+		input_xSize_Edit.setEnabled(false);
+		input_ySize_Edit = new JSpinner();
+		input_ySize_Edit.setEnabled(false);
+		change_gridName_btn = new JButton("");
+		change_xSize_btn = new JButton("");
+		change_ySize_btn = new JButton("");
+		ImageIcon editIcon = new ImageIcon("img/icons/pencil.png");
+		change_gridName_btn.setBorder(BorderFactory.createEmptyBorder());
+		change_gridName_btn.setContentAreaFilled(false);
+		change_gridName_btn.setIcon(editIcon);
+		change_gridName_btn.addActionListener(this);
+		change_xSize_btn.setBorder(BorderFactory.createEmptyBorder());
+		change_xSize_btn.setContentAreaFilled(false);
+		change_xSize_btn.setIcon(editIcon);
+		change_xSize_btn.addActionListener(this);
+		change_ySize_btn.setBorder(BorderFactory.createEmptyBorder());
+		change_ySize_btn.setContentAreaFilled(false);
+		change_ySize_btn.setIcon(editIcon);
+		change_ySize_btn.addActionListener(this);
+		builder.append(new JLabel("Grid Name :"), input_gridName_Edit, change_gridName_btn);
+		builder.nextLine();
+		builder.append(new JLabel("Size x-axis :"), input_xSize_Edit);
+		builder.append(change_xSize_btn);
+		builder.nextLine();
+		builder.append(new JLabel("Size y-axis :"), input_ySize_Edit, change_ySize_btn);
+		builder.nextLine();
+		builder.append(Box.createRigidArea(new Dimension(10,0)));
+		buildGraphicalGridEdit_Btn = new JButton("ReBuild Structure");
+		buildGraphicalGridEdit_Btn.addActionListener(this);
+		builder.append(buildGraphicalGridEdit_Btn);
+        
+		editorPanel.add(builder.getPanel(), "e");
+		builder = new ProgramData().getNewBuilder();
+		
+		return editorPanel;
+	}
+	
+	private void switchComponentEnabledStateOnButtonClick(JButton clickedButton, Component c){
+		if(c.isEnabled()){
+			c.setEnabled(false);
+			clickedButton.setIcon(new ImageIcon("img/icons/pencil.png"));		}
+		else{
+			c.setEnabled(true);
+			clickedButton.setIcon(new ImageIcon("img/icons/cross.png"));
+		}
+		this.invalidate();
+		this.validate();
+		this.repaint();
+	}
+	
+	public void actionPerformed(ActionEvent e) {
+		Object source = e.getSource();
+		Integer x_size = -1;
+		Integer y_size = -1;
+		
+		if(source == newGraphicalGrid_btn){
+			input_gridName_New.setEnabled(true);
+			input_xSize_New.setEnabled(true);
+			input_ySize_New.setEnabled(true);
+			buildGraphicalGridNew_Btn.setEnabled(true);
+			editorPanel_NewCard.invalidate();
+			editorPanel_NewCard.validate();
+			editorPanel_NewCard.repaint();
+			cards.show(editorPanel, "n");
+			
+		}
+		else if(source == editGraphicalGrid_btn){
+			input_gridName_New.setEnabled(false);
+			input_xSize_New.setEnabled(false);
+			input_ySize_New.setEnabled(false);
+			buildGraphicalGridNew_Btn.setEnabled(false);
+			editorPanel_EditCard.invalidate();
+			editorPanel_EditCard.validate();
+			editorPanel_EditCard.repaint();
+			cards.show(editorPanel, "e");
+		}
+		else if(source == removeGraphicalGrid_btn){
+			Scenario S = ProgramData.getScenario((String)graphicalGridComboBox.getSelectedItem());
+			ProgramData.removeScenario(S);
+//			ProgramData.tmpGraphicalGridModel.remove(graphicalGridComboBox.getSelectedIndex());
+//			ProgramData.savedGraphicalGridModel.remove(graphicalGridComboBox.getSelectedIndex());
+			updateStructureBox();
+		}
+		else if(source == saveGrid_btn){
+			if(editorPanel_NewCard.isVisible()){
+				ProgramData.savedGraphicalGridModel.add(currentGraphicalGridInEditor_New);
+			}
+			else if(editorPanel_NewCard.isVisible()){
+				ProgramData.savedGraphicalGridModel.set(graphicalGridComboBox.getSelectedIndex(), currentGraphicalGridInEditor_Edit);
+			}
+		}
+		else if(source == refreshDropDown_btn){
+			updateStructureBox();
+		}
+		else {
+			if(source == change_gridName_btn || source == change_xSize_btn || source == change_ySize_btn){
+				if(source == change_gridName_btn){
+					switchComponentEnabledStateOnButtonClick(change_gridName_btn, input_gridName_Edit);
+				}
+				else if(source == change_xSize_btn){
+					switchComponentEnabledStateOnButtonClick(change_xSize_btn, input_xSize_Edit);
+				}
+				else if(source == change_ySize_btn){
+					switchComponentEnabledStateOnButtonClick(change_ySize_btn, input_ySize_Edit);
+				}
+			}
+			//newGraphicalGrid_btn, editGraphicalGrid_btn, removeGraphicalGrid_btn, saveGrid_btn, refreshDropDown_btn
+			//input_gridName_New, input_gridName_Edit
+			//input_xSize_New, input_ySize_New, input_xSize_Edit, input_ySize_Edit
+			//change_gridName_btn, change_xSize_btn, change_ySize_btn
+			//buildGraphicalGridNew_Btn, buildGraphicalGridEdit_Btn
+			
+			//Grid gc = new Grid();
+			if(source == buildGraphicalGridNew_Btn || source == buildGraphicalGridEdit_Btn) {
+				try {
+					if(source == buildGraphicalGridNew_Btn){
+						x_size = Integer.parseInt(input_xSize_New.getValue().toString());
+						y_size = Integer.parseInt(input_ySize_New.getValue().toString());
+					}else if(source == buildGraphicalGridEdit_Btn){
+						x_size = Integer.parseInt(input_xSize_Edit.getValue().toString());
+						y_size = Integer.parseInt(input_ySize_Edit.getValue().toString());
+					}
+				} catch(NumberFormatException nfe) {
+					nfe.printStackTrace();
+				}
+				
+				if(x_size <= 1 || y_size <= 1 || x_size > 10 || y_size > 10) {
+					JOptionPane.showMessageDialog(null,
+					"Error: Please enter numbers that are atleast 2 and max 10", "Error Message",
+					JOptionPane.ERROR_MESSAGE);
+					if(x_size <= 1){
+						input_xSize_New.setValue(2);
+						x_size = 2;
+					}
+					if(y_size <= 1){
+						input_ySize_New.setValue(2);
+						y_size = 2;
+					}
+					
+					if(x_size > 10){
+						input_xSize_New.setValue(10);
+						x_size = 10;
+					}
+					if(y_size > 10){
+						input_ySize_New.setValue(10);
+						y_size = 10;
+					}
+					
+				}else{
+					String name = input_gridName_New.getText();
+					if (name != null && name.isEmpty()){
+						name = "No_name"+x_size+"x"+y_size;
+					}
+					
+					if(source == buildCustomGrid_Btn){
+						GraphicalGrid graphicalGrid2 = new GraphicalGrid(x_size, y_size);
+						graphicalGridPanel.removeAll();
+						graphicalGridPanel.add(graphicalGrid2.draw(), BorderLayout.CENTER);
+						graphicalGridPanel.setVisible(true);
+						invalidate();
+						validate();
+						repaint();
+						
+						String relation_list = grid_string.getText();
+						Grid.createCustom(x_size, y_size, name, relation_list);
+
+						ChartPresenter.updateChartStructures();
+						ProductSetup.updateProductStructures();
+						updateStructureBox();
+					}
+					else{
+						GraphicalGrid graphicalGrid = new GraphicalGrid(x_size, y_size);
+						graphicalGridPanel.removeAll();
+						graphicalGridPanel.add(graphicalGrid.draw());
+						graphicalGridPanel.setVisible(true);
+						invalidate();
+						validate();
+						repaint();
+												
+						name += "("+x_size+"x"+y_size+")";
+						Grid.createStructure(x_size, y_size, name);
+						ChartPresenter.updateChartStructures();
+						ProductSetup.updateProductStructures();
+						updateStructureBox();
+					}
+					
+					//Grid.create(x_size, y_size);
+				}
+			}
+//			try {
+//				AgentEnvironmentCreator.addSchedulerAgent();
+//				AgentEnvironmentCreator.addRemoteMonitoringAgent();
+//			} catch (StaleProxyException spe) {
+//				spe.printStackTrace();
+//			}
+			
+		}
+	}
+	
+	public static void updateStructureBox(){
+		graphicalGridComboBox.removeAllItems();
+		for (String name: ProgramData.getScenarioNames()){
+			graphicalGridComboBox.addItem(name);
+		}
+	}
+	
+	public void setEnabled(Component[] components, Boolean b){
+		for(Component c : components){
+			c.setEnabled(b);
+		}
+	}
+}

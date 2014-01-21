@@ -1,7 +1,7 @@
 package GraphicalGridBuilder.gridTypes;
 
 
-public class Crossed_Transport extends Super_Obj {
+public class Crossed_Transport extends SuperType_Obj {
 	
 	public Crossed_Transport(String inputTransportFlow){
 		textualIcon = "X";

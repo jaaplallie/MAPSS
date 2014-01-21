@@ -1,7 +1,7 @@
 package GraphicalGridBuilder.gridTypes;
 
 
-public class ForwardSlash_Transport extends Super_Obj {
+public class ForwardSlash_Transport extends SuperType_Obj {
 	
 	public ForwardSlash_Transport(String inputTransportFlow){
 		textualIcon = "\\";

@@ -1,7 +1,7 @@
 package GraphicalGridBuilder.gridTypes;
 
 
-public class Horizontal_Transport extends Super_Obj {
+public class Horizontal_Transport extends SuperType_Obj {
 	
 	public Horizontal_Transport(String inputTransportFlow){
 		textualIcon = "-";

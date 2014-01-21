@@ -1,7 +1,7 @@
 package GraphicalGridBuilder.gridTypes;
 
 
-public class Equiplet_Obj extends Super_Obj {
+public class Equiplet_Obj extends SuperType_Obj {
 
 	String name = "";
 	

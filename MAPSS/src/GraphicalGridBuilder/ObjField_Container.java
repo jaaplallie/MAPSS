@@ -5,15 +5,15 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 
-import GraphicalGridBuilder.gridTypes.Super_Obj;
+import GraphicalGridBuilder.gridTypes.SuperType_Obj;
 
 public class ObjField_Container{
 
 	JButton fieldButton;
-	Super_Obj[] typePossibilities = new Super_Obj[0];
+	SuperType_Obj[] typePossibilities = new SuperType_Obj[0];
 	int currentlyDisplayedTypePossibility = 0;
 	
-	public ObjField_Container(Super_Obj[] possibilities){
+	public ObjField_Container(SuperType_Obj[] possibilities){
 		typePossibilities = possibilities;
 		fieldButton = new JButton("");
 		fieldButton.setIcon(typePossibilities[currentlyDisplayedTypePossibility].getImageIcon());
@@ -38,7 +38,7 @@ public class ObjField_Container{
 		return fieldButton;
 	}
 	
-	public Super_Obj getInputObject(){
+	public SuperType_Obj getInputObject(){
 		return typePossibilities[currentlyDisplayedTypePossibility];
 	}
 	

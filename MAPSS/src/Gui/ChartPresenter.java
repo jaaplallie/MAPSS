@@ -160,7 +160,7 @@ public class ChartPresenter extends JPanel implements ActionListener, PropertyCh
 	}
 	
 	
-	public static void updateChartStructures(){
+	public static void updateStructureBox(){
 		structureBox.removeAllItems();
 		
 		for (String name: ProgramData.getScenarioNames()){

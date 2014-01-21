@@ -66,7 +66,7 @@ public class ProductSetup extends JPanel implements ActionListener{
         add(builder.getPanel());
 	}
 	
-	public static void updateProductStructures(){
+	public static void updateStructureBox(){
 		structureBox.removeAllItems();
 		for (String name: ProgramData.getScenarioNames()){
 			structureBox.addItem(name);

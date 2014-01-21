@@ -141,8 +141,8 @@ public class CreateGridModule extends JPanel implements ActionListener{
 					
 					case "Build structure":;
 						Grid.createStructure(x_size, y_size, name);
-						ChartPresenter.updateChartStructures();
-						ProductSetup.updateProductStructures();
+						ChartPresenter.updateStructureBox();
+						ProductSetup.updateStructureBox();
 						updateStructureBox();
 						
 						
@@ -161,8 +161,8 @@ public class CreateGridModule extends JPanel implements ActionListener{
 						String relation_list = grid_string.getText();
 						Grid.createCustom(x_size, y_size, name, relation_list);
 						
-						ChartPresenter.updateChartStructures();
-						ProductSetup.updateProductStructures();
+						ChartPresenter.updateStructureBox();
+						ProductSetup.updateStructureBox();
 						updateStructureBox();
 						
 						previewPanel.removeAll();

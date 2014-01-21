@@ -1,7 +1,7 @@
 package GraphicalGridBuilder.gridTypes;
 
 
-public class BackSlash_Transport extends Super_Obj {
+public class BackSlash_Transport extends SuperType_Obj {
 	
 	public BackSlash_Transport(String inputTransportFlow){
 		textualIcon = "/";
