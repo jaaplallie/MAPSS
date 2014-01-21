@@ -69,11 +69,11 @@ public class Grid {
 			}
 		}
 		
-		name += "(Custom)";
+		
 		
 		ArrayList<int[]> products = new ArrayList<int[]>();
 		ProgramData.createAndAddScenario(name, width, length, neighbors, products);
-		MainWindow.stringToOutput("(Custom) Structure '" + name + "' created.");
+		MainWindow.stringToOutput("Structure '" + name + "' created.");
 	}
 	
 	

@@ -20,7 +20,30 @@ public class MapssFileHandler {
 	public MapssFileHandler(){
 	}
 	
+	public static void init(){
+		File scenarios = new File("scenarios");  
+		if (scenarios.exists()){  
+		}else{  
+			scenarios.mkdir();
+		} 
+		
+		File logs = new File("logs");  
+		if (logs.exists()){  
+		}else{  
+			logs.mkdir();
+		} 
+		
+		File data = new File("data");  
+		if (data.exists()){  
+		}else{  
+			data.mkdir();
+		} 
+	}
+	
 	public static void logGrid(Scenario S){
+		
+		
+		
 
 		MapssFileHandler.writeLogLn("Grid layout");
 		int stepnr = 0;

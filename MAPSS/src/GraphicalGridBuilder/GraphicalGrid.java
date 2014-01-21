@@ -268,7 +268,7 @@ public class GraphicalGrid extends JFrame{
 				System.out.println(relation_list);
 				Scenario S = ProgramData.getLatestScenario();
 				Grid.createCustom(S.x, S.y, S.name, relation_list);
-				ProgramData.removeScenario(S);
+				//ProgramData.removeScenario(S);
 
 				ChartPresenter.updateChartStructures();
 				ProductSetup.updateProductStructures();
