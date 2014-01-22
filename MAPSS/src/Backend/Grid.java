@@ -20,8 +20,6 @@ product agent
 
 public class Grid {
 
-
-	
 	public Grid(){
 	}
 
@@ -41,7 +39,6 @@ public class Grid {
 		
 		ArrayList<Integer> tempList;
         int telnr = 0;
-        //System.out.println("relations = "+relations.length);
 		
 		for (String s : relations){
             String[] temp = s.split("-");
@@ -68,12 +65,22 @@ public class Grid {
                 System.out.println("+1 blank");
 			}
 		}
-		
-		
-		
 		ArrayList<int[]> products = new ArrayList<int[]>();
-		ProgramData.createAndAddScenario(name, width, length, neighbors, products);
-		MainWindow.stringToOutput("Structure '" + name + "' created.");
+		
+		if (ProgramData.getScenario(name) != null) { //check if it already exists.
+			//if it does, just update everthing.
+			
+			Scenario S = ProgramData.getScenario(name);
+			S.x = width;
+			S.y = length;
+			S.neighbors = neighbors;
+			S.save();
+			MainWindow.stringToOutput("Structure '" + name + "' updated.");
+			
+		} else {
+			ProgramData.createAndAddScenario(name, width, length, neighbors, products);
+			MainWindow.stringToOutput("Structure '" + name + "' created.");
+		}
 	}
 	
 	
@@ -102,7 +109,6 @@ public class Grid {
 				stepnr++;
 			}
 		}
-		
 		ArrayList<Integer>[] equiplet_positions = new ArrayList[width*length];
 		EquipletAgent[][] grid = new EquipletAgent[width][length];
 
@@ -117,13 +123,8 @@ public class Grid {
 				stepnr++;
 			}
 		}	
-		
-
 		ArrayList<int[]> products = new ArrayList<int[]>();
 		ProgramData.createAndAddScenario(name, width, length, neighbors, products);
 		MainWindow.stringToOutput("Structure '" + name + "' created.");
 	}
-	
-
-	
 }

@@ -54,6 +54,7 @@ public class ProductAgent extends Agent {
 			 protected void handleElapsedTimeout() { 
 				System.out.println(getAID().getLocalName());
 				MapssFileHandler.writeLogLn("Hi. I'm product agent " + getAID().getLocalName() + "."); 
+				MapssFileHandler.writeLogLn(""); //for visual effect
 				Object[] args = myAgent.getArguments();
 				String output = "";
 				int[] productPath;
@@ -165,7 +166,6 @@ public class ProductAgent extends Agent {
 						double average = hops_in_path/((args.length)-1);
 						
 						MapssFileHandler.writeLogLn("Average number of hops needed for each product step: " + average);
-						MapssFileHandler.writeLogLn("");
 						
 						MapssFileHandler.writeLog("Alternative path: ");
 						for (int o: otherPath){

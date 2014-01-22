@@ -22,29 +22,22 @@ public class MapssFileHandler {
 	
 	public static void init(){
 		File scenarios = new File("scenarios");  
-		if (scenarios.exists()){  
-		}else{  
+		if (!scenarios.exists()){  
 			scenarios.mkdir();
-		} 
+		}
 		
 		File logs = new File("logs");  
-		if (logs.exists()){  
-		}else{  
+		if (!logs.exists()){  
 			logs.mkdir();
-		} 
+		}
 		
 		File data = new File("data");  
-		if (data.exists()){  
-		}else{  
+		if (!data.exists()){  
 			data.mkdir();
-		} 
+		}
 	}
 	
 	public static void logGrid(Scenario S){
-		
-		
-		
-
 		MapssFileHandler.writeLogLn("Grid layout");
 		int stepnr = 0;
 		for (int y = 0; y < S.y; y++){
@@ -73,12 +66,7 @@ public class MapssFileHandler {
 	public static void saveScenario(Scenario S){
 		try {
 			PrintWriter structureWriter = new PrintWriter("scenarios/" + S.name + ".txt");
-			
 			structureWriter.println(S.x+"x"+S.y);
-			
-
-			
-			
 			
 			for (ArrayList<Integer> neighbor : S.neighbors) {
 				structureWriter.println(neighbor);
@@ -168,7 +156,7 @@ public class MapssFileHandler {
 			
 			ArrayList<Integer>[] neighbors = S.neighbors;
 			for (int i = 0; i < neighbors.length; i++){
-				DataWriter.println("Equiplet " + i + " kent: " + neighbors[i]);	
+				DataWriter.println("Equiplet " + i + " knows: " + neighbors[i]);	
 			}
 			DataWriter.println("****************************************************");
 			
@@ -266,65 +254,60 @@ public class MapssFileHandler {
 		
 	}
 	
-	public static void scenarioFileToScreen(Scenario S){
+	public static void averagePathToScreen(Scenario S){
 		FileReader fr;
-		try {
-			fr = new FileReader("scenarios/" + S.name +".txt");
+ 		try {
+			fr = new FileReader("logs/" + S.name +".txt");
 	    	BufferedReader br = new BufferedReader(fr); 
-	    	String s; 
-	    	while((s = br.readLine()) != null) { 
-	    		System.out.println(s);
-	    		MainWindow.stringToOutput(s);
+	    	String input;
+	    	String output = "";
+	    	while((input = br.readLine()) != null) { 
+	    		output = input;
 	    	}
 	    	fr.close();
-			
+	    	String output_list[] = output.split(" ");
+	    	MainWindow.stringToOutput("Average path: " + output_list[output_list.length-1]);
+
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+	}
+	
+	
+	public static void scenarioFileToScreen(Scenario S){
+
+		try {
+			File file = new File("scenarios/" + S.name +".txt");
+			java.awt.Desktop.getDesktop().edit(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static void logFileToScreen(Scenario S){
-		
-		FileReader fr;
 		try {
-			fr = new FileReader("logs/" + S.name +".txt");
-	    	BufferedReader br = new BufferedReader(fr); 
-	    	String s; 
-	    	while((s = br.readLine()) != null) { 
-	    		MainWindow.stringToOutput(s);
-	    	}
-	    	fr.close();
-			
+			File file = new File("logs/" + S.name +".txt");
+			java.awt.Desktop.getDesktop().edit(file);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		
 	}
 	
 	public static void dataFileToScreen(Scenario S){
-		
-		FileReader fr;
 		try {
-			fr = new FileReader("data/" + S.name +".txt");
-	    	BufferedReader br = new BufferedReader(fr); 
-	    	String s; 
-	    	while((s = br.readLine()) != null) { 
-	    		MainWindow.stringToOutput(s);
-	    	}
-	    	fr.close();
+			File file = new File("data/" + S.name +".txt");
+			if (file.exists()){
+				java.awt.Desktop.getDesktop().edit(file);
+			} else {
+				MainWindow.stringToOutput("A log file for this scenario does not exist. Run a simulation first");
+			}
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-	}
-	
+	}	
 	
 	
 	

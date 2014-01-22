@@ -138,16 +138,7 @@ public class Scenario {
 						difference++;
 					}
 				} 
-			} /*else {
-				if (first_path.length > alternative_path.length){
-					//Take the smallest path so that you're never out of bounds.
-					difference += alternative_path.length;
-				} else {
-					difference += first_path.length;
-				}
-				
-				
-			}	*/
+			} 
 		}
 		
 		double result = ((difference/size)*100);
@@ -158,25 +149,5 @@ public class Scenario {
 		MapssFileHandler.saveScenario(this);
 		MapssFileHandler.createDataFile(this);
 	}
-	
 
-	
-//	public String getScenarioName() {
-//		return name;
-//	}
-//
-//	public void setScenarioName(String scenarioName) {
-//		this.name = scenarioName;
-//	}
-
-
-	
-//	public EquipletAgent[][] getGrid(){
-//		return Grid;
-//	}
-
-
-
-	
-	
 }

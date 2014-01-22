@@ -49,7 +49,7 @@ public class Simulations {
 		while ((finished_products + unfinished_products) < S.products.size()){} //Wait until each product agent is finished
 
 		double average = getTotalAverageProductSteps()/S.products.size();
-		MapssFileHandler.writeLogLn("The average path for each product step is: " + average + " long");
+		MapssFileHandler.writeLogLn("The average path for each product step is: " + average);
 
 		clearProducts();
 		AgentEnvironmentCreator.destroyMainContainer();

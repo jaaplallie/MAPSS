@@ -1,13 +1,17 @@
 package Gui;
 
 
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JEditorPane;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import Backend.MapssFileHandler;
 import Backend.ProgramData;
@@ -20,23 +24,16 @@ public class ReadData extends JPanel implements ActionListener {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
 	static JComboBox<String> structureBox = new JComboBox<String>();
-	
 	private JButton generic_btn = new JButton("View generic data");
 	private JButton scenario_btn = new JButton("View scenario file");
 	private JButton data_btn = new JButton("View data file");
 	private JButton log_btn = new JButton("View log file");
-	private JButton clear_data = new JButton("clear");
-	
 	DefaultFormBuilder builder = new ProgramData().getNewBuilder();
 	
-	private String output = "******************Output******************";
-	private JPanel textPanel = new JPanel();
-	private JLabel text = new JLabel(output);
-	
-	
 	public ReadData(){
+		
+		builder.appendColumn("right:pref");
 		
 		structureBox.setEditable(false);
 		structureBox.setVisible(true);
@@ -55,10 +52,8 @@ public class ReadData extends JPanel implements ActionListener {
         builder.append("",data_btn);
         builder.nextLine();
         builder.append("",log_btn);
-        
-		
-		//setLayout(new BorderLayout());
-        
+        builder.nextLine();
+     
         generic_btn.addActionListener(this);
         scenario_btn.addActionListener(this);
         data_btn.addActionListener(this);
@@ -76,6 +71,10 @@ public class ReadData extends JPanel implements ActionListener {
 		MainWindow.stringToOutput("reading: " +S.name);
 		switch (source.getText()) {
 			case "View generic data":
+				MainWindow.stringToOutput("Size: " + S.x + " x " + S.y);
+				MainWindow.stringToOutput("Products: " + S.getProducts().size());
+				MainWindow.stringToOutput("Path difference: " + S.comparePaths());
+				MapssFileHandler.averagePathToScreen(S);
 				//MapssFileHandler.dataFileToScreen(S);
 				break;
 			case "View scenario file":
